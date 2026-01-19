@@ -1,0 +1,65 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
+ * SPDX-License-Identifier: MIT
+ */
+package com.github.fabriciofx.cactoos.cache.entries;
+
+import com.github.fabriciofx.cactoos.cache.Entries;
+import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Statistics;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Instrumented Entries.
+ * @param <D> the key domain type
+ * @param <V> the entry value type
+ * @since 0.0.1
+ */
+public final class Instrumented<D, V> implements Entries<D, V> {
+    /**
+     * Entries.
+     */
+    private final Entries<D, V> origin;
+
+    /**
+     * Statistics.
+     */
+    private final Statistics stats;
+
+    /**
+     * Ctor.
+     * @param entries The entries
+     * @param statistics The statistics
+     */
+    public Instrumented(
+        final Entries<D, V> entries,
+        final Statistics statistics
+    ) {
+        this.origin = entries;
+        this.stats = statistics;
+    }
+
+    @Override
+    public int count() {
+        return this.origin.count();
+    }
+
+    @Override
+    public List<Entry<D, V>> invalidate(final Iterable<String> metadata) {
+        final List<Entry<D, V>> invalidated = this.origin.invalidate(metadata);
+        this.stats.statistic("invalidations").increment(invalidated.size());
+        return invalidated;
+    }
+
+    @Override
+    public void clear() {
+        this.origin.clear();
+        this.stats.statistic("invalidations").increment(this.count());
+    }
+
+    @Override
+    public Iterator<Entry<D, V>> iterator() {
+        return this.origin.iterator();
+    }
+}
