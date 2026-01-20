@@ -120,6 +120,7 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.14.1</version>
         <configuration>
@@ -350,19 +351,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-    <profile>
-      <id>github-packages</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <distributionManagement>
-        <repository>
-          <id>github-packages</id>
-          <name>GitHub Packages</name>
-          <url>https://maven.pkg.github.com/${github.repo}</url>
-        </repository>
-      </distributionManagement>
     </profile>
   </profiles>
 </project>
