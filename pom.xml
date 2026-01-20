@@ -351,5 +351,18 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>github-packages</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <distributionManagement>
+        <repository>
+          <id>github-packages</id>
+          <name>GitHub Packages</name>
+          <url>https://maven.pkg.github.com/${github.repo}</url>
+        </repository>
+      </distributionManagement>
+    </profile>
   </profiles>
 </project>
