@@ -164,39 +164,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.12.0</version>
-        <executions>
-          <execution>
-            <id>artifact-javadoc</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <failOnError>true</failOnError>
-              <quiet>true</quiet>
-              <detectLinks>false</detectLinks>
-              <detectJavaApiLink>false</detectJavaApiLink>
-              <additionalOptions>${javadoc.opts}</additionalOptions>
-              <tags>
-                <tag>
-                  <name>todo</name>
-                  <placement>a</placement>
-                  <head>To do:</head>
-                </tag>
-                <tag>
-                  <name>checkstyle</name>
-                  <placement>a</placement>
-                  <head>Suppressed Checkstyle violations:</head>
-                </tag>
-              </tags>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -249,29 +216,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>central</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.sonatype.central</groupId>
-            <artifactId>central-publishing-maven-plugin</artifactId>
-            <version>0.10.0</version>
-            <extensions>true</extensions>
-            <configuration>
-              <publishingServerId>central</publishingServerId>
-              <autoPublish>true</autoPublish>
-              <waitUntil>validated</waitUntil>
-              <deploymentName>${project.version}</deploymentName>
-              <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
-            </configuration>
           </plugin>
         </plugins>
       </build>
