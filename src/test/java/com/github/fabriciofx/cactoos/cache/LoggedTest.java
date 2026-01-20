@@ -11,6 +11,7 @@ import com.github.fabriciofx.cactoos.cache.words.WordsKey;
 import com.github.fabriciofx.fake.logger.FakeLogger;
 import java.util.List;
 import org.cactoos.list.ListOf;
+import org.cactoos.text.Replaced;
 import org.cactoos.text.TextOf;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -48,7 +49,13 @@ final class LoggedTest {
                 '897859f6655555855a890e51483ab5e6' and value '[x, y, z]'
                 """
             ),
-            new Matches<>(new TextOf(logger.toString()))
+            new Matches<>(
+                new Replaced(
+                    new TextOf(logger.toString()),
+                    "\r\n",
+                    "\n"
+                )
+            )
         ).affirm();
     }
 
@@ -79,7 +86,13 @@ final class LoggedTest {
                 value '[k, l, m]'
                 """
             ),
-            new Matches<>(new TextOf(logger.toString()))
+            new Matches<>(
+                new Replaced(
+                    new TextOf(logger.toString()),
+                    "\r\n",
+                    "\n"
+                )
+            )
         ).affirm();
     }
 }
