@@ -4,7 +4,7 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
-import com.github.fabriciofx.cactoos.cache.cache.Logged;
+import com.github.fabriciofx.cactoos.cache.base.Logged;
 import com.github.fabriciofx.cactoos.cache.words.WordsCache;
 import com.github.fabriciofx.cactoos.cache.words.WordsEntry;
 import com.github.fabriciofx.cactoos.cache.words.WordsKey;

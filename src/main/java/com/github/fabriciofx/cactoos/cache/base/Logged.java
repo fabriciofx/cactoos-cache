@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.cactoos.cache.cache;
+package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Statistics;

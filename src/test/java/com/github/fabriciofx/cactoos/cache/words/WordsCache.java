@@ -6,7 +6,7 @@ package com.github.fabriciofx.cactoos.cache.words;
 
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
-import com.github.fabriciofx.cactoos.cache.cache.CacheEnvelope;
+import com.github.fabriciofx.cactoos.cache.base.CacheEnvelope;
 import java.util.List;
 
 /**

@@ -4,7 +4,7 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
-import com.github.fabriciofx.cactoos.cache.cache.Instrumented;
+import com.github.fabriciofx.cactoos.cache.base.Instrumented;
 import com.github.fabriciofx.cactoos.cache.policy.MaxSizePolicy;
 import com.github.fabriciofx.cactoos.cache.words.WordsCache;
 import com.github.fabriciofx.cactoos.cache.words.WordsEntry;

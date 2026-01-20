@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.cactoos.cache.cache;
+package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Statistics;
@@ -15,17 +15,17 @@ import com.github.fabriciofx.cactoos.cache.statistic.Misses;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
 
 /**
- * Instrumented Cache.
+ * CacheEnvelope.
  * @param <D> the key domain type
  * @param <V> the entry value type
  * @since 0.0.1
+ * @checkstyle DesignForExtensionCheck (200 lines)
  */
-@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
-public final class Instrumented<D, V> implements Cache<D, V> {
+public abstract class CacheEnvelope<D, V> implements Cache<D, V> {
     /**
-     * Cache.
+     * Store.
      */
-    private final Cache<D, V> origin;
+    private final Store<D, V> str;
 
     /**
      * Statistics.
@@ -34,37 +34,37 @@ public final class Instrumented<D, V> implements Cache<D, V> {
 
     /**
      * Ctor.
-     * @param cache The cache
+     * @param store A store
      */
-    public Instrumented(final Cache<D, V> cache) {
+    public CacheEnvelope(final Store<D, V> store) {
         this(
-            cache,
+            store,
             new StatisticsOf(
+                new Evictions(),
                 new Hits(),
-                new Misses(),
-                new Lookups(),
                 new Invalidations(),
-                new Evictions()
+                new Lookups(),
+                new Misses()
             )
         );
     }
 
     /**
      * Ctor.
-     * @param cache The cache
+     * @param store A store
      * @param statistics The statistics
      */
-    public Instrumented(final Cache<D, V> cache, final Statistics statistics) {
-        this.origin = cache;
+    public CacheEnvelope(
+        final Store<D, V> store,
+        final Statistics statistics
+    ) {
+        this.str = store;
         this.stats = statistics;
     }
 
     @Override
     public Store<D, V> store() {
-        return new com.github.fabriciofx.cactoos.cache.store.Instrumented<>(
-            this.origin.store(),
-            this.stats
-        );
+        return this.str;
     }
 
     @Override
@@ -74,7 +74,8 @@ public final class Instrumented<D, V> implements Cache<D, V> {
 
     @Override
     public void clear() {
-        this.store().keys().clear();
-        this.store().entries().clear();
+        this.str.keys().clear();
+        this.str.entries().clear();
+        this.stats.reset();
     }
 }
