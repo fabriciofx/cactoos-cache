@@ -32,7 +32,7 @@ A `Key` is composed of a domain and a hash. An `Entry` is the triple consisting
 of a `Key`, a `Value` (which you want to associate with the `Key`) and
 `Metadata`. `Metadata` can be anything (as `String`s), as SQL tables names
 (which are used for cache invalidation). A `Store` is responsible for
-maintaining the assocation `Key` -> `Entry`. Using a `Store`, you can:
+maintaining the association `Key` -> `Entry`. Using a `Store`, you can:
 
 - Retrieve an `Entry` using a `Key`;
 - Associate (save) a `Key` with an `Entry`;
@@ -45,7 +45,7 @@ A `Cache` is responsible for providing a `Store` and generating `Statistics`
 about `Store` usage. The most common statistics are:
 
 - *Hits*: number of times a value was found in the cache;
-- *Misses*: humber of times a value was not found in the cache;
+- *Misses*: number of times a value was not found in the cache;
 - *Lookups*: total number of accesses (hits + misses);
 - *Invalidations*: explicit cache removals;
 - *Evictions*: automatic cache removals.
