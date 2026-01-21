@@ -257,12 +257,12 @@ final Cache<String, List<String>> cache = new Instrumented<>(
 Contributions are welcome! Please, open an issue before submitting any kind of
 contribution (ideas, documentation, code, etc.).
 
-### How to build
+## How to build
 
 ```bash
 mvn clean install -Pqulice
 ```
 
-# License
+## License
 
 MIT.
