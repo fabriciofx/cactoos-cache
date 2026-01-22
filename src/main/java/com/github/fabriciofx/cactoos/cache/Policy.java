@@ -13,5 +13,6 @@ import org.cactoos.Func;
  * @param <V> the entry value type
  * @since 0.0.1
  */
+@FunctionalInterface
 public interface Policy<D, V> extends Func<Store<D, V>, List<Entry<D, V>>> {
 }

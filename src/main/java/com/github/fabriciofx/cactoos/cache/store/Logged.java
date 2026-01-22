@@ -133,7 +133,6 @@ public final class Logged<D, V> implements Store<D, V> {
         final Key<D> key,
         final Entry<D, V> entry
     ) throws Exception {
-        final List<Entry<D, V>> removed = this.origin.save(key, entry);
         this.logger.log(
             this.level.value(),
             new UncheckedText(
@@ -145,7 +144,7 @@ public final class Logged<D, V> implements Store<D, V> {
                 )
             ).asString()
         );
-        return removed;
+        return this.origin.save(key, entry);
     }
 
     @Override

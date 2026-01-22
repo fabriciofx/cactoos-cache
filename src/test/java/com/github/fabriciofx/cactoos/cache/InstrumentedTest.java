@@ -20,6 +20,7 @@ import org.llorllale.cactoos.matchers.HasValue;
  * Instrumented tests.
  * @since 0.0.1
  */
+@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class InstrumentedTest {
     @Test
     void checkHits() throws Exception {

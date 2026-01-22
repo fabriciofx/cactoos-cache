@@ -20,7 +20,6 @@ import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
 public final class Instrumented<D, V> implements Cache<D, V> {
     /**
      * Cache.

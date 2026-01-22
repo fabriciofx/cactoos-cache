@@ -166,7 +166,6 @@ public final class Logged<D, V> implements Entries<D, V> {
 
     @Override
     public Iterator<Entry<D, V>> iterator() {
-        final Iterator<Entry<D, V>> entries = this.origin.iterator();
         this.logger.log(
             this.level.value(),
             new UncheckedText(
@@ -176,6 +175,6 @@ public final class Logged<D, V> implements Entries<D, V> {
                 )
             ).asString()
         );
-        return entries;
+        return this.origin.iterator();
     }
 }

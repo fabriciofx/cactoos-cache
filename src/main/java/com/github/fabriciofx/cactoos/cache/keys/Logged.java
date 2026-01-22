@@ -137,7 +137,6 @@ public final class Logged<D> implements Keys<D> {
 
     @Override
     public Iterator<Key<D>> iterator() {
-        final Iterator<Key<D>> keys = this.origin.iterator();
         this.logger.log(
             this.level.value(),
             new UncheckedText(
@@ -147,6 +146,6 @@ public final class Logged<D> implements Keys<D> {
                 )
             ).asString()
         );
-        return keys;
+        return this.origin.iterator();
     }
 }

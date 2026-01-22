@@ -26,7 +26,6 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
 public final class Logged<D, V> implements Cache<D, V> {
     /**
      * Cache.

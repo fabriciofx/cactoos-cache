@@ -18,7 +18,7 @@ import org.cactoos.Bytes;
  * @checkstyle BooleanExpressionComplexityCheck (200 lines)
  */
 @SuppressWarnings({
-    "PMD.UselessParentheses",
+    "PMD.UnnecessaryCast",
     "PMD.ImplicitSwitchFallThrough",
     "PMD.NcssCount"
 })

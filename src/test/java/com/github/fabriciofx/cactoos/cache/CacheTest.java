@@ -19,6 +19,7 @@ import org.llorllale.cactoos.matchers.Matches;
  * <p>Tests for {@link Cache}.
  * @since 0.0.1
  */
+@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class CacheTest {
     @Test
     void saveAndRetrieve() throws Exception {
