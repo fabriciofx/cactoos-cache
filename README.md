@@ -37,13 +37,11 @@ Add to your `pom.xml` file:
 
 Add to your `build.gradle` file:
 
-```
+```groovy
 dependencies {
     implementation "com.github.fabriciofx:cactoos-cache:0.0.3"
 }
 ```
-
-
 
 ## Terminology
 
