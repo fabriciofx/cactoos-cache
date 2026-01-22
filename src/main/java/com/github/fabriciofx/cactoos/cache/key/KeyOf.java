@@ -68,9 +68,8 @@ public final class KeyOf<D> implements Key<D> {
     @Override
     public boolean equals(final Object other) {
         return this == other
-            || other != null
-            && this.getClass() == other.getClass()
-            && this.hash().equals(KeyOf.class.cast(other).hash());
+            || other instanceof Key
+            && this.hash().equals(Key.class.cast(other).hash());
     }
 
     @Override
