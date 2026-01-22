@@ -91,13 +91,7 @@ public final class WordsKey implements Key<String> {
 }
 ```
 
-Or simply:
-
-```java
-public final class WordsKey extends KeyEnvelope<String> {
-    // Constructors that call super() if necessary
-}
-```
+Or you can just use `KeyOf` a default `Key` implementation.
 
 - Creating an `Entry`:
 
@@ -143,37 +137,29 @@ public final class WordsEntry implements Entry<List<String>> {
 }
 ```
 
-Or simply:
-
-```java
-public final class WordsEntry extends EntryEnvelope<List<String>> {
-    // Constructors that call super() if necessary
-}
-```
+Or you can just use `EntryOf` a default `Entry` implementation.
 
 - Creating a `Store`
 
 Follow the same process:
 
 ```java
-public final class WordsStore implements StoreEnvelope<String, List<String>> {
-    // Constructors that call super() if necessary
+public final class WordsStore implements Store<String, List<String>> {
+    // Methods to implement your own Store
 }
 ```
 
-Or you can implement the `Store` interface directly.
+Or you can just use `StoreOf` a default `Store` implementation.
 
 - Creating a `Cache`
 
 ```java
-public final class WordsCache implements CacheEnvelope<String, List<String>> {
-    public WordsCache() {
-        super(new WordsStore());
-    }
+public final class WordsCache implements Cache<String, List<String>> {
+    // Methods to implement your own Cache
 }
 ```
 
-Or you can implement the `Cache` interface directly.
+Or you can just use the `CacheOf` a default `Cache` implementation.
 
 - Storing and retrieving from the cache
 
@@ -199,12 +185,44 @@ final List<String> words = cache
                             .value();
 ```
 
+Or using default implementations (basic cache):
+
+```java
+final Cache<String, List<String>> cache = new CacheOf<>();
+cache.store().save(
+    new KeyOf<>("a", new BytesOf("a")),
+    new EntryOf<>(
+        new KeyOf<>("a", new BytesOf("a")),
+        new ListOf<>("x", "y", "z")
+    )
+);
+cache.store().save(
+    new KeyOf<>("b", new BytesOf("b")),
+    new EntryOf<>(
+        new KeyOf<>("b", new BytesOf("b")),
+        new ListOf<>("k", "l", "m")
+    )
+);
+final List<String> words = cache
+    .store()
+    .retrieve(new KeyOf<>("a", new BytesOf("a")))
+    .value();
+```
+
 - Deleting from the cache
 
 ```java
 final Cache<String, List<String>> cache = new WordsCache();
 // Store some values
 cache.store().delete(new WordsKey("a"));
+```
+
+Or using default implementations (basic cache):
+
+```java
+final Cache<String, List<String>> cache = new CacheOf<>();
+// Store some values
+cache.store().delete(new KeyOf<>("a", new BytesOf("a")));
 ```
 
 - Logging cache usage
@@ -220,6 +238,17 @@ final Cache<String, List<String>> cache = new Logged<>(
 // Normal cache usage
 ```
 
+Or using default implementations (basic cache):
+
+```java
+final Cache<String, List<String>> cache = new Logged<>(
+    new CacheOf<>(),
+    "cache",
+    logger
+);
+// Normal cache usage
+```
+
 - Getting statistics
 
 To collect cache statistics, decorate the `Cache` with the `Instrumented`
@@ -227,7 +256,7 @@ decorator:
 
 ```java
 final Cache<String, List<String>> cache = new Instrumented<>(
-    new WordsCache()
+    new CacheOf<>()
 );
 // Normal cache usage
 final Statistics stats = cache.statistics();
@@ -244,7 +273,7 @@ You can combine multiple decorators, for example:
 ```java
 final Cache<String, List<String>> cache = new Instrumented<>(
     new Logged<>(
-        new WordsCache(),
+        new CacheOf<>(),
         "cache",
         logger
     )

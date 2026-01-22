@@ -10,9 +10,9 @@ import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Keys;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
-import com.github.fabriciofx.cactoos.cache.entries.MapEntries;
+import com.github.fabriciofx.cactoos.cache.entries.EntriesOf;
 import com.github.fabriciofx.cactoos.cache.entry.InvalidEntry;
-import com.github.fabriciofx.cactoos.cache.keys.SetKeys;
+import com.github.fabriciofx.cactoos.cache.keys.KeysOf;
 import com.github.fabriciofx.cactoos.cache.policy.MaxSizePolicy;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +20,12 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * StoreEnvelope.
+ * StoreOf.
  * @param <D> the key domain type
  * @param <V> the entry value type
- * @since 0.0.1
- * @checkstyle DesignForExtensionCheck (200 lines)
+ * @since 0.0.3
  */
-public abstract class StoreEnvelope<D, V> implements Store<D, V> {
+public final class StoreOf<D, V> implements Store<D, V> {
     /**
      * Entries.
      */
@@ -40,7 +39,7 @@ public abstract class StoreEnvelope<D, V> implements Store<D, V> {
     /**
      * Ctor.
      */
-    public StoreEnvelope() {
+    public StoreOf() {
         this(new MaxSizePolicy<>());
     }
 
@@ -48,7 +47,7 @@ public abstract class StoreEnvelope<D, V> implements Store<D, V> {
      * Ctor.
      * @param policy The policy
      */
-    public StoreEnvelope(final Policy<D, V> policy) {
+    public StoreOf(final Policy<D, V> policy) {
         this(new ConcurrentHashMap<>(), policy);
     }
 
@@ -57,7 +56,7 @@ public abstract class StoreEnvelope<D, V> implements Store<D, V> {
      * @param entries The entries
      * @param policy The policy
      */
-    public StoreEnvelope(
+    public StoreOf(
         final Map<Key<D>, Entry<D, V>> entries,
         final Policy<D, V> policy
     ) {
@@ -96,11 +95,11 @@ public abstract class StoreEnvelope<D, V> implements Store<D, V> {
 
     @Override
     public Keys<D> keys() {
-        return new SetKeys<>(this.records.keySet());
+        return new KeysOf<>(this.records.keySet());
     }
 
     @Override
     public Entries<D, V> entries() {
-        return new MapEntries<>(this.records);
+        return new EntriesOf<>(this.records);
     }
 }

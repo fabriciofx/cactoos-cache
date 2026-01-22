@@ -10,11 +10,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * SetKeys.
+ * KeysOf.
  * @param <D> the key domain type
  * @since 0.0.1
  */
-public final class SetKeys<D> implements Keys<D> {
+public final class KeysOf<D> implements Keys<D> {
     /**
      * Keys.
      */
@@ -24,7 +24,7 @@ public final class SetKeys<D> implements Keys<D> {
      * Ctor.
      * @param keys The keys
      */
-    public SetKeys(final Set<Key<D>> keys) {
+    public KeysOf(final Set<Key<D>> keys) {
         this.keys = keys;
     }
 

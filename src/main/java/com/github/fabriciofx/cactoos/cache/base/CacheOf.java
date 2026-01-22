@@ -13,15 +13,15 @@ import com.github.fabriciofx.cactoos.cache.statistic.Invalidations;
 import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
 import com.github.fabriciofx.cactoos.cache.statistic.Misses;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
+import com.github.fabriciofx.cactoos.cache.store.StoreOf;
 
 /**
- * CacheEnvelope.
+ * CacheOf.
  * @param <D> the key domain type
  * @param <V> the entry value type
- * @since 0.0.1
- * @checkstyle DesignForExtensionCheck (200 lines)
+ * @since 0.0.3
  */
-public abstract class CacheEnvelope<D, V> implements Cache<D, V> {
+public final class CacheOf<D, V> implements Cache<D, V> {
     /**
      * Store.
      */
@@ -34,9 +34,16 @@ public abstract class CacheEnvelope<D, V> implements Cache<D, V> {
 
     /**
      * Ctor.
+     */
+    public CacheOf() {
+        this(new StoreOf<>());
+    }
+
+    /**
+     * Ctor.
      * @param store A store
      */
-    public CacheEnvelope(final Store<D, V> store) {
+    public CacheOf(final Store<D, V> store) {
         this(
             store,
             new StatisticsOf(
@@ -54,7 +61,7 @@ public abstract class CacheEnvelope<D, V> implements Cache<D, V> {
      * @param store A store
      * @param statistics The statistics
      */
-    public CacheEnvelope(
+    public CacheOf(
         final Store<D, V> store,
         final Statistics statistics
     ) {

@@ -11,13 +11,12 @@ import java.util.Map;
 import org.cactoos.map.MapOf;
 
 /**
- * EntryEnvelope.
+ * EntryOf.
  * @param <D> the key domain type
  * @param <V> the entry value type
- * @since 0.0.1
- * @checkstyle DesignForExtensionCheck (200 lines)
+ * @since 0.0.3
  */
-public abstract class EntryEnvelope<D, V> implements Entry<D, V> {
+public final class EntryOf<D, V> implements Entry<D, V> {
     /**
      * Key.
      */
@@ -38,7 +37,7 @@ public abstract class EntryEnvelope<D, V> implements Entry<D, V> {
      * @param key A key
      * @param value A value
      */
-    public EntryEnvelope(final Key<D> key, final V value) {
+    public EntryOf(final Key<D> key, final V value) {
         this(key, value, new MapOf<>());
     }
 
@@ -48,7 +47,7 @@ public abstract class EntryEnvelope<D, V> implements Entry<D, V> {
      * @param value A value
      * @param metadata The metadata
      */
-    public EntryEnvelope(
+    public EntryOf(
         final Key<D> key,
         final V value,
         final Map<String, List<String>> metadata

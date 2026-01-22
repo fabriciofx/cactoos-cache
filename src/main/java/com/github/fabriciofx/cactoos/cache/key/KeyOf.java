@@ -12,12 +12,11 @@ import org.cactoos.text.Sticky;
 import org.cactoos.text.UncheckedText;
 
 /**
- * KeyEnvelope.
+ * KeyOf.
  * @param <D> the key domain type
  * @since 0.0.1
- * @checkstyle DesignForExtensionCheck (200 lines)
  */
-public abstract class KeyEnvelope<D> implements Key<D> {
+public final class KeyOf<D> implements Key<D> {
     /**
      * Value.
      */
@@ -33,7 +32,7 @@ public abstract class KeyEnvelope<D> implements Key<D> {
      * @param value A value
      * @param bytes A value as bytes
      */
-    public KeyEnvelope(final D value, final Bytes bytes) {
+    public KeyOf(final D value, final Bytes bytes) {
         this(
             value,
             new UncheckedText(
@@ -51,7 +50,7 @@ public abstract class KeyEnvelope<D> implements Key<D> {
      * @param value A value
      * @param hash The value's hash
      */
-    public KeyEnvelope(final D value, final UncheckedText hash) {
+    public KeyOf(final D value, final UncheckedText hash) {
         this.value = value;
         this.hsh = hash;
     }
@@ -68,8 +67,10 @@ public abstract class KeyEnvelope<D> implements Key<D> {
 
     @Override
     public boolean equals(final Object other) {
-        return other instanceof KeyEnvelope
-            && this.hash().equals(KeyEnvelope.class.cast(other).hash());
+        return this == other
+            || other != null
+            && this.getClass() == other.getClass()
+            && this.hash().equals(KeyOf.class.cast(other).hash());
     }
 
     @Override

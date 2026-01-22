@@ -11,17 +11,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import org.cactoos.set.SetOf;
 
 /**
- * MapEntries.
+ * EntriesOf.
  *
  * @param <D> the key domain type
  * @param <V> the entry value type
- * @since 0.0.1
+ * @since 0.0.3
  */
-public final class MapEntries<D, V> implements Entries<D, V> {
+public final class EntriesOf<D, V> implements Entries<D, V> {
     /**
      * Entries.
      */
@@ -32,7 +31,7 @@ public final class MapEntries<D, V> implements Entries<D, V> {
      *
      * @param entries The entries
      */
-    public MapEntries(final Map<Key<D>, Entry<D, V>> entries) {
+    public EntriesOf(final Map<Key<D>, Entry<D, V>> entries) {
         this.entries = entries;
     }
 
@@ -43,9 +42,7 @@ public final class MapEntries<D, V> implements Entries<D, V> {
 
     @Override
     public List<Entry<D, V>> invalidate(final Iterable<String> metadata) {
-        final Set<String> lookup = StreamSupport
-            .stream(metadata.spliterator(), false)
-            .collect(Collectors.toSet());
+        final Set<String> lookup = new SetOf<>(metadata);
         return this.entries.values()
             .stream()
             .filter(

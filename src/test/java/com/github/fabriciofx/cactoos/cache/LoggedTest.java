@@ -4,12 +4,13 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
+import com.github.fabriciofx.cactoos.cache.base.CacheOf;
 import com.github.fabriciofx.cactoos.cache.base.Logged;
-import com.github.fabriciofx.cactoos.cache.words.WordsCache;
-import com.github.fabriciofx.cactoos.cache.words.WordsEntry;
-import com.github.fabriciofx.cactoos.cache.words.WordsKey;
+import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
+import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.fake.logger.FakeLogger;
 import java.util.List;
+import org.cactoos.bytes.BytesOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.Replaced;
 import org.cactoos.text.TextOf;
@@ -28,18 +29,18 @@ final class LoggedTest {
     void logSaveAndRetrieve() throws Exception {
         final FakeLogger logger = new FakeLogger();
         final Cache<String, List<String>> cache = new Logged<>(
-            new WordsCache(),
+            new CacheOf<>(),
             "cache",
             logger
         );
         cache.store().save(
-            new WordsKey("a"),
-            new WordsEntry(
-                new WordsKey("a"),
+            new KeyOf<>("a", new BytesOf("a")),
+            new EntryOf<>(
+                new KeyOf<>("a", new BytesOf("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
-        cache.store().retrieve(new WordsKey("a"));
+        cache.store().retrieve(new KeyOf<>("a", new BytesOf("a")));
         new Assertion<>(
             "must log save and retrieve from cache",
             new HasString(
@@ -64,18 +65,18 @@ final class LoggedTest {
     void logSaveAndDelete() throws Exception {
         final FakeLogger logger = new FakeLogger();
         final Cache<String, List<String>> cache = new Logged<>(
-            new WordsCache(),
+            new CacheOf<>(),
             "cache",
             logger
         );
         cache.store().save(
-            new WordsKey("b"),
-            new WordsEntry(
-                new WordsKey("b"),
+            new KeyOf<>("b", new BytesOf("b")),
+            new EntryOf<>(
+                new KeyOf<>("b", new BytesOf("b")),
                 new ListOf<>("k", "l", "m")
             )
         );
-        cache.store().delete(new WordsKey("b"));
+        cache.store().delete(new KeyOf<>("b", new BytesOf("b")));
         new Assertion<>(
             "must log save and delete from cache",
             new HasString(
