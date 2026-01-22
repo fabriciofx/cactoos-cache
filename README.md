@@ -14,17 +14,36 @@ the same thing, but through (more OO) objects.
 These are the [design principles](http://www.elegantobjects.org#principles)
 behind Cactoos-Cache.
 
+## Requirements
+
+- Java 17+
+- [Cactoos](https://wwwcactoos.org) as dependency (just it)
+
 ## How to use
+
+- Maven
+
+Add to your `pom.xml` file:
 
 ```xml
 <dependency>
   <groupId>com.github.fabriciofx</groupId>
   <artifactId>cactoos-cache</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
 </dependency>
 ```
 
-Required Java version: 17+.
+- Gradle
+
+Add to your `build.gradle` file:
+
+```
+dependencies {
+    implementation "com.github.fabriciofx:cactoos-cache:0.0.3"
+}
+```
+
+
 
 ## Terminology
 
@@ -180,9 +199,9 @@ cache.store().save(
     )
 );
 final List<String> words = cache
-                            .store()
-                            .retrieve(new WordsKey("a"))
-                            .value();
+    .store()
+    .retrieve(new WordsKey("a"))
+    .value();
 ```
 
 Or using default implementations (basic cache):
