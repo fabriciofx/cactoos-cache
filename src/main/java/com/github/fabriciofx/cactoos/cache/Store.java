@@ -8,17 +8,17 @@ import java.util.List;
 
 /**
  * Store.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Store<D, V> {
+public interface Store<K, V> {
     /**
      * Retrieve an entry from store.
      * @param key The key
      * @return The entry associated with the key or an invalid entry otherwise
      */
-    Entry<D, V> retrieve(Key<D> key);
+    Entry<K, V> retrieve(Key<K> key);
 
     /**
      * Save an entry into store.
@@ -27,31 +27,31 @@ public interface Store<D, V> {
      * @return Elements removed automatically
      * @throws Exception If something goes wrong
      */
-    List<Entry<D, V>> save(Key<D> key, Entry<D, V> entry) throws Exception;
+    List<Entry<K, V>> save(Key<K> key, Entry<K, V> entry) throws Exception;
 
     /**
      * Delete an entry into store.
      * @param key The key associated to the entry
      * @return The entry associated with the key or an invalid entry otherwise
      */
-    Entry<D, V> delete(Key<D> key);
+    Entry<K, V> delete(Key<K> key);
 
     /**
      * Checks if the store has an entry associated with the key.
      * @param key The key
      * @return True if there is, false otherwise
      */
-    boolean contains(Key<D> key);
+    boolean contains(Key<K> key);
 
     /**
      * Retrieve the keys.
      * @return The keys
      */
-    Keys<D> keys();
+    Keys<K> keys();
 
     /**
      * Retrieve entries.
      * @return The entries
      */
-    Entries<D, V> entries();
+    Entries<K, V> entries();
 }

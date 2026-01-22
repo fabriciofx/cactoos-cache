@@ -21,16 +21,16 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * Logged Entries.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (300 lines)
  */
-public final class Logged<D, V> implements Entries<D, V> {
+public final class Logged<K, V> implements Entries<K, V> {
     /**
      * Entries.
      */
-    private final Entries<D, V> origin;
+    private final Entries<K, V> origin;
 
     /**
      * Where the logs come from.
@@ -53,7 +53,7 @@ public final class Logged<D, V> implements Entries<D, V> {
      * @param entries The cache to be logged
      * @param from Where the data comes from
      */
-    public Logged(final Entries<D, V> entries, final String from) {
+    public Logged(final Entries<K, V> entries, final String from) {
         this(entries, from, Logger.getLogger(from));
     }
 
@@ -65,7 +65,7 @@ public final class Logged<D, V> implements Entries<D, V> {
      * @param logger The logger
      */
     public Logged(
-        final Entries<D, V> entries,
+        final Entries<K, V> entries,
         final String from,
         final Logger logger
     ) {
@@ -100,7 +100,7 @@ public final class Logged<D, V> implements Entries<D, V> {
      * @param level The logger level
      */
     public Logged(
-        final Entries<D, V> entries,
+        final Entries<K, V> entries,
         final String from,
         final Logger logger,
         final Unchecked<Level> level
@@ -128,8 +128,8 @@ public final class Logged<D, V> implements Entries<D, V> {
     }
 
     @Override
-    public List<Entry<D, V>> invalidate(final Iterable<String> metadata) {
-        final List<Entry<D, V>> invalidated = this.origin.invalidate(metadata);
+    public List<Entry<K, V>> invalidate(final Iterable<String> metadata) {
+        final List<Entry<K, V>> invalidated = this.origin.invalidate(metadata);
         this.logger.log(
             this.level.value(),
             new UncheckedText(
@@ -165,7 +165,7 @@ public final class Logged<D, V> implements Entries<D, V> {
     }
 
     @Override
-    public Iterator<Entry<D, V>> iterator() {
+    public Iterator<Entry<K, V>> iterator() {
         this.logger.log(
             this.level.value(),
             new UncheckedText(

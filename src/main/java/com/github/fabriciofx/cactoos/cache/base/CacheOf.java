@@ -17,15 +17,15 @@ import com.github.fabriciofx.cactoos.cache.store.StoreOf;
 
 /**
  * CacheOf.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class CacheOf<D, V> implements Cache<D, V> {
+public final class CacheOf<K, V> implements Cache<K, V> {
     /**
      * Store.
      */
-    private final Store<D, V> str;
+    private final Store<K, V> str;
 
     /**
      * Statistics.
@@ -43,7 +43,7 @@ public final class CacheOf<D, V> implements Cache<D, V> {
      * Ctor.
      * @param store A store
      */
-    public CacheOf(final Store<D, V> store) {
+    public CacheOf(final Store<K, V> store) {
         this(
             store,
             new StatisticsOf(
@@ -62,7 +62,7 @@ public final class CacheOf<D, V> implements Cache<D, V> {
      * @param statistics The statistics
      */
     public CacheOf(
-        final Store<D, V> store,
+        final Store<K, V> store,
         final Statistics statistics
     ) {
         this.str = store;
@@ -70,7 +70,7 @@ public final class CacheOf<D, V> implements Cache<D, V> {
     }
 
     @Override
-    public Store<D, V> store() {
+    public Store<K, V> store() {
         return this.str;
     }
 

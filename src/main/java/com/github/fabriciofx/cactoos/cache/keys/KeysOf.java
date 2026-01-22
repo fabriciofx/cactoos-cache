@@ -11,20 +11,20 @@ import java.util.Set;
 
 /**
  * KeysOf.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @since 0.0.1
  */
-public final class KeysOf<D> implements Keys<D> {
+public final class KeysOf<K> implements Keys<K> {
     /**
      * Keys.
      */
-    private final Set<Key<D>> keys;
+    private final Set<Key<K>> keys;
 
     /**
      * Ctor.
      * @param keys The keys
      */
-    public KeysOf(final Set<Key<D>> keys) {
+    public KeysOf(final Set<Key<K>> keys) {
         this.keys = keys;
     }
 
@@ -39,7 +39,7 @@ public final class KeysOf<D> implements Keys<D> {
     }
 
     @Override
-    public Iterator<Key<D>> iterator() {
+    public Iterator<Key<K>> iterator() {
         return this.keys.iterator();
     }
 }

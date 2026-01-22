@@ -11,14 +11,14 @@ import java.util.Iterator;
 
 /**
  * Instrumented Keys.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @since 0.0.1
  */
-public final class Instrumented<D> implements Keys<D> {
+public final class Instrumented<K> implements Keys<K> {
     /**
      * Keys.
      */
-    private final Keys<D> origin;
+    private final Keys<K> origin;
 
     /**
      * Statistics.
@@ -31,7 +31,7 @@ public final class Instrumented<D> implements Keys<D> {
      * @param statistics The statistics
      */
     public Instrumented(
-        final Keys<D> keys,
+        final Keys<K> keys,
         final Statistics statistics
     ) {
         this.origin = keys;
@@ -50,7 +50,7 @@ public final class Instrumented<D> implements Keys<D> {
     }
 
     @Override
-    public Iterator<Key<D>> iterator() {
+    public Iterator<Key<K>> iterator() {
         return this.origin.iterator();
     }
 }

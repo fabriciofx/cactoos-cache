@@ -12,15 +12,15 @@ import java.util.List;
 
 /**
  * Instrumented Entries.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<D, V> implements Entries<D, V> {
+public final class Instrumented<K, V> implements Entries<K, V> {
     /**
      * Entries.
      */
-    private final Entries<D, V> origin;
+    private final Entries<K, V> origin;
 
     /**
      * Statistics.
@@ -33,7 +33,7 @@ public final class Instrumented<D, V> implements Entries<D, V> {
      * @param statistics The statistics
      */
     public Instrumented(
-        final Entries<D, V> entries,
+        final Entries<K, V> entries,
         final Statistics statistics
     ) {
         this.origin = entries;
@@ -46,8 +46,8 @@ public final class Instrumented<D, V> implements Entries<D, V> {
     }
 
     @Override
-    public List<Entry<D, V>> invalidate(final Iterable<String> metadata) {
-        final List<Entry<D, V>> invalidated = this.origin.invalidate(metadata);
+    public List<Entry<K, V>> invalidate(final Iterable<String> metadata) {
+        final List<Entry<K, V>> invalidated = this.origin.invalidate(metadata);
         this.stats.statistic("invalidations").increment(invalidated.size());
         return invalidated;
     }
@@ -59,7 +59,7 @@ public final class Instrumented<D, V> implements Entries<D, V> {
     }
 
     @Override
-    public Iterator<Entry<D, V>> iterator() {
+    public Iterator<Entry<K, V>> iterator() {
         return this.origin.iterator();
     }
 }

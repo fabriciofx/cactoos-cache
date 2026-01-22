@@ -7,15 +7,15 @@ package com.github.fabriciofx.cactoos.cache;
 /**
  * Key.
  * <p>You MUST implement equals() and hashCode() in Key's implementation class.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @since 0.0.1
  */
-public interface Key<D> {
+public interface Key<K> {
     /**
-     * Retrieve the domain associated with this key.
-     * @return The domain
+     * Retrieve the value associated with this key.
+     * @return The value
      */
-    D domain();
+    K value();
 
     /**
      * Calculate the key's hash.

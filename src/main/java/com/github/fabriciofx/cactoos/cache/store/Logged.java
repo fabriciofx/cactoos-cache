@@ -21,16 +21,16 @@ import org.cactoos.text.UncheckedText;
 /**
  * Logged Store.
  * <p>A {@link Store} decorator to logging store operations.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (500 lines)
  */
-public final class Logged<D, V> implements Store<D, V> {
+public final class Logged<K, V> implements Store<K, V> {
     /**
      * Store.
      */
-    private final Store<D, V> origin;
+    private final Store<K, V> origin;
 
     /**
      * Where the logs come from.
@@ -53,7 +53,7 @@ public final class Logged<D, V> implements Store<D, V> {
      * @param store The cache to be logged
      * @param from Where the data comes from
      */
-    public Logged(final Store<D, V> store, final String from) {
+    public Logged(final Store<K, V> store, final String from) {
         this(store, from, Logger.getLogger(from));
     }
 
@@ -65,7 +65,7 @@ public final class Logged<D, V> implements Store<D, V> {
      * @param logger The logger
      */
     public Logged(
-        final Store<D, V> store,
+        final Store<K, V> store,
         final String from,
         final Logger logger
     ) {
@@ -100,7 +100,7 @@ public final class Logged<D, V> implements Store<D, V> {
      * @param level The logger level
      */
     public Logged(
-        final Store<D, V> store,
+        final Store<K, V> store,
         final String from,
         final Logger logger,
         final Unchecked<Level> level
@@ -112,8 +112,8 @@ public final class Logged<D, V> implements Store<D, V> {
     }
 
     @Override
-    public Entry<D, V> retrieve(final Key<D> key) {
-        final Entry<D, V> entry = this.origin.retrieve(key);
+    public Entry<K, V> retrieve(final Key<K> key) {
+        final Entry<K, V> entry = this.origin.retrieve(key);
         this.logger.log(
             this.level.value(),
             new UncheckedText(
@@ -129,9 +129,9 @@ public final class Logged<D, V> implements Store<D, V> {
     }
 
     @Override
-    public List<Entry<D, V>> save(
-        final Key<D> key,
-        final Entry<D, V> entry
+    public List<Entry<K, V>> save(
+        final Key<K> key,
+        final Entry<K, V> entry
     ) throws Exception {
         this.logger.log(
             this.level.value(),
@@ -148,8 +148,8 @@ public final class Logged<D, V> implements Store<D, V> {
     }
 
     @Override
-    public Entry<D, V> delete(final Key<D> key) {
-        final Entry<D, V> entry = this.origin.delete(key);
+    public Entry<K, V> delete(final Key<K> key) {
+        final Entry<K, V> entry = this.origin.delete(key);
         this.logger.log(
             this.level.value(),
             new UncheckedText(
@@ -171,7 +171,7 @@ public final class Logged<D, V> implements Store<D, V> {
     }
 
     @Override
-    public boolean contains(final Key<D> key) {
+    public boolean contains(final Key<K> key) {
         final boolean exists = this.origin.contains(key);
         this.logger.log(
             this.level.value(),
@@ -188,7 +188,7 @@ public final class Logged<D, V> implements Store<D, V> {
     }
 
     @Override
-    public Keys<D> keys() {
+    public Keys<K> keys() {
         return new com.github.fabriciofx.cactoos.cache.keys.Logged<>(
             this.origin.keys(),
             this.from,
@@ -198,7 +198,7 @@ public final class Logged<D, V> implements Store<D, V> {
     }
 
     @Override
-    public Entries<D, V> entries() {
+    public Entries<K, V> entries() {
         return new com.github.fabriciofx.cactoos.cache.entries.Logged<>(
             this.origin.entries(),
             this.from,

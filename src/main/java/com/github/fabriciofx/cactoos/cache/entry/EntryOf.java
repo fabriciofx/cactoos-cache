@@ -12,15 +12,15 @@ import org.cactoos.map.MapOf;
 
 /**
  * EntryOf.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class EntryOf<D, V> implements Entry<D, V> {
+public final class EntryOf<K, V> implements Entry<K, V> {
     /**
      * Key.
      */
-    private final Key<D> id;
+    private final Key<K> id;
 
     /**
      * Value.
@@ -37,7 +37,7 @@ public final class EntryOf<D, V> implements Entry<D, V> {
      * @param key A key
      * @param value A value
      */
-    public EntryOf(final Key<D> key, final V value) {
+    public EntryOf(final Key<K> key, final V value) {
         this(key, value, new MapOf<>());
     }
 
@@ -48,7 +48,7 @@ public final class EntryOf<D, V> implements Entry<D, V> {
      * @param metadata The metadata
      */
     public EntryOf(
-        final Key<D> key,
+        final Key<K> key,
         final V value,
         final Map<String, List<String>> metadata
     ) {
@@ -58,7 +58,7 @@ public final class EntryOf<D, V> implements Entry<D, V> {
     }
 
     @Override
-    public Key<D> key() {
+    public Key<K> key() {
         return this.id;
     }
 

@@ -21,20 +21,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * StoreOf.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class StoreOf<D, V> implements Store<D, V> {
+public final class StoreOf<K, V> implements Store<K, V> {
     /**
      * Entries.
      */
-    private final Map<Key<D>, Entry<D, V>> records;
+    private final Map<Key<K>, Entry<K, V>> records;
 
     /**
      * Policy.
      */
-    private final Policy<D, V> policy;
+    private final Policy<K, V> policy;
 
     /**
      * Ctor.
@@ -47,7 +47,7 @@ public final class StoreOf<D, V> implements Store<D, V> {
      * Ctor.
      * @param policy The policy
      */
-    public StoreOf(final Policy<D, V> policy) {
+    public StoreOf(final Policy<K, V> policy) {
         this(new ConcurrentHashMap<>(), policy);
     }
 
@@ -57,23 +57,23 @@ public final class StoreOf<D, V> implements Store<D, V> {
      * @param policy The policy
      */
     public StoreOf(
-        final Map<Key<D>, Entry<D, V>> entries,
-        final Policy<D, V> policy
+        final Map<Key<K>, Entry<K, V>> entries,
+        final Policy<K, V> policy
     ) {
         this.records = entries;
         this.policy = policy;
     }
 
     @Override
-    public Entry<D, V> retrieve(final Key<D> key) {
+    public Entry<K, V> retrieve(final Key<K> key) {
         return this.records.getOrDefault(key, new InvalidEntry<>());
     }
 
     @Override
-    public List<Entry<D, V>> save(final Key<D> key, final Entry<D, V> entry)
+    public List<Entry<K, V>> save(final Key<K> key, final Entry<K, V> entry)
         throws Exception {
-        final List<Entry<D, V>> evicted = this.policy.apply(this);
-        final Entry<D, V> removed = this.records.put(key, entry);
+        final List<Entry<K, V>> evicted = this.policy.apply(this);
+        final Entry<K, V> removed = this.records.put(key, entry);
         if (removed != null) {
             evicted.add(removed);
         }
@@ -81,7 +81,7 @@ public final class StoreOf<D, V> implements Store<D, V> {
     }
 
     @Override
-    public Entry<D, V> delete(final Key<D> key) {
+    public Entry<K, V> delete(final Key<K> key) {
         return Objects.requireNonNullElseGet(
             this.records.remove(key),
             InvalidEntry::new
@@ -89,17 +89,17 @@ public final class StoreOf<D, V> implements Store<D, V> {
     }
 
     @Override
-    public boolean contains(final Key<D> key) {
+    public boolean contains(final Key<K> key) {
         return this.records.containsKey(key);
     }
 
     @Override
-    public Keys<D> keys() {
+    public Keys<K> keys() {
         return new KeysOf<>(this.records.keySet());
     }
 
     @Override
-    public Entries<D, V> entries() {
+    public Entries<K, V> entries() {
         return new EntriesOf<>(this.records);
     }
 }

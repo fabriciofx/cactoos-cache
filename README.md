@@ -29,7 +29,7 @@ Add to your `pom.xml` file:
 <dependency>
   <groupId>com.github.fabriciofx</groupId>
   <artifactId>cactoos-cache</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.5</version>
 </dependency>
 ```
 
@@ -45,9 +45,9 @@ dependencies {
 
 ## Terminology
 
-A `Key` is composed of a domain and a hash. An `Entry` is the triple consisting
-of a `Key`, a `Value` (which you want to associate with the `Key`) and
-`Metadata`. `Metadata` can be anything (as `String`s), as SQL tables names
+A `Key` is composed of a value and a hash. An `Entry` is the triple consisting
+of a `Key`, a value (which you want to associate with the `Key`) and
+metadata. Metadata can be anything (as `String`s), as SQL tables names
 (which are used for cache invalidation). A `Store` is responsible for
 maintaining the association `Key` -> `Entry`. Using a `Store`, you can:
 
@@ -77,8 +77,8 @@ associated with a list of synonyms. For that, you need to create a `Key`, an
 
 - Creating a `Key`
 
-You can create a class that implements `Key` where the *domain* is the value you
-want to associate (a word):
+You can create a class that implements `Key` where the value is what do you want
+to associate (a word):
 
 ```java
 public final class WordsKey implements Key<String> {
@@ -89,7 +89,7 @@ public final class WordsKey implements Key<String> {
     }
 
     @Override
-    public String domain() {
+    public String value() {
         return this.word;
     }
 

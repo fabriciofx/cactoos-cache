@@ -9,16 +9,16 @@ import java.util.Map;
 
 /**
  * Entry.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Entry<D, V> {
+public interface Entry<K, V> {
     /**
      * Retrieve the key associated with this entry.
      * @return The key
      */
-    Key<D> key();
+    Key<K> key();
 
     /**
      * Retrieve the value associated with this entry.

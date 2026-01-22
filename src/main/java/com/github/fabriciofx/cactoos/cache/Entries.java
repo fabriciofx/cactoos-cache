@@ -8,11 +8,11 @@ import java.util.List;
 
 /**
  * Entries.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Entries<D, V> extends Iterable<Entry<D, V>> {
+public interface Entries<K, V> extends Iterable<Entry<K, V>> {
     /**
      * Retrieve the amount of entries.
      * @return The amount of entries.
@@ -24,7 +24,7 @@ public interface Entries<D, V> extends Iterable<Entry<D, V>> {
      * @param metadata The metadata
      * @return The invalidated entries associated with this metadata
      */
-    List<Entry<D, V>> invalidate(Iterable<String> metadata);
+    List<Entry<K, V>> invalidate(Iterable<String> metadata);
 
     /**
      * Clear entries.

@@ -6,16 +6,16 @@ package com.github.fabriciofx.cactoos.cache;
 
 /**
  * Cache.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Cache<D, V> {
+public interface Cache<K, V> {
     /**
      * Store.
      * @return The store.
      */
-    Store<D, V> store();
+    Store<K, V> store();
 
     /**
      * Statistics.

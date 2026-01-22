@@ -16,15 +16,15 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * Logged Keys.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (300 lines)
  */
-public final class Logged<D> implements Keys<D> {
+public final class Logged<K> implements Keys<K> {
     /**
      * Keys.
      */
-    private final Keys<D> origin;
+    private final Keys<K> origin;
 
     /**
      * Where the logs come from.
@@ -47,7 +47,7 @@ public final class Logged<D> implements Keys<D> {
      * @param keys The cache to be logged
      * @param from Where the data comes from
      */
-    public Logged(final Keys<D> keys, final String from) {
+    public Logged(final Keys<K> keys, final String from) {
         this(keys, from, Logger.getLogger(from));
     }
 
@@ -59,7 +59,7 @@ public final class Logged<D> implements Keys<D> {
      * @param logger The logger
      */
     public Logged(
-        final Keys<D> keys,
+        final Keys<K> keys,
         final String from,
         final Logger logger
     ) {
@@ -94,7 +94,7 @@ public final class Logged<D> implements Keys<D> {
      * @param level The logger level
      */
     public Logged(
-        final Keys<D> keys,
+        final Keys<K> keys,
         final String from,
         final Logger logger,
         final Unchecked<Level> level
@@ -136,7 +136,7 @@ public final class Logged<D> implements Keys<D> {
     }
 
     @Override
-    public Iterator<Key<D>> iterator() {
+    public Iterator<Key<K>> iterator() {
         this.logger.log(
             this.level.value(),
             new UncheckedText(

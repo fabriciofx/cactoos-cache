@@ -16,15 +16,15 @@ import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
 
 /**
  * Instrumented Cache.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<D, V> implements Cache<D, V> {
+public final class Instrumented<K, V> implements Cache<K, V> {
     /**
      * Cache.
      */
-    private final Cache<D, V> origin;
+    private final Cache<K, V> origin;
 
     /**
      * Statistics.
@@ -35,7 +35,7 @@ public final class Instrumented<D, V> implements Cache<D, V> {
      * Ctor.
      * @param cache The cache
      */
-    public Instrumented(final Cache<D, V> cache) {
+    public Instrumented(final Cache<K, V> cache) {
         this(
             cache,
             new StatisticsOf(
@@ -53,13 +53,13 @@ public final class Instrumented<D, V> implements Cache<D, V> {
      * @param cache The cache
      * @param statistics The statistics
      */
-    public Instrumented(final Cache<D, V> cache, final Statistics statistics) {
+    public Instrumented(final Cache<K, V> cache, final Statistics statistics) {
         this.origin = cache;
         this.stats = statistics;
     }
 
     @Override
-    public Store<D, V> store() {
+    public Store<K, V> store() {
         return new com.github.fabriciofx.cactoos.cache.store.Instrumented<>(
             this.origin.store(),
             this.stats

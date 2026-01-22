@@ -16,22 +16,22 @@ import org.cactoos.set.SetOf;
 /**
  * EntriesOf.
  *
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class EntriesOf<D, V> implements Entries<D, V> {
+public final class EntriesOf<K, V> implements Entries<K, V> {
     /**
      * Entries.
      */
-    private final Map<Key<D>, Entry<D, V>> entries;
+    private final Map<Key<K>, Entry<K, V>> entries;
 
     /**
      * Ctor.
      *
      * @param entries The entries
      */
-    public EntriesOf(final Map<Key<D>, Entry<D, V>> entries) {
+    public EntriesOf(final Map<Key<K>, Entry<K, V>> entries) {
         this.entries = entries;
     }
 
@@ -41,7 +41,7 @@ public final class EntriesOf<D, V> implements Entries<D, V> {
     }
 
     @Override
-    public List<Entry<D, V>> invalidate(final Iterable<String> metadata) {
+    public List<Entry<K, V>> invalidate(final Iterable<String> metadata) {
         final Set<String> lookup = new SetOf<>(metadata);
         return this.entries.values()
             .stream()
@@ -59,7 +59,7 @@ public final class EntriesOf<D, V> implements Entries<D, V> {
     }
 
     @Override
-    public Iterator<Entry<D, V>> iterator() {
+    public Iterator<Entry<K, V>> iterator() {
         return this.entries.values().iterator();
     }
 }

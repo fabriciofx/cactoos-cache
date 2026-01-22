@@ -9,10 +9,10 @@ import org.cactoos.Func;
 
 /**
  * Policy.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
 @FunctionalInterface
-public interface Policy<D, V> extends Func<Store<D, V>, List<Entry<D, V>>> {
+public interface Policy<K, V> extends Func<Store<K, V>, List<Entry<K, V>>> {
 }

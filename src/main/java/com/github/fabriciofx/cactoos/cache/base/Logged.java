@@ -21,16 +21,16 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * Logged Cache.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (200 lines)
  */
-public final class Logged<D, V> implements Cache<D, V> {
+public final class Logged<K, V> implements Cache<K, V> {
     /**
      * Cache.
      */
-    private final Cache<D, V> origin;
+    private final Cache<K, V> origin;
 
     /**
      * Where the data comes from.
@@ -53,7 +53,7 @@ public final class Logged<D, V> implements Cache<D, V> {
      * @param cache The cache to be logged
      * @param from Where the data comes from
      */
-    public Logged(final Cache<D, V> cache, final String from) {
+    public Logged(final Cache<K, V> cache, final String from) {
         this(cache, from, Logger.getLogger(from));
     }
 
@@ -65,7 +65,7 @@ public final class Logged<D, V> implements Cache<D, V> {
      * @param logger The logger
      */
     public Logged(
-        final Cache<D, V> cache,
+        final Cache<K, V> cache,
         final String from,
         final Logger logger
     ) {
@@ -92,7 +92,7 @@ public final class Logged<D, V> implements Cache<D, V> {
     }
 
     public Logged(
-        final Cache<D, V> cache,
+        final Cache<K, V> cache,
         final String from,
         final Logger logger,
         final Unchecked<Level> level
@@ -104,7 +104,7 @@ public final class Logged<D, V> implements Cache<D, V> {
     }
 
     @Override
-    public Store<D, V> store() {
+    public Store<K, V> store() {
         return new com.github.fabriciofx.cactoos.cache.store.Logged<>(
             this.origin.store(),
             this.from,

@@ -13,14 +13,14 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * KeyOf.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @since 0.0.1
  */
-public final class KeyOf<D> implements Key<D> {
+public final class KeyOf<K> implements Key<K> {
     /**
      * Value.
      */
-    private final D value;
+    private final K val;
 
     /**
      * Hash.
@@ -32,7 +32,7 @@ public final class KeyOf<D> implements Key<D> {
      * @param value A value
      * @param bytes A value as bytes
      */
-    public KeyOf(final D value, final Bytes bytes) {
+    public KeyOf(final K value, final Bytes bytes) {
         this(
             value,
             new UncheckedText(
@@ -50,14 +50,14 @@ public final class KeyOf<D> implements Key<D> {
      * @param value A value
      * @param hash The value's hash
      */
-    public KeyOf(final D value, final UncheckedText hash) {
-        this.value = value;
+    public KeyOf(final K value, final UncheckedText hash) {
+        this.val = value;
         this.hsh = hash;
     }
 
     @Override
-    public D domain() {
-        return this.value;
+    public K value() {
+        return this.val;
     }
 
     @Override

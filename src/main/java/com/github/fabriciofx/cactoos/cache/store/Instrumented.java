@@ -14,15 +14,15 @@ import java.util.List;
 
 /**
  * Instrumented Store.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<D, V> implements Store<D, V> {
+public final class Instrumented<K, V> implements Store<K, V> {
     /**
      * Store.
      */
-    private final Store<D, V> origin;
+    private final Store<K, V> origin;
 
     /**
      * Statistics.
@@ -34,15 +34,15 @@ public final class Instrumented<D, V> implements Store<D, V> {
      * @param cache The cache
      * @param statistics The statistics
      */
-    public Instrumented(final Store<D, V> cache, final Statistics statistics) {
+    public Instrumented(final Store<K, V> cache, final Statistics statistics) {
         this.origin = cache;
         this.stats = statistics;
     }
 
     @Override
-    public Entry<D, V> retrieve(final Key<D> key) {
+    public Entry<K, V> retrieve(final Key<K> key) {
         this.stats.statistic("lookups").increment(1);
-        final Entry<D, V> entry = this.origin.retrieve(key);
+        final Entry<K, V> entry = this.origin.retrieve(key);
         if (entry.valid()) {
             this.stats.statistic("hits").increment(1);
         } else {
@@ -52,23 +52,23 @@ public final class Instrumented<D, V> implements Store<D, V> {
     }
 
     @Override
-    public List<Entry<D, V>> save(
-        final Key<D> key,
-        final Entry<D, V> entry
+    public List<Entry<K, V>> save(
+        final Key<K> key,
+        final Entry<K, V> entry
     ) throws Exception {
-        final List<Entry<D, V>> evicted = this.origin.save(key, entry);
+        final List<Entry<K, V>> evicted = this.origin.save(key, entry);
         this.stats.statistic("evictions").increment(evicted.size());
         return evicted;
     }
 
     @Override
-    public Entry<D, V> delete(final Key<D> key) {
+    public Entry<K, V> delete(final Key<K> key) {
         this.stats.statistic("invalidations").increment(1);
         return this.origin.delete(key);
     }
 
     @Override
-    public boolean contains(final Key<D> key) {
+    public boolean contains(final Key<K> key) {
         final boolean exists = this.origin.contains(key);
         if (exists) {
             this.stats.statistic("hits").increment(1);
@@ -80,7 +80,7 @@ public final class Instrumented<D, V> implements Store<D, V> {
     }
 
     @Override
-    public Keys<D> keys() {
+    public Keys<K> keys() {
         return new com.github.fabriciofx.cactoos.cache.keys.Instrumented<>(
             this.origin.keys(),
             this.stats
@@ -88,7 +88,7 @@ public final class Instrumented<D, V> implements Store<D, V> {
     }
 
     @Override
-    public Entries<D, V> entries() {
+    public Entries<K, V> entries() {
         return new com.github.fabriciofx.cactoos.cache.entries.Instrumented<>(
             this.origin.entries(),
             this.stats

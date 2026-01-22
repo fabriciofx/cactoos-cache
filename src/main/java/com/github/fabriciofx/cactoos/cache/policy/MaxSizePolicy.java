@@ -13,11 +13,11 @@ import java.util.List;
 
 /**
  * MaxSizePolicy.
- * @param <D> the key domain type
+ * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class MaxSizePolicy<D, V> implements Policy<D, V> {
+public final class MaxSizePolicy<K, V> implements Policy<K, V> {
     /**
      * Max size.
      */
@@ -40,9 +40,9 @@ public final class MaxSizePolicy<D, V> implements Policy<D, V> {
     }
 
     @Override
-    public List<Entry<D, V>> apply(final Store<D, V> store) throws Exception {
-        final List<Entry<D, V>> evicted = new LinkedList<>();
-        final Entries<D, V> entries = store.entries();
+    public List<Entry<K, V>> apply(final Store<K, V> store) throws Exception {
+        final List<Entry<K, V>> evicted = new LinkedList<>();
+        final Entries<K, V> entries = store.entries();
         while (entries.count() >= this.max) {
             evicted.add(store.delete(store.keys().iterator().next()));
         }
