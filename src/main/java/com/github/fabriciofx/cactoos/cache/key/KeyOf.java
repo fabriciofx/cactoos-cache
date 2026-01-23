@@ -16,7 +16,7 @@ import org.cactoos.text.UncheckedText;
  * @param <K> the key value type
  * @since 0.0.1
  */
-public final class KeyOf<K> implements Key<K> {
+public final class KeyOf<K extends Bytes> implements Key<K> {
     /**
      * Value.
      */
@@ -30,15 +30,14 @@ public final class KeyOf<K> implements Key<K> {
     /**
      * Ctor.
      * @param value A value
-     * @param bytes A value as bytes
      */
-    public KeyOf(final K value, final Bytes bytes) {
+    public KeyOf(final K value) {
         this(
             value,
             new UncheckedText(
                 new Sticky(
                     new HexOf(
-                        new Murmur3Hash(bytes)
+                        new Murmur3Hash(value)
                     )
                 )
             )

@@ -9,6 +9,7 @@ import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import java.util.Iterator;
 import java.util.List;
+import org.cactoos.Bytes;
 
 /**
  * Instrumented Entries.
@@ -16,7 +17,7 @@ import java.util.List;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<K, V> implements Entries<K, V> {
+public final class Instrumented<K extends Bytes, V> implements Entries<K, V> {
     /**
      * Entries.
      */

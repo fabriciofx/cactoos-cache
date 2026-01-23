@@ -9,6 +9,7 @@ import com.github.fabriciofx.cactoos.cache.Keys;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.cactoos.Bytes;
 import org.cactoos.scalar.Sticky;
 import org.cactoos.scalar.Unchecked;
 import org.cactoos.text.FormattedText;
@@ -20,7 +21,7 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (300 lines)
  */
-public final class Logged<K> implements Keys<K> {
+public final class Logged<K extends Bytes> implements Keys<K> {
     /**
      * Keys.
      */

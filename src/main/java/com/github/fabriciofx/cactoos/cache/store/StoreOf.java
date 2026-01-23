@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import org.cactoos.Bytes;
 
 /**
  * StoreOf.
@@ -25,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class StoreOf<K, V> implements Store<K, V> {
+public final class StoreOf<K extends Bytes, V> implements Store<K, V> {
     /**
      * Entries.
      */

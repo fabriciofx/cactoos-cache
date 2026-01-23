@@ -10,7 +10,6 @@ import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.fake.logger.FakeLogger;
 import java.util.List;
-import org.cactoos.bytes.BytesOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.Replaced;
 import org.cactoos.text.TextOf;
@@ -28,19 +27,19 @@ final class LoggedTest {
     @Test
     void logSaveAndRetrieve() throws Exception {
         final FakeLogger logger = new FakeLogger();
-        final Cache<String, List<String>> cache = new Logged<>(
+        final Cache<Word, List<String>> cache = new Logged<>(
             new CacheOf<>(),
             "cache",
             logger
         );
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
-        cache.store().retrieve(new KeyOf<>("a", new BytesOf("a")));
+        cache.store().retrieve(new KeyOf<>(new Word("a")));
         new Assertion<>(
             "must log save and retrieve from cache",
             new HasString(
@@ -64,19 +63,19 @@ final class LoggedTest {
     @Test
     void logSaveAndDelete() throws Exception {
         final FakeLogger logger = new FakeLogger();
-        final Cache<String, List<String>> cache = new Logged<>(
+        final Cache<Word, List<String>> cache = new Logged<>(
             new CacheOf<>(),
             "cache",
             logger
         );
         cache.store().save(
-            new KeyOf<>("b", new BytesOf("b")),
+            new KeyOf<>(new Word("b")),
             new EntryOf<>(
-                new KeyOf<>("b", new BytesOf("b")),
+                new KeyOf<>(new Word("b")),
                 new ListOf<>("k", "l", "m")
             )
         );
-        cache.store().delete(new KeyOf<>("b", new BytesOf("b")));
+        cache.store().delete(new KeyOf<>(new Word("b")));
         new Assertion<>(
             "must log save and delete from cache",
             new HasString(

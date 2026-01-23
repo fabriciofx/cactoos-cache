@@ -8,6 +8,7 @@ import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
 import java.util.List;
 import java.util.Map;
+import org.cactoos.Bytes;
 import org.cactoos.map.MapOf;
 
 /**
@@ -16,7 +17,7 @@ import org.cactoos.map.MapOf;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class EntryOf<K, V> implements Entry<K, V> {
+public final class EntryOf<K extends Bytes, V> implements Entry<K, V> {
     /**
      * Key.
      */

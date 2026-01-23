@@ -5,6 +5,7 @@
 package com.github.fabriciofx.cactoos.cache;
 
 import java.util.List;
+import org.cactoos.Bytes;
 
 /**
  * Store.
@@ -12,7 +13,7 @@ import java.util.List;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Store<K, V> {
+public interface Store<K extends Bytes, V> {
     /**
      * Retrieve an entry from store.
      * @param key The key

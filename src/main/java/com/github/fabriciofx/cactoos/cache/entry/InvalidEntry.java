@@ -8,6 +8,7 @@ import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
 import java.util.List;
 import java.util.Map;
+import org.cactoos.Bytes;
 
 /**
  * InvalidEntry.
@@ -15,7 +16,7 @@ import java.util.Map;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class InvalidEntry<K, V> implements Entry<K, V> {
+public final class InvalidEntry<K extends Bytes, V> implements Entry<K, V> {
     @Override
     public Key<K> key() {
         throw new UnsupportedOperationException("#key(): invalid entry");

@@ -10,6 +10,7 @@ import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
 import java.util.LinkedList;
 import java.util.List;
+import org.cactoos.Bytes;
 
 /**
  * MaxSizePolicy.
@@ -17,7 +18,7 @@ import java.util.List;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class MaxSizePolicy<K, V> implements Policy<K, V> {
+public final class MaxSizePolicy<K extends Bytes, V> implements Policy<K, V> {
     /**
      * Max size.
      */

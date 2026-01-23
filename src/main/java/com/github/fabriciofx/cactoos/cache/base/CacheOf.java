@@ -14,6 +14,7 @@ import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
 import com.github.fabriciofx.cactoos.cache.statistic.Misses;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
 import com.github.fabriciofx.cactoos.cache.store.StoreOf;
+import org.cactoos.Bytes;
 
 /**
  * CacheOf.
@@ -21,7 +22,7 @@ import com.github.fabriciofx.cactoos.cache.store.StoreOf;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class CacheOf<K, V> implements Cache<K, V> {
+public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
     /**
      * Store.
      */

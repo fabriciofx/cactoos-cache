@@ -8,7 +8,6 @@ import com.github.fabriciofx.cactoos.cache.base.CacheOf;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import java.util.List;
-import org.cactoos.bytes.BytesOf;
 import org.cactoos.list.ListOf;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -24,18 +23,18 @@ import org.llorllale.cactoos.matchers.Matches;
 final class CacheTest {
     @Test
     void saveAndRetrieve() throws Exception {
-        final Cache<String, List<String>> cache = new CacheOf<>();
+        final Cache<Word, List<String>> cache = new CacheOf<>();
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
         cache.store().save(
-            new KeyOf<>("b", new BytesOf("b")),
+            new KeyOf<>(new Word("b")),
             new EntryOf<>(
-                new KeyOf<>("b", new BytesOf("b")),
+                new KeyOf<>(new Word("b")),
                 new ListOf<>("k", "l", "m")
             )
         );
@@ -43,7 +42,7 @@ final class CacheTest {
             "must save and retrieve a cache entry",
             new HasValues<>(
                 cache.store().retrieve(
-                    new KeyOf<>("a", new BytesOf("a"))
+                    new KeyOf<>(new Word("a"))
                 ).value()
             ),
             new Matches<>(new ListOf<>("x", "y", "z"))
@@ -52,18 +51,18 @@ final class CacheTest {
 
     @Test
     void saveAndDelete() throws Exception {
-        final Cache<String, List<String>> cache = new CacheOf<>();
+        final Cache<Word, List<String>> cache = new CacheOf<>();
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
         cache.store().save(
-            new KeyOf<>("b", new BytesOf("b")),
+            new KeyOf<>(new Word("b")),
             new EntryOf<>(
-                new KeyOf<>("b", new BytesOf("b")),
+                new KeyOf<>(new Word("b")),
                 new ListOf<>("k", "l", "m")
             )
         );
@@ -71,7 +70,7 @@ final class CacheTest {
             "must save and delete a cache entry",
             new HasValues<>(
                 cache.store().delete(
-                    new KeyOf<>("a", new BytesOf("a"))
+                    new KeyOf<>(new Word("a"))
                 ).value()
             ),
             new Matches<>(new ListOf<>("x", "y", "z"))

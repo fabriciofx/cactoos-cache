@@ -6,6 +6,7 @@ package com.github.fabriciofx.cactoos.cache;
 
 import java.util.List;
 import java.util.Map;
+import org.cactoos.Bytes;
 
 /**
  * Entry.
@@ -13,7 +14,7 @@ import java.util.Map;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Entry<K, V> {
+public interface Entry<K extends Bytes, V> {
     /**
      * Retrieve the key associated with this entry.
      * @return The key

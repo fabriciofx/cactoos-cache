@@ -13,6 +13,7 @@ import com.github.fabriciofx.cactoos.cache.statistic.Invalidations;
 import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
 import com.github.fabriciofx.cactoos.cache.statistic.Misses;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
+import org.cactoos.Bytes;
 
 /**
  * Instrumented Cache.
@@ -20,7 +21,7 @@ import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<K, V> implements Cache<K, V> {
+public final class Instrumented<K extends Bytes, V> implements Cache<K, V> {
     /**
      * Cache.
      */

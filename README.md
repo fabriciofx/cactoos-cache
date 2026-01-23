@@ -29,7 +29,7 @@ Add to your `pom.xml` file:
 <dependency>
   <groupId>com.github.fabriciofx</groupId>
   <artifactId>cactoos-cache</artifactId>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
 </dependency>
 ```
 
@@ -39,17 +39,18 @@ Add to your `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation "com.github.fabriciofx:cactoos-cache:0.0.3"
+    implementation "com.github.fabriciofx:cactoos-cache:0.0.6"
 }
 ```
 
 ## Terminology
 
-A `Key` is composed of a value and a hash. An `Entry` is the triple consisting
-of a `Key`, a value (which you want to associate with the `Key`) and
-metadata. Metadata can be anything (as `String`s), as SQL tables names
-(which are used for cache invalidation). A `Store` is responsible for
-maintaining the association `Key` -> `Entry`. Using a `Store`, you can:
+A `Key` is composed of a value (which must implements `Bytes`) and a hash. An
+`Entry` is the triple consisting of a `Key`, a value (which you want to
+associate with the `Key`) and metadata. Metadata can be anything (as `String`s),
+as SQL tables names (which are used for cache invalidation). A `Store` is
+responsible for maintaining the association `Key` -> `Entry`. Using a `Store`,
+you can:
 
 - Retrieve an `Entry` using a `Key`;
 - Associate (save) a `Key` with an `Entry`;
@@ -72,174 +73,63 @@ These statistics are already provided, but you can create your own if needed.
 ## Usage
 
 Suppose do you want to create a cache for a set of words, where each word is
-associated with a list of synonyms. For that, you need to create a `Key`, an
-`Entry`, a `Store` and a `Cache`.
-
-- Creating a `Key`
-
-You can create a class that implements `Key` where the value is what do you want
-to associate (a word):
+associated with a list of synonyms. For that, you need to create a `Word` that
+implements `Bytes`:
 
 ```java
-public final class WordsKey implements Key<String> {
-    private final String word;
+public final class Word implements Bytes {
+    private final String content;
 
-    public WordsKey(final String word) {
-      this.word = word;
+    public Word(final String content) {
+        this.content = content;
     }
 
     @Override
-    public String value() {
-        return this.word;
-    }
-
-    @Override
-    public String hash() {
-        return new UncheckedText(
-            new HexOf(
-                new Murmur3Hash(
-                    new BytesOf(
-                        new TextOf(this.word)
-                    )
-                )
-            )
-        ).asString()
+    public byte[] asBytes() throws Exception {
+        return this.content.getBytes(StandardCharsets.UTF_8);
     }
 }
 ```
 
-Or you can just use `KeyOf` a default `Key` implementation.
-
-- Creating an `Entry`:
-
-```java
-public final class WordsEntry implements Entry<List<String>> {
-    private final Key<String> key;
-    private final List<String> value;
-    private final Map<String, List<String>> metadata;
-
-    public WordsEntry(final Key<String> key, final List<String> value) {
-        this(key, value, new HashMap<>());
-    }
-
-    public WordsEntry(
-        final Key<String> key,
-        final List<String> value,
-        final Map<String, List<String>>> metadata
-    ) {
-        this.key = key;
-        this.value = value;
-        this.metadata = metadata;
-    }
-
-    @Override
-    public Key<String> key() {
-        return this.key;
-    }
-
-    @Override
-    public List<String> value() {
-        return this.value;
-    }
-
-    @Override
-    public Map<String, List<String>> metadata() {
-        return this.metadata;
-    }
-
-    @Override
-    public boolean valid() {
-        return true;
-    }
-}
-```
-
-Or you can just use `EntryOf` a default `Entry` implementation.
-
-- Creating a `Store`
-
-Follow the same process:
+And now, we use `CacheOf`, `KeyOf` and `EntryOf` already provided to store,
+retrieve, check if contains or delete from the cache:
 
 ```java
-public final class WordsStore implements Store<String, List<String>> {
-    // Methods to implement your own Store
-}
-```
+// Create a new cache (associate a Word to List<String>)
+final Cache<Word, List<String>> cache = new CacheOf<>();
 
-Or you can just use `StoreOf` a default `Store` implementation.
-
-- Creating a `Cache`
-
-```java
-public final class WordsCache implements Cache<String, List<String>> {
-    // Methods to implement your own Cache
-}
-```
-
-Or you can just use the `CacheOf` a default `Cache` implementation.
-
-- Storing and retrieving from the cache
-
-```java
-final Cache<String, List<String>> cache = new WordsCache();
+// Store
 cache.store().save(
-    new WordsKey("a"),
-    new WordsEntry(
-        new WordsKey("a"),
+    new KeyOf<>(new Word("a")),
+    new EntryOf<>(
+        new KeyOf<>(new Word("a")),
         new ListOf<>("x", "y", "z")
     )
 );
+
+// Store
 cache.store().save(
-    new WordsKey("b"),
-    new WordsEntry(
-        new WordsKey("b"),
+    new KeyOf<>(new Word("b")),
+    new EntryOf<>(
+        new KeyOf<>(new Word("b")),
         new ListOf<>("k", "l", "m")
     )
 );
+
+// Check if contains (it's false)
+final boolean exists = cache.store().contains(new KeyOf<>(new Word("c")));
+
+// Retrieve
 final List<String> words = cache
     .store()
     .retrieve(new WordsKey("a"))
     .value();
-```
 
-Or using default implementations (basic cache):
-
-```java
-final Cache<String, List<String>> cache = new CacheOf<>();
-cache.store().save(
-    new KeyOf<>("a", new BytesOf("a")),
-    new EntryOf<>(
-        new KeyOf<>("a", new BytesOf("a")),
-        new ListOf<>("x", "y", "z")
-    )
-);
-cache.store().save(
-    new KeyOf<>("b", new BytesOf("b")),
-    new EntryOf<>(
-        new KeyOf<>("b", new BytesOf("b")),
-        new ListOf<>("k", "l", "m")
-    )
-);
-final List<String> words = cache
+// Delete
+final List<String> deleted = cache
     .store()
-    .retrieve(new KeyOf<>("a", new BytesOf("a")))
+    .delete(new KeyOf<>(new Word("a")))
     .value();
-```
-
-- Deleting from the cache
-
-```java
-final Cache<String, List<String>> cache = new WordsCache();
-// Store some values
-cache.store().delete(new WordsKey("a"));
-```
-
-Or using default implementations (basic cache):
-
-```java
-final Cache<String, List<String>> cache = new CacheOf<>();
-// Store some values
-cache.store().delete(new KeyOf<>("a", new BytesOf("a")));
 ```
 
 - Logging cache usage
@@ -247,22 +137,16 @@ cache.store().delete(new KeyOf<>("a", new BytesOf("a")));
 To log cache usage, simply decorate the `Cache` with the `Logged` decorator:
 
 ```java
-final Cache<String, List<String>> cache = new Logged<>(
-    new WordsCache(),
-    "cache",
-    logger
-);
-// Normal cache usage
-```
+// Create a logger
+final Logger logger = Logger.getLogger(MyClass.class.getName());
 
-Or using default implementations (basic cache):
-
-```java
-final Cache<String, List<String>> cache = new Logged<>(
+// Create a logged cache, just decorating a Cache object
+final Cache<Word, List<String>> cache = new Logged<>(
     new CacheOf<>(),
     "cache",
     logger
 );
+
 // Normal cache usage
 ```
 
@@ -275,10 +159,13 @@ decorator:
 final Cache<String, List<String>> cache = new Instrumented<>(
     new CacheOf<>()
 );
-// Normal cache usage
+
+// Normal cache usage (save, retrieve, etc.)
+
+// Collect statistics
 final Statistics stats = cache.statistics();
 
-// Get the number of hits
+// Get the number of hits, for example
 final int hits = stats.statistic("hits").value();
 ```
 
@@ -295,6 +182,7 @@ final Cache<String, List<String>> cache = new Instrumented<>(
         logger
     )
 );
+
 // Normal cache usage, with logging and statistics enabled
 ```
 

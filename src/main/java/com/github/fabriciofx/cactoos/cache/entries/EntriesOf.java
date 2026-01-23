@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.cactoos.Bytes;
 import org.cactoos.set.SetOf;
 
 /**
@@ -20,7 +21,7 @@ import org.cactoos.set.SetOf;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class EntriesOf<K, V> implements Entries<K, V> {
+public final class EntriesOf<K extends Bytes, V> implements Entries<K, V> {
     /**
      * Entries.
      */

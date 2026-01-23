@@ -5,6 +5,7 @@
 package com.github.fabriciofx.cactoos.cache;
 
 import java.util.List;
+import org.cactoos.Bytes;
 import org.cactoos.Func;
 
 /**
@@ -14,5 +15,6 @@ import org.cactoos.Func;
  * @since 0.0.1
  */
 @FunctionalInterface
-public interface Policy<K, V> extends Func<Store<K, V>, List<Entry<K, V>>> {
+public interface Policy<K extends Bytes, V>
+    extends Func<Store<K, V>, List<Entry<K, V>>> {
 }

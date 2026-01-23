@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.cactoos.Bytes;
 import org.cactoos.Text;
 import org.cactoos.iterable.Mapped;
 import org.cactoos.scalar.Sticky;
@@ -26,7 +27,7 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (300 lines)
  */
-public final class Logged<K, V> implements Entries<K, V> {
+public final class Logged<K extends Bytes, V> implements Entries<K, V> {
     /**
      * Entries.
      */

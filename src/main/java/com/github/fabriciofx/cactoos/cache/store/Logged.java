@@ -12,6 +12,7 @@ import com.github.fabriciofx.cactoos.cache.Store;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.cactoos.Bytes;
 import org.cactoos.scalar.Sticky;
 import org.cactoos.scalar.Ternary;
 import org.cactoos.scalar.Unchecked;
@@ -26,7 +27,7 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (500 lines)
  */
-public final class Logged<K, V> implements Store<K, V> {
+public final class Logged<K extends Bytes, V> implements Store<K, V> {
     /**
      * Store.
      */

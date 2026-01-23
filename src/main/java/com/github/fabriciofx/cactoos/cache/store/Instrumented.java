@@ -11,6 +11,7 @@ import com.github.fabriciofx.cactoos.cache.Keys;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
 import java.util.List;
+import org.cactoos.Bytes;
 
 /**
  * Instrumented Store.
@@ -18,7 +19,7 @@ import java.util.List;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<K, V> implements Store<K, V> {
+public final class Instrumented<K extends Bytes, V> implements Store<K, V> {
     /**
      * Store.
      */

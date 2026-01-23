@@ -11,7 +11,6 @@ import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.cactoos.cache.policy.MaxSizePolicy;
 import com.github.fabriciofx.cactoos.cache.store.StoreOf;
 import java.util.List;
-import org.cactoos.bytes.BytesOf;
 import org.cactoos.list.ListOf;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -25,17 +24,17 @@ import org.llorllale.cactoos.matchers.HasValue;
 final class InstrumentedTest {
     @Test
     void checkHits() throws Exception {
-        final Cache<String, List<String>> cache = new Instrumented<>(
+        final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
-        cache.store().retrieve(new KeyOf<>("a", new BytesOf("a")));
+        cache.store().retrieve(new KeyOf<>(new Word("a")));
         final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the hits statistic",
@@ -46,18 +45,18 @@ final class InstrumentedTest {
 
     @Test
     void checkLookups() throws Exception {
-        final Cache<String, List<String>> cache = new Instrumented<>(
+        final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
-        cache.store().retrieve(new KeyOf<>("a", new BytesOf("a")));
-        cache.store().contains(new KeyOf<>("a", new BytesOf("a")));
+        cache.store().retrieve(new KeyOf<>(new Word("a")));
+        cache.store().contains(new KeyOf<>(new Word("a")));
         final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the lookups statistic",
@@ -68,17 +67,17 @@ final class InstrumentedTest {
 
     @Test
     void checkInvalidations() throws Exception {
-        final Cache<String, List<String>> cache = new Instrumented<>(
+        final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
-        cache.store().delete(new KeyOf<>("a", new BytesOf("a")));
+        cache.store().delete(new KeyOf<>(new Word("a")));
         final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the invalidations statistic",
@@ -89,17 +88,17 @@ final class InstrumentedTest {
 
     @Test
     void checkMisses() throws Exception {
-        final Cache<String, List<String>> cache = new Instrumented<>(
+        final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
-        cache.store().retrieve(new KeyOf<>("b", new BytesOf("b")));
+        cache.store().retrieve(new KeyOf<>(new Word("b")));
         final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the misses statistic",
@@ -110,7 +109,7 @@ final class InstrumentedTest {
 
     @Test
     void checkEvictions() throws Exception {
-        final Cache<String, List<String>> cache = new Instrumented<>(
+        final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>(
                 new StoreOf<>(
                     new MaxSizePolicy<>(1)
@@ -118,16 +117,16 @@ final class InstrumentedTest {
             )
         );
         cache.store().save(
-            new KeyOf<>("a", new BytesOf("a")),
+            new KeyOf<>(new Word("a")),
             new EntryOf<>(
-                new KeyOf<>("a", new BytesOf("a")),
+                new KeyOf<>(new Word("a")),
                 new ListOf<>("x", "y", "z")
             )
         );
         cache.store().save(
-            new KeyOf<>("b", new BytesOf("b")),
+            new KeyOf<>(new Word("b")),
             new EntryOf<>(
-                new KeyOf<>("b", new BytesOf("b")),
+                new KeyOf<>(new Word("b")),
                 new ListOf<>("k", "l", "m")
             )
         );

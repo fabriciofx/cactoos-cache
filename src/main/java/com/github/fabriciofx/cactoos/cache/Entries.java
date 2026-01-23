@@ -5,6 +5,7 @@
 package com.github.fabriciofx.cactoos.cache;
 
 import java.util.List;
+import org.cactoos.Bytes;
 
 /**
  * Entries.
@@ -12,7 +13,7 @@ import java.util.List;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Entries<K, V> extends Iterable<Entry<K, V>> {
+public interface Entries<K extends Bytes, V> extends Iterable<Entry<K, V>> {
     /**
      * Retrieve the amount of entries.
      * @return The amount of entries.
