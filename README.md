@@ -8,7 +8,7 @@ Cactoos-Cache is a truly object-oriented implementation of caching.
 We are not happy with many existing caching APIs because they are procedural
 rather than object-oriented. They do their job, but mostly through strongly
 coupled classes and static methods. Cactoos-Cache proposes doing almost exactly
-the same thing, but through (more OO) objects.
+the same thing, but through (more Object-Oriented) objects.
 
 **Principles**.
 These are the [design principles](http://www.elegantobjects.org#principles)
@@ -91,8 +91,8 @@ public final class Word implements Bytes {
 }
 ```
 
-And now, we use `CacheOf`, `KeyOf` and `EntryOf` already provided to store,
-retrieve, check if contains or delete from the cache:
+And now, we use `CacheOf`, `KeyOf` and `EntryOf` to provide store, retrieve,
+check if contains or delete from the cache:
 
 ```java
 // Create a new cache (associate a Word to List<String>)
@@ -122,7 +122,7 @@ final boolean exists = cache.store().contains(new KeyOf<>(new Word("c")));
 // Retrieve
 final List<String> words = cache
     .store()
-    .retrieve(new WordsKey("a"))
+    .retrieve(new KeyOf<>(new Word("a")))
     .value();
 
 // Delete
@@ -156,7 +156,7 @@ To collect cache statistics, decorate the `Cache` with the `Instrumented`
 decorator:
 
 ```java
-final Cache<String, List<String>> cache = new Instrumented<>(
+final Cache<Word, List<String>> cache = new Instrumented<>(
     new CacheOf<>()
 );
 
@@ -175,7 +175,7 @@ Remember: Cactoos-Cache is a truly object-oriented and highly composable cache.
 You can combine multiple decorators, for example:
 
 ```java
-final Cache<String, List<String>> cache = new Instrumented<>(
+final Cache<Word, List<String>> cache = new Instrumented<>(
     new Logged<>(
         new CacheOf<>(),
         "cache",
