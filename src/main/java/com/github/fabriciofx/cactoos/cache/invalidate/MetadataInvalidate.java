@@ -20,7 +20,7 @@ import org.cactoos.list.ListOf;
  * @since 0.0.7
  */
 @SuppressWarnings("PMD.UnnecessaryLocalRule")
-public final class MetadataContains<K extends Bytes, V>
+public final class MetadataInvalidate<K extends Bytes, V>
     implements Invalidate<K, V> {
     /**
      * Values.
@@ -31,7 +31,7 @@ public final class MetadataContains<K extends Bytes, V>
      * Ctor.
      * @param values The values
      */
-    public MetadataContains(final List<Object> values) {
+    public MetadataInvalidate(final List<Object> values) {
         this.values = values;
     }
 

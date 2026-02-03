@@ -23,7 +23,7 @@ import org.llorllale.cactoos.matchers.HasValue;
  * @since 0.0.7
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-final class InvalidateTest {
+final class MetadataInvalidateTest {
     @Test
     void invalidateIfMetadataContains() throws Exception {
         final Cache<Word, List<String>> cache = new CacheOf<>();
@@ -45,7 +45,7 @@ final class InvalidateTest {
         final List<Entry<Word, List<String>>> invalidated = cache
             .store()
             .entries()
-            .invalidate(new MetadataContains<>(new ListOf<>("j")));
+            .invalidate(new MetadataInvalidate<>(new ListOf<>("j")));
         new Assertion<>(
             "must invalidate a cache entry if metadata contains a value",
             () -> invalidated.get(0).key().value(),
