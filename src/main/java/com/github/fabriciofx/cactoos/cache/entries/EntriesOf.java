@@ -6,13 +6,12 @@ package com.github.fabriciofx.cactoos.cache.entries;
 
 import com.github.fabriciofx.cactoos.cache.Entries;
 import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Invalidate;
 import com.github.fabriciofx.cactoos.cache.Key;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.cactoos.Bytes;
-import org.cactoos.set.SetOf;
 
 /**
  * EntriesOf.
@@ -42,16 +41,9 @@ public final class EntriesOf<K extends Bytes, V> implements Entries<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> invalidate(final Iterable<String> metadata) {
-        final Set<String> lookup = new SetOf<>(metadata);
-        return this.entries.values()
-            .stream()
-            .filter(
-                entry -> entry.metadata().values().stream()
-                    .flatMap(List::stream)
-                    .anyMatch(lookup::contains)
-            )
-            .toList();
+    public List<Entry<K, V>> invalidate(final Invalidate<K, V> invalidate)
+        throws Exception {
+        return invalidate.apply(this.entries);
     }
 
     @Override

@@ -21,11 +21,12 @@ public interface Entries<K extends Bytes, V> extends Iterable<Entry<K, V>> {
     int count();
 
     /**
-     * Invalidate entries according metadata.
-     * @param metadata The metadata
-     * @return The invalidated entries associated with this metadata
+     * Invalidate entries.
+     * @param invalidate The invalidate function
+     * @return The invalidated entries
+     * @throws Exception If something goes wrong
      */
-    List<Entry<K, V>> invalidate(Iterable<String> metadata);
+    List<Entry<K, V>> invalidate(Invalidate<K, V> invalidate) throws Exception;
 
     /**
      * Clear entries.

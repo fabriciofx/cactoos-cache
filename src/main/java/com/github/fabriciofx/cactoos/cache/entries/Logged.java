@@ -6,6 +6,7 @@ package com.github.fabriciofx.cactoos.cache.entries;
 
 import com.github.fabriciofx.cactoos.cache.Entries;
 import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Invalidate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -129,8 +130,11 @@ public final class Logged<K extends Bytes, V> implements Entries<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> invalidate(final Iterable<String> metadata) {
-        final List<Entry<K, V>> invalidated = this.origin.invalidate(metadata);
+    public List<Entry<K, V>> invalidate(final Invalidate<K, V> invalidate)
+        throws Exception {
+        final List<Entry<K, V>> invalidated = this.origin.invalidate(
+            invalidate
+        );
         this.logger.log(
             this.level.value(),
             new UncheckedText(

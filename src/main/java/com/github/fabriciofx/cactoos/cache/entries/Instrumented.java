@@ -6,6 +6,7 @@ package com.github.fabriciofx.cactoos.cache.entries;
 
 import com.github.fabriciofx.cactoos.cache.Entries;
 import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Invalidate;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import java.util.Iterator;
 import java.util.List;
@@ -47,8 +48,11 @@ public final class Instrumented<K extends Bytes, V> implements Entries<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> invalidate(final Iterable<String> metadata) {
-        final List<Entry<K, V>> invalidated = this.origin.invalidate(metadata);
+    public List<Entry<K, V>> invalidate(final Invalidate<K, V> invalidate)
+        throws Exception {
+        final List<Entry<K, V>> invalidated = this.origin.invalidate(
+            invalidate
+        );
         this.stats.statistic("invalidations").increment(invalidated.size());
         return invalidated;
     }

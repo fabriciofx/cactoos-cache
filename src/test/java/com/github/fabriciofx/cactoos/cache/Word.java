@@ -29,4 +29,16 @@ public final class Word implements Bytes {
     public byte[] asBytes() throws Exception {
         return this.content.getBytes(StandardCharsets.UTF_8);
     }
+
+    @Override
+    public boolean equals(final Object other) {
+        return this == other
+            || other instanceof Word
+            && this.content.equals(Word.class.cast(other).content);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.content.hashCode();
+    }
 }
