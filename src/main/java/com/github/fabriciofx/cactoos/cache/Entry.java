@@ -4,8 +4,6 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
-import java.util.List;
-import java.util.Map;
 import org.cactoos.Bytes;
 
 /**
@@ -31,7 +29,7 @@ public interface Entry<K extends Bytes, V> {
      * Retrieve the metadata associated with this entry.
      * @return The metadata
      */
-    Map<String, List<String>> metadata();
+    Metadata metadata();
 
     /**
      * Checks if an entry is valid.

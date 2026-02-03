@@ -6,8 +6,7 @@ package com.github.fabriciofx.cactoos.cache.entry;
 
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
-import java.util.List;
-import java.util.Map;
+import com.github.fabriciofx.cactoos.cache.Metadata;
 import org.cactoos.Bytes;
 
 /**
@@ -28,7 +27,7 @@ public final class InvalidEntry<K extends Bytes, V> implements Entry<K, V> {
     }
 
     @Override
-    public Map<String, List<String>> metadata() {
+    public Metadata metadata() {
         throw new UnsupportedOperationException("#metadata(): invalid entry");
     }
 

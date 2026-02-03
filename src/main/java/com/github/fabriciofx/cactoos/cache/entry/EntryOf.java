@@ -6,10 +6,9 @@ package com.github.fabriciofx.cactoos.cache.entry;
 
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
-import java.util.List;
-import java.util.Map;
+import com.github.fabriciofx.cactoos.cache.Metadata;
+import com.github.fabriciofx.cactoos.cache.metadata.MetadataOf;
 import org.cactoos.Bytes;
-import org.cactoos.map.MapOf;
 
 /**
  * EntryOf.
@@ -31,7 +30,7 @@ public final class EntryOf<K extends Bytes, V> implements Entry<K, V> {
     /**
      * Metadata.
      */
-    private final Map<String, List<String>> meta;
+    private final Metadata meta;
 
     /**
      * Ctor.
@@ -39,7 +38,7 @@ public final class EntryOf<K extends Bytes, V> implements Entry<K, V> {
      * @param value A value
      */
     public EntryOf(final Key<K> key, final V value) {
-        this(key, value, new MapOf<>());
+        this(key, value, new MetadataOf());
     }
 
     /**
@@ -51,7 +50,7 @@ public final class EntryOf<K extends Bytes, V> implements Entry<K, V> {
     public EntryOf(
         final Key<K> key,
         final V value,
-        final Map<String, List<String>> metadata
+        final Metadata metadata
     ) {
         this.id = key;
         this.val = value;
@@ -69,7 +68,7 @@ public final class EntryOf<K extends Bytes, V> implements Entry<K, V> {
     }
 
     @Override
-    public Map<String, List<String>> metadata() {
+    public Metadata metadata() {
         return this.meta;
     }
 
