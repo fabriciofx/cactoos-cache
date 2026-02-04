@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 
@@ -57,8 +58,13 @@ public final class MetadataOf implements Metadata {
     }
 
     @Override
-    public <T> T value(final String name, final Class<T> type) {
-        return type.cast(this.items.get(name));
+    public <T> List<T> value(final String name, final TypeOf<T> type) {
+        final List<T> box = new ListOf<>();
+        final T value = type.cast(this.items.get(name));
+        if (value != null) {
+            box.add(value);
+        }
+        return box;
     }
 
     @Override

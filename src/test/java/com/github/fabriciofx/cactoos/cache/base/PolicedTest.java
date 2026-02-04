@@ -18,6 +18,12 @@ import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
 import org.llorllale.cactoos.matchers.HasSize;
 
+/**
+ * {@link Policed} tests.
+ *
+ * @since 0.0.7
+ */
+@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class PolicedTest {
     @Test
     void expiredPolicy() throws Exception {

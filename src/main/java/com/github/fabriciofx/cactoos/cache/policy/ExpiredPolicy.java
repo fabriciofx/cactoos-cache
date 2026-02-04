@@ -8,6 +8,7 @@ import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
+import com.github.fabriciofx.cactoos.cache.metadata.TypeOf;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.cactoos.Bytes;
@@ -47,9 +48,12 @@ public final class ExpiredPolicy<K extends Bytes, V> implements Policy<K, V> {
         final List<Entry<K, V>> evicted = new ListOf<>();
         for (final Key<K> key : store.keys()) {
             final Entry<K, V> entry = store.retrieve(key);
-            final LocalDateTime expiration = entry.metadata()
-                .value("expiration", LocalDateTime.class);
-            if (expiration.isAfter(this.timestamp)) {
+            final List<LocalDateTime> expiration = entry.metadata()
+                .value("expiration", new TypeOf<>() { });
+            if (
+                !expiration.isEmpty()
+                    && expiration.get(0).isAfter(this.timestamp)
+            ) {
                 evicted.add(store.delete(key));
             }
         }

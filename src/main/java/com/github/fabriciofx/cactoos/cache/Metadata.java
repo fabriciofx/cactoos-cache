@@ -4,6 +4,7 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
+import com.github.fabriciofx.cactoos.cache.metadata.TypeOf;
 import java.util.List;
 import java.util.Set;
 
@@ -20,13 +21,13 @@ public interface Metadata {
     Set<String> names();
 
     /**
-     * Value of a metadata item by its name and type.
+     * Value of a metadata item (if exists) by its name and type.
      * @param name Metadata item name
      * @param type Metadata item type
-     * @return The value
+     * @return The value if exists
      * @param <T> Type of the value
      */
-    <T> T value(String name, Class<T> type);
+    <T> List<T> value(String name, TypeOf<T> type);
 
     /**
      * Adds a metadata item and returns a new Metadata instance.
