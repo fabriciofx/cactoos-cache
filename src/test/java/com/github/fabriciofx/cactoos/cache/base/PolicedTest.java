@@ -14,9 +14,10 @@ import com.github.fabriciofx.cactoos.cache.policy.ExpiredPolicy;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.cactoos.list.ListOf;
+import org.cactoos.scalar.Unchecked;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
-import org.llorllale.cactoos.matchers.HasSize;
+import org.llorllale.cactoos.matchers.HasValue;
 
 /**
  * {@link Policed} tests.
@@ -51,9 +52,9 @@ final class PolicedTest {
             )
         );
         new Assertion<>(
-            "must check the evictions entries",
-            cache.evicted(),
-            new HasSize(1)
+            "must check whether the eviction is the expired one",
+            new Unchecked<>(() -> cache.evicted().get(0).key()),
+            new HasValue<>(new KeyOf<>(new Word("a")))
         ).affirm();
     }
 }

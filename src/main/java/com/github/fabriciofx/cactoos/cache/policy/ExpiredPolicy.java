@@ -52,7 +52,7 @@ public final class ExpiredPolicy<K extends Bytes, V> implements Policy<K, V> {
                 .value("expiration", new TypeOf<>() { });
             if (
                 !expiration.isEmpty()
-                    && expiration.get(0).isAfter(this.timestamp)
+                    && expiration.get(0).isBefore(this.timestamp)
             ) {
                 evicted.add(store.delete(key));
             }
