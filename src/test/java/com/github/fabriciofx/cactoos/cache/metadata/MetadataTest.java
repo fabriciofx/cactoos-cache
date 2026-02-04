@@ -86,25 +86,25 @@ final class MetadataTest {
     }
 
     @Test
-    void checkIfContainsAValue() {
+    void checkIfHasAnyAValue() {
         new Assertion<>(
             "must check if metadata contains any value",
             new MetadataOf()
                 .with("name", "John")
                 .with("tables", new SetOf<>("x", "y", "z"))
-                .contains(new ListOf<>("John")),
+                .hasAny(new ListOf<>("John")),
             new IsTrue()
         ).affirm();
     }
 
     @Test
-    void checkIfContainsAValueInSet() {
+    void checkIfHasAnyAValueInSet() {
         new Assertion<>(
             "must check if metadata contains any value",
             new MetadataOf()
                 .with("name", "John")
                 .with("tables", new SetOf<>("x", "y", "z"))
-                .contains(new ListOf<>("y")),
+                .hasAny(new ListOf<>("y")),
             new IsTrue()
         ).affirm();
     }

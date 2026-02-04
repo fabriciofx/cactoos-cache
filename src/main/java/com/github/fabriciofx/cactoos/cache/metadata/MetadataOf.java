@@ -76,7 +76,7 @@ public final class MetadataOf implements Metadata {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> boolean contains(final List<T> values) {
+    public <T> boolean hasAny(final List<T> values) {
         return this.items.values().stream()
             .flatMap(
                 value ->

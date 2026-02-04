@@ -42,7 +42,7 @@ public final class MetadataInvalidate<K extends Bytes, V>
         input.values().forEach(
             entry -> {
                 final Metadata metadata = entry.metadata();
-                if (metadata.contains(this.values)) {
+                if (metadata.hasAny(this.values)) {
                     invalidated.add(input.remove(entry.key()));
                 }
             }
