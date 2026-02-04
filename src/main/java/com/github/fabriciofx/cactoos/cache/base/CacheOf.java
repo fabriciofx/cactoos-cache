@@ -5,6 +5,7 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
+import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.statistic.Evictions;
@@ -14,7 +15,9 @@ import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
 import com.github.fabriciofx.cactoos.cache.statistic.Misses;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
 import com.github.fabriciofx.cactoos.cache.store.StoreOf;
+import java.util.List;
 import org.cactoos.Bytes;
+import org.cactoos.list.ListOf;
 
 /**
  * CacheOf.
@@ -32,6 +35,11 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
      * Statistics.
      */
     private final Statistics stats;
+
+    /**
+     * Evicted.
+     */
+    private final List<Entry<K, V>> removed;
 
     /**
      * Ctor.
@@ -53,7 +61,8 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
                 new Invalidations(),
                 new Lookups(),
                 new Misses()
-            )
+            ),
+            new ListOf<>()
         );
     }
 
@@ -61,13 +70,16 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
      * Ctor.
      * @param store A store
      * @param statistics The statistics
+     * @param evicted The evicted entries
      */
     public CacheOf(
         final Store<K, V> store,
-        final Statistics statistics
+        final Statistics statistics,
+        final List<Entry<K, V>> evicted
     ) {
         this.str = store;
         this.stats = statistics;
+        this.removed = evicted;
     }
 
     @Override
@@ -81,9 +93,15 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
     }
 
     @Override
+    public List<Entry<K, V>> evicted() {
+        return this.removed;
+    }
+
+    @Override
     public void clear() {
         this.str.keys().clear();
         this.str.entries().clear();
         this.stats.reset();
+        this.removed.clear();
     }
 }

@@ -5,6 +5,7 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
+import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.statistic.Evictions;
@@ -13,6 +14,7 @@ import com.github.fabriciofx.cactoos.cache.statistic.Invalidations;
 import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
 import com.github.fabriciofx.cactoos.cache.statistic.Misses;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
+import java.util.List;
 import org.cactoos.Bytes;
 
 /**
@@ -69,7 +71,14 @@ public final class Instrumented<K extends Bytes, V> implements Cache<K, V> {
 
     @Override
     public Statistics statistics() {
+        final List<Entry<K, V>> evicted = this.origin.evicted();
+        this.stats.statistic("evictions").increment(evicted.size());
         return this.stats;
+    }
+
+    @Override
+    public List<Entry<K, V>> evicted() {
+        return this.origin.evicted();
     }
 
     @Override

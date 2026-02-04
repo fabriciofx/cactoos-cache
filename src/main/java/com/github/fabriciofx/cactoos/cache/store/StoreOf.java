@@ -8,17 +8,16 @@ import com.github.fabriciofx.cactoos.cache.Entries;
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Keys;
-import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.entries.EntriesOf;
 import com.github.fabriciofx.cactoos.cache.entry.InvalidEntry;
 import com.github.fabriciofx.cactoos.cache.keys.KeysOf;
-import com.github.fabriciofx.cactoos.cache.policy.MaxSizePolicy;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import org.cactoos.Bytes;
+import org.cactoos.list.ListOf;
 
 /**
  * StoreOf.
@@ -33,36 +32,18 @@ public final class StoreOf<K extends Bytes, V> implements Store<K, V> {
     private final Map<Key<K>, Entry<K, V>> records;
 
     /**
-     * Policy.
-     */
-    private final Policy<K, V> policy;
-
-    /**
      * Ctor.
      */
     public StoreOf() {
-        this(new MaxSizePolicy<>());
-    }
-
-    /**
-     * Ctor.
-     * @param policy The policy
-     */
-    public StoreOf(final Policy<K, V> policy) {
-        this(new ConcurrentHashMap<>(), policy);
+        this(new ConcurrentHashMap<>());
     }
 
     /**
      * Ctor.
      * @param entries The entries
-     * @param policy The policy
      */
-    public StoreOf(
-        final Map<Key<K>, Entry<K, V>> entries,
-        final Policy<K, V> policy
-    ) {
+    public StoreOf(final Map<Key<K>, Entry<K, V>> entries) {
         this.records = entries;
-        this.policy = policy;
     }
 
     @Override
@@ -73,7 +54,7 @@ public final class StoreOf<K extends Bytes, V> implements Store<K, V> {
     @Override
     public List<Entry<K, V>> save(final Key<K> key, final Entry<K, V> entry)
         throws Exception {
-        final List<Entry<K, V>> evicted = this.policy.apply(this);
+        final List<Entry<K, V>> evicted = new ListOf<>();
         final Entry<K, V> removed = this.records.put(key, entry);
         if (removed != null) {
             evicted.add(removed);

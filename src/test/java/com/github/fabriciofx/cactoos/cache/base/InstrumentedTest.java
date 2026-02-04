@@ -7,10 +7,10 @@ package com.github.fabriciofx.cactoos.cache.base;
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Word;
+import com.github.fabriciofx.cactoos.cache.enforcer.ImmediateEnforcer;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.cactoos.cache.policy.MaxSizePolicy;
-import com.github.fabriciofx.cactoos.cache.store.StoreOf;
 import java.util.List;
 import org.cactoos.list.ListOf;
 import org.junit.jupiter.api.Test;
@@ -111,10 +111,10 @@ final class InstrumentedTest {
     @Test
     void checkEvictions() throws Exception {
         final Cache<Word, List<String>> cache = new Instrumented<>(
-            new CacheOf<>(
-                new StoreOf<>(
-                    new MaxSizePolicy<>(1)
-                )
+            new Policed<>(
+                new CacheOf<>(),
+                new ImmediateEnforcer<>(),
+                new MaxSizePolicy<>(1)
             )
         );
         cache.store().save(

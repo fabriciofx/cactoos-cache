@@ -44,7 +44,7 @@ public final class MaxSizePolicy<K extends Bytes, V> implements Policy<K, V> {
     public List<Entry<K, V>> apply(final Store<K, V> store) throws Exception {
         final List<Entry<K, V>> evicted = new LinkedList<>();
         final Entries<K, V> entries = store.entries();
-        while (entries.count() >= this.max) {
+        while (entries.count() > this.max) {
             evicted.add(store.delete(store.keys().iterator().next()));
         }
         return evicted;
