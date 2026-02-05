@@ -41,7 +41,7 @@ public final class MaxSizePolicy<K extends Bytes, V> implements Policy<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> apply(final Store<K, V> store) throws Exception {
+    public List<Entry<K, V>> apply(final Store<K, V> store) {
         final List<Entry<K, V>> evicted = new ListOf<>();
         final Entries<K, V> entries = store.entries();
         while (entries.count() > this.max) {

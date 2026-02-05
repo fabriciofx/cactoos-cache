@@ -44,7 +44,7 @@ public final class ExpiredPolicy<K extends Bytes, V> implements Policy<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> apply(final Store<K, V> store) throws Exception {
+    public List<Entry<K, V>> apply(final Store<K, V> store) {
         final List<Entry<K, V>> evicted = new ListOf<>();
         for (final Key<K> key : store.keys()) {
             final Entry<K, V> entry = store.retrieve(key);
