@@ -36,8 +36,7 @@ public final class MetadataInvalidate<K extends Bytes, V>
     }
 
     @Override
-    public List<Entry<K, V>> apply(final Map<Key<K>, Entry<K, V>> input)
-        throws Exception {
+    public List<Entry<K, V>> apply(final Map<Key<K>, Entry<K, V>> input) {
         final List<Entry<K, V>> invalidated = new ListOf<>();
         input.values().forEach(
             entry -> {
