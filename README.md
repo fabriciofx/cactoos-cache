@@ -17,7 +17,7 @@ behind Cactoos-Cache.
 ## Requirements
 
 - Java 17+
-- [Cactoos](https://wwwcactoos.org) as dependency (just it)
+- [Cactoos](https://www.cactoos.org) as a dependency (that's it)
 
 ## How to use
 
@@ -45,7 +45,7 @@ dependencies {
 
 ## Terminology
 
-A `Key` is composed of a value (which must implements `Bytes`) and a hash. An
+A `Key` is composed of a value (which must implement `Bytes`) and a hash. An
 `Entry` is the triple consisting of a `Key`, a value (which you want to
 associate with the `Key`) and metadata. Metadata can be anything (as `String`s),
 as SQL tables names (which are used for cache invalidation). A `Store` is
@@ -72,7 +72,7 @@ These statistics are already provided, but you can create your own if needed.
 
 ## Usage
 
-Suppose do you want to create a cache for a set of words, where each word is
+Suppose you want to create a cache for a set of words, where each word is
 associated with a list of synonyms. For that, you need to create a `Word` that
 implements `Bytes`:
 
@@ -132,7 +132,121 @@ final List<String> deleted = cache
     .value();
 ```
 
-- Logging cache usage
+### Cache eviction
+
+Cache eviction is an *automatic* entry removal performed by a `Policy`. To
+enable it, just compose the cache with the `Policed` decorator and pass the
+policies that the enforcer will execute, as in the example below:
+
+```java
+// Create a cache with Expired and MaxSize policies
+final Cache<Word, List<String>> cache = new Policed<>(
+    new CacheOf<>(),
+    new ExpiredPolicy<>(),
+    new MaxSizePolicy<>()
+);
+
+// Normal cache usage
+```
+
+By default, `Cactoos-Cache` will use the `DelayedEnforcer` that iterates the cache,
+applying the policies to each entry every **500 milliseconds**. This time can be
+changed too; just create a new `DelayedEnforcer` with the desired time:
+
+```java
+final Cache<Word, List<String>> cache = new Policed<>(
+    new CacheOf<>(),
+    new DelayedEnforcer<>(1L, TimeUnit.SECONDS), // Execute at each 1 second
+    new ExpiredPolicy<>(),
+    new MaxSizePolicy<>()
+);
+
+// Normal cache usage
+```
+
+### Policies
+
+`Cactoos-Cache` has the following policies:
+
+- `MaxSizePolicy`: remove entries when reach a max number
+- `ExpiredPolicy`: remove entries when reach an expired lifetime
+
+To use `MaxSizePolicy` just use the policy using the max number of entries
+(the default is `Integer.MAX_VALUE`), as the example below:
+
+
+```java
+// Create a cache with max 2 entries
+final Cache<Word, List<String>> cache = new Policed<>(
+    new CacheOf<>(),
+    new MaxSizePolicy<>(2)
+);
+
+// Store
+cache.store().save(
+    new KeyOf<>(new Word("a")),
+    new EntryOf<>(
+        new KeyOf<>(new Word("a")),
+        new ListOf<>("x", "y", "z")
+    )
+);
+
+// Store
+cache.store().save(
+    new KeyOf<>(new Word("b")),
+    new EntryOf<>(
+        new KeyOf<>(new Word("b")),
+        new ListOf<>("k", "l", "m")
+    )
+);
+
+// Store this entry, but remove the first because the max number of entries
+// is 2.
+cache.store().save(
+    new KeyOf<>(new Word("c")),
+    new EntryOf<>(
+        new KeyOf<>(new Word("c")),
+        new ListOf<>("i", "j", "k")
+    )
+);
+```
+
+To use `ExpiredPolicy` create a new entry with `expiration` metadata using the
+`LocalDateTime` object as lifetime, for example:
+
+```java
+// Create a cache with entries lifetime
+final Cache<Word, List<String>> cache = new Policed<>(
+    new CacheOf<>(),
+    new ExpiredPolicy<>()
+);
+
+// Store an entry with lifetime of 5 seconds
+cache.store().save(
+    new KeyOf<>(new Word("a")),
+    new EntryOf<>(
+        new KeyOf<>(new Word("a")),
+        new ListOf<>("x", "y", "z"),
+        new MetadataOf()
+            .with("expiration", LocalDateTime.now().plusSeconds(5L))
+    )
+);
+
+// Store an entry with lifetime of 10 seconds
+cache.store().save(
+    new KeyOf<>(new Word("b")),
+    new EntryOf<>(
+        new KeyOf<>(new Word("b")),
+        new ListOf<>("k", "l", "m"),
+        new MetadataOf()
+            .with("expiration", LocalDateTime.now().plusSeconds(10L))
+    )
+);
+
+// After 5 seconds the first entry will be removed automatically
+```
+
+### Logging cache usage
 
 To log cache usage, simply decorate the `Cache` with the `Logged` decorator:
 
@@ -150,7 +264,7 @@ final Cache<Word, List<String>> cache = new Logged<>(
 // Normal cache usage
 ```
 
-- Getting statistics
+### Getting statistics
 
 To collect cache statistics, decorate the `Cache` with the `Instrumented`
 decorator:
@@ -169,15 +283,20 @@ final Statistics stats = cache.statistics();
 final int hits = stats.statistic("hits").value();
 ```
 
-- Multiple composition
+### Multiple composition
 
 Remember: Cactoos-Cache is a truly object-oriented and highly composable cache.
 You can combine multiple decorators, for example:
 
 ```java
+// Create a instrumented, logged and policed cache
 final Cache<Word, List<String>> cache = new Instrumented<>(
     new Logged<>(
-        new CacheOf<>(),
+        new Policed<>(
+            new CacheOf<>(),
+            new ExpiredPolicy<>(),
+            new MaxSizePolicy<>()
+        ),
         "cache",
         logger
     )
