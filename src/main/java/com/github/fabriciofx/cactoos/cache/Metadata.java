@@ -44,5 +44,5 @@ public interface Metadata {
      * @return True if any values are present, false otherwise
      * @param <T> Type of the value
      */
-    <T> boolean hasAny(List<T> values);
+    <T> boolean hasAny(Iterable<T> values);
 }

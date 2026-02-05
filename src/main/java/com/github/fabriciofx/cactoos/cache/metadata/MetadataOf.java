@@ -76,7 +76,7 @@ public final class MetadataOf implements Metadata {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> boolean hasAny(final List<T> values) {
+    public <T> boolean hasAny(final Iterable<T> values) {
         return this.items.values().stream()
             .flatMap(
                 value ->
@@ -88,6 +88,6 @@ public final class MetadataOf implements Metadata {
                             .flatMap(Collection::stream)
                     )
             )
-            .anyMatch(values::contains);
+            .anyMatch(new ListOf<>(values)::contains);
     }
 }
