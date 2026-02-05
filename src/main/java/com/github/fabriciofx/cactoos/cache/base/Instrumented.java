@@ -10,9 +10,11 @@ import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.statistic.Evictions;
 import com.github.fabriciofx.cactoos.cache.statistic.Hits;
+import com.github.fabriciofx.cactoos.cache.statistic.Insertions;
 import com.github.fabriciofx.cactoos.cache.statistic.Invalidations;
 import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
 import com.github.fabriciofx.cactoos.cache.statistic.Misses;
+import com.github.fabriciofx.cactoos.cache.statistic.Replacements;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
 import java.util.List;
 import org.cactoos.Bytes;
@@ -46,7 +48,9 @@ public final class Instrumented<K extends Bytes, V> implements Cache<K, V> {
                 new Misses(),
                 new Lookups(),
                 new Invalidations(),
-                new Evictions()
+                new Evictions(),
+                new Insertions(),
+                new Replacements()
             )
         );
     }

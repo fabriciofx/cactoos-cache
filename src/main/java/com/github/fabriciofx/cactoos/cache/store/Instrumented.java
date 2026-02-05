@@ -10,7 +10,6 @@ import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Keys;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
-import java.util.List;
 import org.cactoos.Bytes;
 
 /**
@@ -53,13 +52,14 @@ public final class Instrumented<K extends Bytes, V> implements Store<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> save(
-        final Key<K> key,
-        final Entry<K, V> entry
-    ) throws Exception {
-        final List<Entry<K, V>> evicted = this.origin.save(key, entry);
-        this.stats.statistic("evictions").increment(evicted.size());
-        return evicted;
+    public Entry<K, V> save(final Key<K> key, final Entry<K, V> entry) {
+        final Entry<K, V> replaced = this.origin.save(key, entry);
+        if (replaced.valid()) {
+            this.stats.statistic("replacements").increment(1);
+        } else {
+            this.stats.statistic("insertions").increment(1);
+        }
+        return replaced;
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Keys;
 import com.github.fabriciofx.cactoos.cache.Store;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cactoos.Bytes;
@@ -130,10 +129,7 @@ public final class Logged<K extends Bytes, V> implements Store<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> save(
-        final Key<K> key,
-        final Entry<K, V> entry
-    ) throws Exception {
+    public Entry<K, V> save(final Key<K> key, final Entry<K, V> entry) {
         this.logger.log(
             this.level.value(),
             new UncheckedText(

@@ -29,7 +29,7 @@ Add to your `pom.xml` file:
 <dependency>
   <groupId>com.github.fabriciofx</groupId>
   <artifactId>cactoos-cache</artifactId>
-  <version>0.0.6</version>
+  <version>0.0.9</version>
 </dependency>
 ```
 
@@ -39,7 +39,7 @@ Add to your `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation "com.github.fabriciofx:cactoos-cache:0.0.6"
+    implementation "com.github.fabriciofx:cactoos-cache:0.0.9"
 }
 ```
 
@@ -62,6 +62,8 @@ you can:
 A `Cache` is responsible for providing a `Store` and generating `Statistics`
 about `Store` usage. The most common statistics are:
 
+- *Insertions*: number of times a value is inserted in the cache;
+- *Replacements*: number of time a value is replaced in the cache;
 - *Hits*: number of times a value was found in the cache;
 - *Misses*: number of times a value was not found in the cache;
 - *Lookups*: total number of accesses (hits + misses);

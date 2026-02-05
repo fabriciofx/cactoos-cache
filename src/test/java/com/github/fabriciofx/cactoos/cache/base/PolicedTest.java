@@ -27,7 +27,7 @@ import org.llorllale.cactoos.matchers.HasValue;
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class PolicedTest {
     @Test
-    void expiredPolicy() throws Exception {
+    void expiredPolicy() {
         final Cache<Word, List<String>> cache = new Policed<>(
             new CacheOf<>(),
             new ImmediateEnforcer<>(),

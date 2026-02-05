@@ -60,14 +60,9 @@ public final class Policed<K extends Bytes, V> implements Store<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> save(final Key<K> key, final Entry<K, V> entry)
-        throws Exception {
-        final List<Entry<K, V>> evicted = this.enforcer.apply(
-            this.cache,
-            this.policies
-        );
-        evicted.addAll(this.cache.store().save(key, entry));
-        return evicted;
+    public Entry<K, V> save(final Key<K> key, final Entry<K, V> entry) {
+        this.enforcer.apply(this.cache, this.policies);
+        return this.cache.store().save(key, entry);
     }
 
     @Override

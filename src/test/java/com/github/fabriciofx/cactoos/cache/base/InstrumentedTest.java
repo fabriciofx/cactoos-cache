@@ -24,7 +24,7 @@ import org.llorllale.cactoos.matchers.HasValue;
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class InstrumentedTest {
     @Test
-    void checkHits() throws Exception {
+    void checkHits() {
         final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
@@ -45,7 +45,7 @@ final class InstrumentedTest {
     }
 
     @Test
-    void checkLookups() throws Exception {
+    void checkLookups() {
         final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
@@ -67,7 +67,7 @@ final class InstrumentedTest {
     }
 
     @Test
-    void checkInvalidations() throws Exception {
+    void checkInvalidations() {
         final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
@@ -88,7 +88,7 @@ final class InstrumentedTest {
     }
 
     @Test
-    void checkMisses() throws Exception {
+    void checkMisses() {
         final Cache<Word, List<String>> cache = new Instrumented<>(
             new CacheOf<>()
         );
@@ -109,7 +109,7 @@ final class InstrumentedTest {
     }
 
     @Test
-    void checkEvictions() throws Exception {
+    void checkEvictions() {
         final Cache<Word, List<String>> cache = new Instrumented<>(
             new Policed<>(
                 new CacheOf<>(),
@@ -135,6 +135,60 @@ final class InstrumentedTest {
         new Assertion<>(
             "must check the evictions statistic",
             () -> stats.statistic("evictions").value(),
+            new HasValue<>(1)
+        ).affirm();
+    }
+
+    @Test
+    void checkInsertions() {
+        final Cache<Word, List<String>> cache = new Instrumented<>(
+            new CacheOf<>()
+        );
+        cache.store().save(
+            new KeyOf<>(new Word("a")),
+            new EntryOf<>(
+                new KeyOf<>(new Word("a")),
+                new ListOf<>("x", "y", "z")
+            )
+        );
+        cache.store().save(
+            new KeyOf<>(new Word("b")),
+            new EntryOf<>(
+                new KeyOf<>(new Word("b")),
+                new ListOf<>("k", "l", "m")
+            )
+        );
+        final Statistics stats = cache.statistics();
+        new Assertion<>(
+            "must check the insertions statistic",
+            () -> stats.statistic("insertions").value(),
+            new HasValue<>(2)
+        ).affirm();
+    }
+
+    @Test
+    void checkReplacements() {
+        final Cache<Word, List<String>> cache = new Instrumented<>(
+            new CacheOf<>()
+        );
+        cache.store().save(
+            new KeyOf<>(new Word("a")),
+            new EntryOf<>(
+                new KeyOf<>(new Word("a")),
+                new ListOf<>("x", "y", "z")
+            )
+        );
+        cache.store().save(
+            new KeyOf<>(new Word("a")),
+            new EntryOf<>(
+                new KeyOf<>(new Word("a")),
+                new ListOf<>("i", "j", "k")
+            )
+        );
+        final Statistics stats = cache.statistics();
+        new Assertion<>(
+            "must check the replacements statistic",
+            () -> stats.statistic("replacements").value(),
             new HasValue<>(1)
         ).affirm();
     }

@@ -25,7 +25,7 @@ import org.llorllale.cactoos.matchers.Matches;
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class LoggedTest {
     @Test
-    void logSaveAndRetrieve() throws Exception {
+    void logSaveAndRetrieve() {
         final FakeLogger logger = new FakeLogger();
         final Cache<Word, List<String>> cache = new Logged<>(
             new CacheOf<>(),
@@ -61,7 +61,7 @@ final class LoggedTest {
     }
 
     @Test
-    void logSaveAndDelete() throws Exception {
+    void logSaveAndDelete() {
         final FakeLogger logger = new FakeLogger();
         final Cache<Word, List<String>> cache = new Logged<>(
             new CacheOf<>(),

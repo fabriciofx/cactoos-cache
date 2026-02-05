@@ -23,7 +23,7 @@ import org.llorllale.cactoos.matchers.Matches;
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class CacheTest {
     @Test
-    void saveAndRetrieve() throws Exception {
+    void saveAndRetrieve() {
         final Cache<Word, List<String>> cache = new CacheOf<>();
         cache.store().save(
             new KeyOf<>(new Word("a")),
@@ -51,7 +51,7 @@ final class CacheTest {
     }
 
     @Test
-    void saveAndDelete() throws Exception {
+    void saveAndDelete() {
         final Cache<Word, List<String>> cache = new CacheOf<>();
         cache.store().save(
             new KeyOf<>(new Word("a")),

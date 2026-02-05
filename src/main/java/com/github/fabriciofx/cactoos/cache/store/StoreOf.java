@@ -12,12 +12,10 @@ import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.entries.EntriesOf;
 import com.github.fabriciofx.cactoos.cache.entry.InvalidEntry;
 import com.github.fabriciofx.cactoos.cache.keys.KeysOf;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import org.cactoos.Bytes;
-import org.cactoos.list.ListOf;
 
 /**
  * StoreOf.
@@ -52,14 +50,11 @@ public final class StoreOf<K extends Bytes, V> implements Store<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> save(final Key<K> key, final Entry<K, V> entry)
-        throws Exception {
-        final List<Entry<K, V>> evicted = new ListOf<>();
-        final Entry<K, V> removed = this.records.put(key, entry);
-        if (removed != null) {
-            evicted.add(removed);
-        }
-        return evicted;
+    public Entry<K, V> save(final Key<K> key, final Entry<K, V> entry) {
+        return Objects.requireNonNullElseGet(
+            this.records.put(key, entry),
+            InvalidEntry::new
+        );
     }
 
     @Override
