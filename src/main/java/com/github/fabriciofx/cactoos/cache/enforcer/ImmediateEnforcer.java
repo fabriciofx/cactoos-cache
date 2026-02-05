@@ -24,7 +24,7 @@ public final class ImmediateEnforcer<K extends Bytes, V> implements
     public List<Entry<K, V>> apply(
         final Cache<K, V> cache,
         final List<Policy<K, V>> policies
-    ) throws Exception {
+    ) {
         final List<Entry<K, V>> evicted = cache.evicted();
         for (final Policy<K, V> policy : policies) {
             evicted.addAll(policy.apply(cache.store()));

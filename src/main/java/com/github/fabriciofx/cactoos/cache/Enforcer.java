@@ -5,7 +5,6 @@
 package com.github.fabriciofx.cactoos.cache;
 
 import java.util.List;
-import org.cactoos.BiFunc;
 import org.cactoos.Bytes;
 
 /**
@@ -16,6 +15,6 @@ import org.cactoos.Bytes;
  * @since 0.0.7
  */
 @FunctionalInterface
-public interface Enforcer<K extends Bytes, V>
-    extends BiFunc<Cache<K, V>, List<Policy<K, V>>, List<Entry<K, V>>> {
+public interface Enforcer<K extends Bytes, V> {
+    List<Entry<K, V>> apply(Cache<K, V> cache, List<Policy<K, V>> policies);
 }

@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.Bytes;
-import org.cactoos.Scalar;
 import org.cactoos.list.ListOf;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * Delayed enforcer of policies.
@@ -29,7 +29,7 @@ public final class DelayedEnforcer<K extends Bytes, V> implements
     /**
      * Enforced.
      */
-    private final List<Scalar<List<Entry<K, V>>>> enforced;
+    private final List<Unchecked<List<Entry<K, V>>>> enforced;
 
     /**
      * Delay between executions.
@@ -43,6 +43,7 @@ public final class DelayedEnforcer<K extends Bytes, V> implements
 
     /**
      * Ctor.
+     *
      * @param delay Delay between executions
      * @param unit Time unit
      */
@@ -59,24 +60,26 @@ public final class DelayedEnforcer<K extends Bytes, V> implements
     public List<Entry<K, V>> apply(
         final Cache<K, V> cache,
         final List<Policy<K, V>> policies
-    ) throws Exception {
+    ) {
         if (this.enforced.isEmpty()) {
             this.enforced.add(
-                () -> {
-                    final List<Entry<K, V>> evicted = cache.evicted();
-                    final ScheduledExecutorService executor = Executors
-                        .newSingleThreadScheduledExecutor();
-                    return executor.schedule(
-                        () -> {
-                            for (final Policy<K, V> policy : policies) {
-                                evicted.addAll(policy.apply(cache.store()));
-                            }
-                            return evicted;
-                        },
-                        this.delay,
-                        this.unit
-                    ).get();
-                }
+                new Unchecked<>(
+                    () -> {
+                        final List<Entry<K, V>> evicted = cache.evicted();
+                        final ScheduledExecutorService executor = Executors
+                            .newSingleThreadScheduledExecutor();
+                        return executor.schedule(
+                            () -> {
+                                for (final Policy<K, V> policy : policies) {
+                                    evicted.addAll(policy.apply(cache.store()));
+                                }
+                                return evicted;
+                            },
+                            this.delay,
+                            this.unit
+                        ).get();
+                    }
+                )
             );
         }
         return this.enforced.get(0).value();
