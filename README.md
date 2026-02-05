@@ -174,7 +174,6 @@ final Cache<Word, List<String>> cache = new Policed<>(
 To use `MaxSizePolicy` just use the policy using the max number of entries
 (the default is `Integer.MAX_VALUE`), as the example below:
 
-
 ```java
 // Create a cache with max 2 entries
 final Cache<Word, List<String>> cache = new Policed<>(
