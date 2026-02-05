@@ -14,7 +14,7 @@ import org.cactoos.Bytes;
 import org.cactoos.list.ListOf;
 
 /**
- * MetadataContains.
+ * MetadataInvalidate.
  * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.7
@@ -25,13 +25,13 @@ public final class MetadataInvalidate<K extends Bytes, V>
     /**
      * Values.
      */
-    private final List<Object> values;
+    private final Iterable<?> values;
 
     /**
      * Ctor.
-     * @param values The values
+     * @param values The metadata values
      */
-    public MetadataInvalidate(final List<Object> values) {
+    public MetadataInvalidate(final Iterable<?> values) {
         this.values = values;
     }
 
