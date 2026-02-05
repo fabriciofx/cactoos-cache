@@ -8,9 +8,9 @@ import com.github.fabriciofx.cactoos.cache.Entries;
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
-import java.util.LinkedList;
 import java.util.List;
 import org.cactoos.Bytes;
+import org.cactoos.list.ListOf;
 
 /**
  * MaxSizePolicy.
@@ -42,7 +42,7 @@ public final class MaxSizePolicy<K extends Bytes, V> implements Policy<K, V> {
 
     @Override
     public List<Entry<K, V>> apply(final Store<K, V> store) throws Exception {
-        final List<Entry<K, V>> evicted = new LinkedList<>();
+        final List<Entry<K, V>> evicted = new ListOf<>();
         final Entries<K, V> entries = store.entries();
         while (entries.count() > this.max) {
             evicted.add(store.delete(store.keys().iterator().next()));
