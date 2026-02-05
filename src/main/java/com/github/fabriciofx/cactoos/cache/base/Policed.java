@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.Bytes;
 import org.cactoos.list.ListOf;
-import org.cactoos.scalar.Unchecked;
 
 /**
  * Cache with policies enforcement.
@@ -33,7 +32,12 @@ public final class Policed<K extends Bytes, V> implements Cache<K, V> {
     /**
      * Enforcer.
      */
-    private final Unchecked<List<Entry<K, V>>> enforcer;
+    private final Enforcer<K, V> enforcer;
+
+    /**
+     * Policies.
+     */
+    private final List<Policy<K, V>> policies;
 
     /**
      * Ctor.
@@ -79,26 +83,28 @@ public final class Policed<K extends Bytes, V> implements Cache<K, V> {
         final List<Policy<K, V>> policies
     ) {
         this.origin = cache;
-        this.enforcer = new Unchecked<>(
-            () -> enforcer.apply(cache, policies)
-        );
+        this.enforcer = enforcer;
+        this.policies = policies;
     }
 
     @Override
     public Store<K, V> store() {
-        this.enforcer.value();
-        return this.origin.store();
+        return new com.github.fabriciofx.cactoos.cache.store.Policed<>(
+            this.origin,
+            this.enforcer,
+            this.policies
+        );
     }
 
     @Override
     public Statistics statistics() {
-        this.enforcer.value();
+        this.enforcer.apply(this.origin, this.policies);
         return this.origin.statistics();
     }
 
     @Override
     public List<Entry<K, V>> evicted() {
-        return this.enforcer.value();
+        return this.enforcer.apply(this.origin, this.policies);
     }
 
     @Override
