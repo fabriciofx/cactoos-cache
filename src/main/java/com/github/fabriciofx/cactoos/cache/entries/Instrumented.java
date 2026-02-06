@@ -48,8 +48,7 @@ public final class Instrumented<K extends Bytes, V> implements Entries<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> invalidate(final Invalidate<K, V> invalidate)
-        throws Exception {
+    public List<Entry<K, V>> invalidate(final Invalidate<K, V> invalidate) {
         final List<Entry<K, V>> invalidated = this.origin.invalidate(
             invalidate
         );

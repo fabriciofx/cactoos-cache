@@ -41,8 +41,7 @@ public final class EntriesOf<K extends Bytes, V> implements Entries<K, V> {
     }
 
     @Override
-    public List<Entry<K, V>> invalidate(final Invalidate<K, V> invalidate)
-        throws Exception {
+    public List<Entry<K, V>> invalidate(final Invalidate<K, V> invalidate) {
         return invalidate.apply(this.entries);
     }
 

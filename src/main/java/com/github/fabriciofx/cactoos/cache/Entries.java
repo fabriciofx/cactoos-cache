@@ -24,9 +24,8 @@ public interface Entries<K extends Bytes, V> extends Iterable<Entry<K, V>> {
      * Invalidate entries.
      * @param invalidate The invalidate function
      * @return The invalidated entries
-     * @throws Exception If something goes wrong
      */
-    List<Entry<K, V>> invalidate(Invalidate<K, V> invalidate) throws Exception;
+    List<Entry<K, V>> invalidate(Invalidate<K, V> invalidate);
 
     /**
      * Clear entries.
