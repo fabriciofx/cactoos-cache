@@ -5,6 +5,7 @@
 package com.github.fabriciofx.cactoos.cache.hash;
 
 import org.cactoos.Bytes;
+import org.cactoos.Scalar;
 
 /**
  * Murmur3Hash.
@@ -22,7 +23,7 @@ import org.cactoos.Bytes;
     "PMD.ImplicitSwitchFallThrough",
     "PMD.NcssCount"
 })
-public final class Murmur3Hash implements Bytes {
+public final class Murmur3Hash implements Scalar<long[]> {
     /**
      * Bytes.
      */
@@ -53,14 +54,15 @@ public final class Murmur3Hash implements Bytes {
 
     @SuppressWarnings("fallthrough")
     @Override
-    public byte[] asBytes() throws Exception {
+    public long[] value() throws Exception {
         final byte[] data = this.bytes.asBytes();
         final int length = data.length;
         final int blocks = length >> 4;
         final long ctsa = 0x87c37b91114253d5L;
         final long ctsb = 0x4cf5ad432745937fL;
-        long hasha = this.seed & 0xffffffffL;
-        long hashb = this.seed & 0xffffffffL;
+        final long[] hash = new long[2];
+        hash[0] = this.seed & 0xffffffffL;
+        hash[1] = this.seed & 0xffffffffL;
         for (int num = 0; num < blocks; ++num) {
             final int index = num << 4;
             long keia = littleEndian(data, index);
@@ -68,17 +70,17 @@ public final class Murmur3Hash implements Bytes {
             keia *= ctsa;
             keia = Long.rotateLeft(keia, 31);
             keia *= ctsb;
-            hasha ^= keia;
-            hasha = Long.rotateLeft(hasha, 27);
-            hasha += hashb;
-            hasha = hasha * 5 + 0x52dce729;
+            hash[0] ^= keia;
+            hash[0] = Long.rotateLeft(hash[0], 27);
+            hash[0] += hash[1];
+            hash[0] = hash[0] * 5 + 0x52dce729;
             keib *= ctsb;
             keib = Long.rotateLeft(keib, 33);
             keib *= ctsa;
-            hashb ^= keib;
-            hashb = Long.rotateLeft(hashb, 31);
-            hashb += hasha;
-            hashb = hashb * 5 + 0x38495ab5;
+            hash[1] ^= keib;
+            hash[1] = Long.rotateLeft(hash[1], 31);
+            hash[1] += hash[0];
+            hash[1] = hash[1] * 5 + 0x38495ab5;
         }
         long keia = 0;
         long keib = 0;
@@ -101,7 +103,7 @@ public final class Murmur3Hash implements Bytes {
                 keib *= ctsb;
                 keib = Long.rotateLeft(keib, 33);
                 keib *= ctsa;
-                hashb ^= keib;
+                hash[1] ^= keib;
             case 8:
                 keia ^= ((long) data[tail + 7] & 0xff) << 56;
             case 7:
@@ -121,25 +123,20 @@ public final class Murmur3Hash implements Bytes {
                 keia *= ctsa;
                 keia = Long.rotateLeft(keia, 31);
                 keia *= ctsb;
-                hasha ^= keia;
+                hash[0] ^= keia;
                 break;
             default:
                 break;
         }
-        hasha ^= length;
-        hashb ^= length;
-        hasha += hashb;
-        hashb += hasha;
-        hasha = fmix(hasha);
-        hashb = fmix(hashb);
-        hasha += hashb;
-        hashb += hasha;
-        final byte[] out = new byte[16];
-        for (int idx = 0; idx < 8; ++idx) {
-            out[idx] = (byte) (hasha >>> (idx * 8));
-            out[idx + 8] = (byte) (hashb >>> (idx * 8));
-        }
-        return out;
+        hash[0] ^= length;
+        hash[1] ^= length;
+        hash[0] += hash[1];
+        hash[1] += hash[0];
+        hash[0] = fmix(hash[0]);
+        hash[1] = fmix(hash[1]);
+        hash[0] += hash[1];
+        hash[1] += hash[0];
+        return hash;
     }
 
     private static long littleEndian(final byte[] data, final int index) {
