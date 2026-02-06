@@ -21,7 +21,7 @@ final class KeyOfTest {
         new Assertion<>(
             "Must have the same hash",
             new TextOf(new KeyOf<>(new Word("test")).hash()),
-            new IsText("9de1bd74cc287dac824dbdf93182129a")
+            new IsText("bc13f8e0f3048bed")
         ).affirm();
     }
 }

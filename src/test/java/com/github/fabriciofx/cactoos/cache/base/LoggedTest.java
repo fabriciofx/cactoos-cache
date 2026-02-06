@@ -45,9 +45,9 @@ final class LoggedTest {
             new HasString(
                 """
                 [cache] Storing in cache with key \
-                '897859f6655555855a890e51483ab5e6' and value '[x, y, z]'
+                'c654297dc7d34acc' and value '[x, y, z]'
                 [cache] Retrieving from cache with key \
-                '897859f6655555855a890e51483ab5e6' and value '[x, y, z]'
+                'c654297dc7d34acc' and value '[x, y, z]'
                 """
             ),
             new Matches<>(
@@ -81,9 +81,9 @@ final class LoggedTest {
             new HasString(
                 """
                 [cache] Storing in cache with key \
-                'eed1d3b157a9987ae9944e541e132efa' and value '[k, l, m]'
+                '906a98983c4ba12d' and value '[k, l, m]'
                 [cache] Deleting into cache with key \
-                'eed1d3b157a9987ae9944e541e132efa' and returning \
+                '906a98983c4ba12d' and returning \
                 value '[k, l, m]'
                 """
             ),

@@ -6,7 +6,7 @@ package com.github.fabriciofx.cactoos.cache.key;
 
 import com.github.fabriciofx.cactoos.cache.Hash;
 import com.github.fabriciofx.cactoos.cache.Key;
-import com.github.fabriciofx.cactoos.cache.hash.Murmur3Hash;
+import com.github.fabriciofx.cactoos.cache.hash.Xxh3BasedHash;
 import org.cactoos.Bytes;
 
 /**
@@ -30,7 +30,7 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
      * @param value A value
      */
     public KeyOf(final K value) {
-        this(value, new Murmur3Hash(value));
+        this(value, new Xxh3BasedHash(value));
     }
 
     /**
