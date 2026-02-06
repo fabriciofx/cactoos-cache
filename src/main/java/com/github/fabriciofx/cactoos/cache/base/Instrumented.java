@@ -87,7 +87,7 @@ public final class Instrumented<K extends Bytes, V> implements Cache<K, V> {
 
     @Override
     public void clear() {
-        this.store().keys().clear();
-        this.store().entries().clear();
+        this.origin.clear();
+        this.stats.reset();
     }
 }

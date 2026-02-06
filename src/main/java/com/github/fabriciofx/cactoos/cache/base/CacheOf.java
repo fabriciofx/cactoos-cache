@@ -8,11 +8,6 @@ import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
-import com.github.fabriciofx.cactoos.cache.statistic.Evictions;
-import com.github.fabriciofx.cactoos.cache.statistic.Hits;
-import com.github.fabriciofx.cactoos.cache.statistic.Invalidations;
-import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
-import com.github.fabriciofx.cactoos.cache.statistic.Misses;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
 import com.github.fabriciofx.cactoos.cache.store.StoreOf;
 import java.util.List;
@@ -32,11 +27,6 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
     private final Store<K, V> str;
 
     /**
-     * Statistics.
-     */
-    private final Statistics stats;
-
-    /**
      * Evicted.
      */
     private final List<Entry<K, V>> removed;
@@ -53,32 +43,19 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
      * @param store A store
      */
     public CacheOf(final Store<K, V> store) {
-        this(
-            store,
-            new StatisticsOf(
-                new Evictions(),
-                new Hits(),
-                new Invalidations(),
-                new Lookups(),
-                new Misses()
-            ),
-            new ListOf<>()
-        );
+        this(store, new ListOf<>());
     }
 
     /**
      * Ctor.
      * @param store A store
-     * @param statistics The statistics
      * @param evicted The evicted entries
      */
     public CacheOf(
         final Store<K, V> store,
-        final Statistics statistics,
         final List<Entry<K, V>> evicted
     ) {
         this.str = store;
-        this.stats = statistics;
         this.removed = evicted;
     }
 
@@ -89,7 +66,7 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
 
     @Override
     public Statistics statistics() {
-        return this.stats;
+        return new StatisticsOf();
     }
 
     @Override
@@ -101,7 +78,6 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
     public void clear() {
         this.str.keys().clear();
         this.str.entries().clear();
-        this.stats.reset();
         this.removed.clear();
     }
 }

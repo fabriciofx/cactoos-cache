@@ -20,7 +20,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
 import org.llorllale.cactoos.matchers.Matches;
 
 /**
- * Metadata tests.
+ * MetadataOf tests.
  * @since 0.0.7
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
