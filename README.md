@@ -29,7 +29,7 @@ Add to your `pom.xml` file:
 <dependency>
   <groupId>com.github.fabriciofx</groupId>
   <artifactId>cactoos-cache</artifactId>
-  <version>0.0.9</version>
+  <version>0.0.10</version>
 </dependency>
 ```
 
@@ -39,7 +39,7 @@ Add to your `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation "com.github.fabriciofx:cactoos-cache:0.0.9"
+    implementation "com.github.fabriciofx:cactoos-cache:0.0.10"
 }
 ```
 
