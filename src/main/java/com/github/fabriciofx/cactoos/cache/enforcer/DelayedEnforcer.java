@@ -14,6 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.Bytes;
 import org.cactoos.list.ListOf;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * Delayed enforcer of policies.
@@ -23,7 +24,12 @@ import org.cactoos.list.ListOf;
  * @since 0.0.7
  */
 public final class DelayedEnforcer<K extends Bytes, V> implements
-    Enforcer<K, V> {
+    Enforcer<K, V>, AutoCloseable {
+    /**
+     * Executor.
+     */
+    private final Unchecked<ScheduledExecutorService> executor;
+
     /**
      * Cached evicted list.
      */
@@ -49,6 +55,26 @@ public final class DelayedEnforcer<K extends Bytes, V> implements
         final long delay,
         final TimeUnit unit
     ) {
+        this(
+            new Unchecked<>(Executors::newSingleThreadScheduledExecutor),
+            delay,
+            unit
+        );
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param executor Executor service to run the enforcer
+     * @param delay Delay between executions
+     * @param unit Time unit
+     */
+    public DelayedEnforcer(
+        final Unchecked<ScheduledExecutorService> executor,
+        final long delay,
+        final TimeUnit unit
+    ) {
+        this.executor = executor;
         this.cached = new ListOf<>();
         this.delay = delay;
         this.unit = unit;
@@ -61,9 +87,7 @@ public final class DelayedEnforcer<K extends Bytes, V> implements
     ) {
         if (this.cached.isEmpty()) {
             final List<Entry<K, V>> evicted = cache.evicted();
-            final ScheduledExecutorService executor = Executors
-                .newSingleThreadScheduledExecutor();
-            executor.scheduleWithFixedDelay(
+            this.executor.value().scheduleWithFixedDelay(
                 () -> {
                     for (final Policy<K, V> policy : policies) {
                         evicted.addAll(policy.apply(cache.store()));
@@ -76,5 +100,10 @@ public final class DelayedEnforcer<K extends Bytes, V> implements
             this.cached.add(evicted);
         }
         return this.cached.get(0);
+    }
+
+    @Override
+    public void close() {
+        this.executor.value().shutdown();
     }
 }
