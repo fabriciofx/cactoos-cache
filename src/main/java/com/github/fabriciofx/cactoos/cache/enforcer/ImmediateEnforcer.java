@@ -18,8 +18,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.7
  */
-public final class ImmediateEnforcer<K extends Bytes, V> implements
-    Enforcer<K, V> {
+public final class ImmediateEnforcer<K extends Bytes, V extends Bytes>
+    implements Enforcer<K, V> {
     @Override
     public List<Entry<K, V>> apply(
         final Cache<K, V> cache,

@@ -24,4 +24,10 @@ public interface Key<K extends Bytes> {
      * @return The hexadecimal of key's hash
      */
     String hash();
+
+    /**
+     * Size of the key in bytes.
+     * @return The size
+     */
+    int size();
 }

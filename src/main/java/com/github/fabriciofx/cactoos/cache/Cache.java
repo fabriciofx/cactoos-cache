@@ -13,7 +13,7 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Cache<K extends Bytes, V> {
+public interface Cache<K extends Bytes, V extends Bytes> {
     /**
      * Store.
      * @return The store.
@@ -36,4 +36,10 @@ public interface Cache<K extends Bytes, V> {
      * Clear the cache.
      */
     void clear();
+
+    /**
+     * Size of the cache in bytes.
+     * @return The size
+     */
+    int size();
 }

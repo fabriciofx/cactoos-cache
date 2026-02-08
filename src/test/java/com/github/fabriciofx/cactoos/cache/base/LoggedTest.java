@@ -5,12 +5,11 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
+import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.fake.logger.FakeLogger;
-import java.util.List;
-import org.cactoos.list.ListOf;
 import org.cactoos.text.Replaced;
 import org.cactoos.text.TextOf;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ final class LoggedTest {
     @Test
     void logSaveAndRetrieve() {
         final FakeLogger logger = new FakeLogger();
-        final Cache<Word, List<String>> cache = new Logged<>(
+        final Cache<Word, Synonyms> cache = new Logged<>(
             new CacheOf<>(),
             "cache",
             logger
@@ -36,7 +35,7 @@ final class LoggedTest {
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().retrieve(new KeyOf<>(new Word("a")));
@@ -63,7 +62,7 @@ final class LoggedTest {
     @Test
     void logSaveAndDelete() {
         final FakeLogger logger = new FakeLogger();
-        final Cache<Word, List<String>> cache = new Logged<>(
+        final Cache<Word, Synonyms> cache = new Logged<>(
             new CacheOf<>(),
             "cache",
             logger
@@ -72,7 +71,7 @@ final class LoggedTest {
             new KeyOf<>(new Word("b")),
             new EntryOf<>(
                 new KeyOf<>(new Word("b")),
-                new ListOf<>("k", "l", "m")
+                new Synonyms("k", "l", "m")
             )
         );
         cache.store().delete(new KeyOf<>(new Word("b")));

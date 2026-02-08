@@ -22,4 +22,10 @@ public interface Keys<K extends Bytes> extends Iterable<Key<K>> {
      * Clear keys.
      */
     void clear();
+
+    /**
+     * Size of the keys in bytes.
+     * @return The size
+     */
+    int size();
 }

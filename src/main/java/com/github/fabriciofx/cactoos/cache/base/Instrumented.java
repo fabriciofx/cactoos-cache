@@ -25,7 +25,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<K extends Bytes, V> implements Cache<K, V> {
+public final class Instrumented<K extends Bytes, V extends Bytes>
+    implements Cache<K, V> {
     /**
      * Cache.
      */
@@ -89,5 +90,10 @@ public final class Instrumented<K extends Bytes, V> implements Cache<K, V> {
     public void clear() {
         this.origin.clear();
         this.stats.reset();
+    }
+
+    @Override
+    public int size() {
+        return this.origin.size();
     }
 }

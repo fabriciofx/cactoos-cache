@@ -23,7 +23,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class StoreOf<K extends Bytes, V> implements Store<K, V> {
+public final class StoreOf<K extends Bytes, V extends Bytes>
+    implements Store<K, V> {
     /**
      * Entries.
      */

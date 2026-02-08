@@ -15,6 +15,6 @@ import org.cactoos.Bytes;
  * @since 0.0.7
  */
 @FunctionalInterface
-public interface Invalidate<K extends Bytes, V> {
+public interface Invalidate<K extends Bytes, V extends Bytes> {
     List<Entry<K, V>> apply(Map<Key<K>, Entry<K, V>> entries);
 }

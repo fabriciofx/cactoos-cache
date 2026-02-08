@@ -9,6 +9,7 @@ import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Metadata;
 import com.github.fabriciofx.cactoos.cache.metadata.MetadataOf;
 import org.cactoos.Bytes;
+import org.cactoos.bytes.UncheckedBytes;
 
 /**
  * EntryOf.
@@ -16,7 +17,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class EntryOf<K extends Bytes, V> implements Entry<K, V> {
+public final class EntryOf<K extends Bytes, V extends Bytes>
+    implements Entry<K, V> {
     /**
      * Key.
      */
@@ -75,5 +77,10 @@ public final class EntryOf<K extends Bytes, V> implements Entry<K, V> {
     @Override
     public boolean valid() {
         return true;
+    }
+
+    @Override
+    public int size() {
+        return new UncheckedBytes(this.val).asBytes().length;
     }
 }

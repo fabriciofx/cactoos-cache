@@ -13,7 +13,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Entries<K extends Bytes, V> extends Iterable<Entry<K, V>> {
+public interface Entries<K extends Bytes, V extends Bytes>
+    extends Iterable<Entry<K, V>> {
     /**
      * Retrieve the amount of entries.
      * @return The amount of entries.
@@ -31,4 +32,10 @@ public interface Entries<K extends Bytes, V> extends Iterable<Entry<K, V>> {
      * Clear entries.
      */
     void clear();
+
+    /**
+     * Size of the entries in bytes.
+     * @return The size
+     */
+    int size();
 }

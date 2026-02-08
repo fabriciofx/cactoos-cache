@@ -23,7 +23,8 @@ import org.cactoos.list.ListOf;
  * @param <V> the entry value type
  * @since 0.0.7
  */
-public final class Policed<K extends Bytes, V> implements Cache<K, V> {
+public final class Policed<K extends Bytes, V extends Bytes>
+    implements Cache<K, V> {
     /**
      * Cache.
      */
@@ -110,5 +111,10 @@ public final class Policed<K extends Bytes, V> implements Cache<K, V> {
     @Override
     public void clear() {
         this.origin.clear();
+    }
+
+    @Override
+    public int size() {
+        return this.origin.size();
     }
 }

@@ -5,15 +5,13 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
+import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
-import java.util.List;
-import org.cactoos.list.ListOf;
+import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
-import org.llorllale.cactoos.matchers.HasValues;
-import org.llorllale.cactoos.matchers.Matches;
 
 /**
  * CacheTest.
@@ -24,57 +22,77 @@ import org.llorllale.cactoos.matchers.Matches;
 final class CacheTest {
     @Test
     void saveAndRetrieve() {
-        final Cache<Word, List<String>> cache = new CacheOf<>();
+        final Cache<Word, Synonyms> cache = new CacheOf<>();
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().save(
             new KeyOf<>(new Word("b")),
             new EntryOf<>(
                 new KeyOf<>(new Word("b")),
-                new ListOf<>("k", "l", "m")
+                new Synonyms("k", "l", "m")
             )
         );
         new Assertion<>(
             "must save and retrieve a cache entry",
-            new HasValues<>(
-                cache.store().retrieve(
-                    new KeyOf<>(new Word("a"))
-                ).value()
-            ),
-            new Matches<>(new ListOf<>("x", "y", "z"))
+            cache.store().retrieve(
+                new KeyOf<>(new Word("a"))
+            ).value(),
+            new IsEqual<>(new Synonyms("x", "y", "z"))
         ).affirm();
     }
 
     @Test
     void saveAndDelete() {
-        final Cache<Word, List<String>> cache = new CacheOf<>();
+        final Cache<Word, Synonyms> cache = new CacheOf<>();
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().save(
             new KeyOf<>(new Word("b")),
             new EntryOf<>(
                 new KeyOf<>(new Word("b")),
-                new ListOf<>("k", "l", "m")
+                new Synonyms("k", "l", "m")
             )
         );
         new Assertion<>(
             "must save and delete a cache entry",
-            new HasValues<>(
                 cache.store().delete(
                     new KeyOf<>(new Word("a"))
-                ).value()
-            ),
-            new Matches<>(new ListOf<>("x", "y", "z"))
+                ).value(),
+            new IsEqual<>(new Synonyms("x", "y", "z"))
+        ).affirm();
+    }
+
+    @Test
+    void size() {
+        final Cache<Word, Synonyms> cache = new CacheOf<>();
+        cache.store().save(
+            new KeyOf<>(new Word("a")),
+            new EntryOf<>(
+                new KeyOf<>(new Word("a")),
+                new Synonyms("x", "y", "z")
+            )
+        );
+        cache.store().save(
+            new KeyOf<>(new Word("b")),
+            new EntryOf<>(
+                new KeyOf<>(new Word("b")),
+                new Synonyms("k", "l", "m")
+            )
+        );
+        new Assertion<>(
+            "must check the cache size in bytes",
+            cache.size(),
+            new IsEqual<>(10)
         ).affirm();
     }
 }

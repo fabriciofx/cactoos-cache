@@ -15,7 +15,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class InvalidEntry<K extends Bytes, V> implements Entry<K, V> {
+public final class InvalidEntry<K extends Bytes, V extends Bytes>
+    implements Entry<K, V> {
     @Override
     public Key<K> key() {
         throw new UnsupportedOperationException("#key(): invalid entry");
@@ -34,5 +35,10 @@ public final class InvalidEntry<K extends Bytes, V> implements Entry<K, V> {
     @Override
     public boolean valid() {
         return false;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 }

@@ -137,6 +137,22 @@ public final class Logged<K extends Bytes> implements Keys<K> {
     }
 
     @Override
+    public int size() {
+        final int size = this.origin.size();
+        this.logger.log(
+            this.level.value(),
+            new UncheckedText(
+                new FormattedText(
+                    "[%s] Keys have %d bytes of size",
+                    this.from,
+                    size
+                )
+            ).asString()
+        );
+        return size;
+    }
+
+    @Override
     public Iterator<Key<K>> iterator() {
         this.logger.log(
             this.level.value(),

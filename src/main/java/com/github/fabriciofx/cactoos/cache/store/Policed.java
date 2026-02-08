@@ -21,7 +21,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.9
  */
-public final class Policed<K extends Bytes, V> implements Store<K, V> {
+public final class Policed<K extends Bytes, V extends Bytes>
+    implements Store<K, V> {
     /**
      * Cache.
      */

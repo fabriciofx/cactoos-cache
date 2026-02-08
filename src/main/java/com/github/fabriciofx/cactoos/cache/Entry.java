@@ -12,7 +12,7 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Entry<K extends Bytes, V> {
+public interface Entry<K extends Bytes, V extends Bytes> {
     /**
      * Retrieve the key associated with this entry.
      * @return The key
@@ -36,4 +36,10 @@ public interface Entry<K extends Bytes, V> {
      * @return True if an entry is valid, false otherwise
      */
     boolean valid();
+
+    /**
+     * Size of the entry in bytes.
+     * @return The size
+     */
+    int size();
 }

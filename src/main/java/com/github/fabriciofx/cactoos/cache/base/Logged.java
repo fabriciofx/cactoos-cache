@@ -29,7 +29,8 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (200 lines)
  */
-public final class Logged<K extends Bytes, V> implements Cache<K, V> {
+public final class Logged<K extends Bytes, V extends Bytes>
+    implements Cache<K, V> {
     /**
      * Cache.
      */
@@ -168,5 +169,21 @@ public final class Logged<K extends Bytes, V> implements Cache<K, V> {
                 new FormattedText("[%s] Cache cleared", this.from)
             ).asString()
         );
+    }
+
+    @Override
+    public int size() {
+        final int size = this.origin.size();
+        this.logger.log(
+            this.level.value(),
+            new UncheckedText(
+                new FormattedText(
+                    "[%s] Cache has %d bytes of size",
+                    this.from,
+                    size
+                )
+            ).asString()
+        );
+        return size;
     }
 }

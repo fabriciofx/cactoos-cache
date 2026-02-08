@@ -26,7 +26,8 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (500 lines)
  */
-public final class Logged<K extends Bytes, V> implements Store<K, V> {
+public final class Logged<K extends Bytes, V extends Bytes>
+    implements Store<K, V> {
     /**
      * Store.
      */

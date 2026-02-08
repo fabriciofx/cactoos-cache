@@ -28,7 +28,8 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (300 lines)
  */
-public final class Logged<K extends Bytes, V> implements Entries<K, V> {
+public final class Logged<K extends Bytes, V extends Bytes>
+    implements Entries<K, V> {
     /**
      * Entries.
      */
@@ -166,6 +167,22 @@ public final class Logged<K extends Bytes, V> implements Entries<K, V> {
                 )
             ).asString()
         );
+    }
+
+    @Override
+    public int size() {
+        final int size = this.origin.size();
+        this.logger.log(
+            this.level.value(),
+            new UncheckedText(
+                new FormattedText(
+                    "[%s] Entries have %d bytes of size",
+                    this.from,
+                    size
+                )
+            ).asString()
+        );
+        return size;
     }
 
     @Override

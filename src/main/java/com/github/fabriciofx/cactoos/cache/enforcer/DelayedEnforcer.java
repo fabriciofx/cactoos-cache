@@ -23,8 +23,8 @@ import org.cactoos.scalar.Unchecked;
  * @param <V> the entry value type
  * @since 0.0.7
  */
-public final class DelayedEnforcer<K extends Bytes, V> implements
-    Enforcer<K, V>, AutoCloseable {
+public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
+    implements Enforcer<K, V>, AutoCloseable {
     /**
      * Executor.
      */

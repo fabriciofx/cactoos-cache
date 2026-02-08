@@ -21,7 +21,8 @@ import org.cactoos.list.ListOf;
  * @param <V> the entry value type
  * @since 0.0.7
  */
-public final class ExpiredPolicy<K extends Bytes, V> implements Policy<K, V> {
+public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
+    implements Policy<K, V> {
     /**
      * Expiration timestamp.
      */

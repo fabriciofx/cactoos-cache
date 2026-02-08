@@ -15,6 +15,6 @@ import org.cactoos.Bytes;
  * @since 0.0.7
  */
 @FunctionalInterface
-public interface Enforcer<K extends Bytes, V> {
+public interface Enforcer<K extends Bytes, V extends Bytes> {
     List<Entry<K, V>> apply(Cache<K, V> cache, List<Policy<K, V>> policies);
 }

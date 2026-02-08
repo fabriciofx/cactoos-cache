@@ -9,6 +9,8 @@ import com.github.fabriciofx.cactoos.cache.Keys;
 import java.util.Iterator;
 import java.util.Set;
 import org.cactoos.Bytes;
+import org.cactoos.iterable.Mapped;
+import org.cactoos.number.SumOf;
 
 /**
  * KeysOf.
@@ -37,6 +39,16 @@ public final class KeysOf<K extends Bytes> implements Keys<K> {
     @Override
     public void clear() {
         this.keys.clear();
+    }
+
+    @Override
+    public int size() {
+        return new SumOf(
+            new Mapped<>(
+                Key::size,
+                this.keys
+            )
+        ).intValue();
     }
 
     @Override

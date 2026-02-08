@@ -51,6 +51,11 @@ public final class Instrumented<K extends Bytes> implements Keys<K> {
     }
 
     @Override
+    public int size() {
+        return this.origin.size();
+    }
+
+    @Override
     public Iterator<Key<K>> iterator() {
         return this.origin.iterator();
     }

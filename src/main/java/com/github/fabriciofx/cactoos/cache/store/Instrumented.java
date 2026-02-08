@@ -18,7 +18,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<K extends Bytes, V> implements Store<K, V> {
+public final class Instrumented<K extends Bytes, V extends Bytes>
+    implements Store<K, V> {
     /**
      * Store.
      */

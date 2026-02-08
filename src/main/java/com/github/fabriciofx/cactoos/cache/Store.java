@@ -13,7 +13,7 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public interface Store<K extends Bytes, V> {
+public interface Store<K extends Bytes, V extends Bytes> {
     /**
      * Retrieve an entry from store.
      *

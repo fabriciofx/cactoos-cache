@@ -8,6 +8,7 @@ import com.github.fabriciofx.cactoos.cache.Hash;
 import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.hash.Xxh3BasedHash;
 import org.cactoos.Bytes;
+import org.cactoos.bytes.UncheckedBytes;
 
 /**
  * KeyOf.
@@ -51,6 +52,11 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
     @Override
     public String hash() {
         return this.hsh.asString();
+    }
+
+    @Override
+    public int size() {
+        return new UncheckedBytes(this.val).asBytes().length;
     }
 
     @Override

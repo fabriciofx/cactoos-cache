@@ -18,7 +18,8 @@ import org.cactoos.list.ListOf;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class MaxSizePolicy<K extends Bytes, V> implements Policy<K, V> {
+public final class MaxSizePolicy<K extends Bytes, V extends Bytes>
+    implements Policy<K, V> {
     /**
      * Max size.
      */

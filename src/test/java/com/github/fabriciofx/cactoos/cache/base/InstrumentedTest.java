@@ -6,13 +6,12 @@ package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Statistics;
+import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.enforcer.ImmediateEnforcer;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.cactoos.cache.policy.MaxSizePolicy;
-import java.util.List;
-import org.cactoos.list.ListOf;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
 import org.llorllale.cactoos.matchers.HasValue;
@@ -25,14 +24,14 @@ import org.llorllale.cactoos.matchers.HasValue;
 final class InstrumentedTest {
     @Test
     void checkHits() {
-        final Cache<Word, List<String>> cache = new Instrumented<>(
+        final Cache<Word, Synonyms> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().retrieve(new KeyOf<>(new Word("a")));
@@ -46,14 +45,14 @@ final class InstrumentedTest {
 
     @Test
     void checkLookups() {
-        final Cache<Word, List<String>> cache = new Instrumented<>(
+        final Cache<Word, Synonyms> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().retrieve(new KeyOf<>(new Word("a")));
@@ -68,14 +67,14 @@ final class InstrumentedTest {
 
     @Test
     void checkInvalidations() {
-        final Cache<Word, List<String>> cache = new Instrumented<>(
+        final Cache<Word, Synonyms> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().delete(new KeyOf<>(new Word("a")));
@@ -89,14 +88,14 @@ final class InstrumentedTest {
 
     @Test
     void checkMisses() {
-        final Cache<Word, List<String>> cache = new Instrumented<>(
+        final Cache<Word, Synonyms> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().retrieve(new KeyOf<>(new Word("b")));
@@ -110,7 +109,7 @@ final class InstrumentedTest {
 
     @Test
     void checkEvictions() {
-        final Cache<Word, List<String>> cache = new Instrumented<>(
+        final Cache<Word, Synonyms> cache = new Instrumented<>(
             new Policed<>(
                 new CacheOf<>(),
                 new ImmediateEnforcer<>(),
@@ -121,14 +120,14 @@ final class InstrumentedTest {
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().save(
             new KeyOf<>(new Word("b")),
             new EntryOf<>(
                 new KeyOf<>(new Word("b")),
-                new ListOf<>("k", "l", "m")
+                new Synonyms("k", "l", "m")
             )
         );
         final Statistics stats = cache.statistics();
@@ -141,21 +140,21 @@ final class InstrumentedTest {
 
     @Test
     void checkInsertions() {
-        final Cache<Word, List<String>> cache = new Instrumented<>(
+        final Cache<Word, Synonyms> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().save(
             new KeyOf<>(new Word("b")),
             new EntryOf<>(
                 new KeyOf<>(new Word("b")),
-                new ListOf<>("k", "l", "m")
+                new Synonyms("k", "l", "m")
             )
         );
         final Statistics stats = cache.statistics();
@@ -168,21 +167,21 @@ final class InstrumentedTest {
 
     @Test
     void checkReplacements() {
-        final Cache<Word, List<String>> cache = new Instrumented<>(
+        final Cache<Word, Synonyms> cache = new Instrumented<>(
             new CacheOf<>()
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z")
+                new Synonyms("x", "y", "z")
             )
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("i", "j", "k")
+                new Synonyms("i", "j", "k")
             )
         );
         final Statistics stats = cache.statistics();

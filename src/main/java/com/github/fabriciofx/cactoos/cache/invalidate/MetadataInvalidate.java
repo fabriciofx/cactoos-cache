@@ -20,7 +20,7 @@ import org.cactoos.list.ListOf;
  * @since 0.0.7
  */
 @SuppressWarnings("PMD.UnnecessaryLocalRule")
-public final class MetadataInvalidate<K extends Bytes, V>
+public final class MetadataInvalidate<K extends Bytes, V extends Bytes>
     implements Invalidate<K, V> {
     /**
      * Values.

@@ -41,4 +41,9 @@ public final class Word implements Bytes {
     public int hashCode() {
         return this.content.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return this.content;
+    }
 }

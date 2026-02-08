@@ -12,6 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.cactoos.Bytes;
+import org.cactoos.iterable.Joined;
+import org.cactoos.iterable.Mapped;
+import org.cactoos.number.SumOf;
 
 /**
  * EntriesOf.
@@ -20,7 +23,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class EntriesOf<K extends Bytes, V> implements Entries<K, V> {
+public final class EntriesOf<K extends Bytes, V extends Bytes>
+    implements Entries<K, V> {
     /**
      * Entries.
      */
@@ -48,6 +52,16 @@ public final class EntriesOf<K extends Bytes, V> implements Entries<K, V> {
     @Override
     public void clear() {
         this.entries.clear();
+    }
+
+    @Override
+    public int size() {
+        return new SumOf(
+            new Joined<Integer>(
+                new Mapped<>(Key::size, this.entries.keySet()),
+                new Mapped<>(Entry::size, this.entries.values())
+            )
+        ).intValue();
     }
 
     @Override

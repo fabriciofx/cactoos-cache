@@ -6,6 +6,7 @@ package com.github.fabriciofx.cactoos.cache.invalidate;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.base.CacheOf;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
@@ -25,13 +26,13 @@ import org.llorllale.cactoos.matchers.HasValue;
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class MetadataInvalidateTest {
     @Test
-    void invalidateIfMetadataHasAny() throws Exception {
-        final Cache<Word, List<String>> cache = new CacheOf<>();
+    void invalidateIfMetadataHasAny() {
+        final Cache<Word, Synonyms> cache = new CacheOf<>();
         cache.store().save(
             new KeyOf<>(new Word("a")),
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
-                new ListOf<>("x", "y", "z"),
+                new Synonyms("x", "y", "z"),
                 new MetadataOf().with("tables", new SetOf<>("i", "j", "k"))
             )
         );
@@ -39,10 +40,10 @@ final class MetadataInvalidateTest {
             new KeyOf<>(new Word("b")),
             new EntryOf<>(
                 new KeyOf<>(new Word("b")),
-                new ListOf<>("k", "l", "m")
+                new Synonyms("k", "l", "m")
             )
         );
-        final List<Entry<Word, List<String>>> invalidated = cache
+        final List<Entry<Word, Synonyms>> invalidated = cache
             .store()
             .entries()
             .invalidate(new MetadataInvalidate<>(new ListOf<>("j")));
@@ -52,5 +53,4 @@ final class MetadataInvalidateTest {
             new HasValue<>(new Word("a"))
         ).affirm();
     }
-
 }

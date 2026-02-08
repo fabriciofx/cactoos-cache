@@ -20,7 +20,8 @@ import org.cactoos.list.ListOf;
  * @param <V> the entry value type
  * @since 0.0.3
  */
-public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
+public final class CacheOf<K extends Bytes, V extends Bytes>
+    implements Cache<K, V> {
     /**
      * Store.
      */
@@ -79,5 +80,10 @@ public final class CacheOf<K extends Bytes, V> implements Cache<K, V> {
         this.str.keys().clear();
         this.str.entries().clear();
         this.removed.clear();
+    }
+
+    @Override
+    public int size() {
+        return this.str.keys().size() + this.str.entries().size();
     }
 }

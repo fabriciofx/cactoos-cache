@@ -18,7 +18,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.1
  */
-public final class Instrumented<K extends Bytes, V> implements Entries<K, V> {
+public final class Instrumented<K extends Bytes, V extends Bytes>
+    implements Entries<K, V> {
     /**
      * Entries.
      */
@@ -60,6 +61,11 @@ public final class Instrumented<K extends Bytes, V> implements Entries<K, V> {
     public void clear() {
         this.origin.clear();
         this.stats.statistic("invalidations").increment(this.count());
+    }
+
+    @Override
+    public int size() {
+        return this.origin.size();
     }
 
     @Override
