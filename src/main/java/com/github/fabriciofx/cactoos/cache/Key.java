@@ -20,8 +20,8 @@ public interface Key<K extends Bytes> {
     K value();
 
     /**
-     * Calculate the key's hash.
-     * @return The key's hash
+     * Retrieve the hexadecimal of the key's hash value.
+     * @return The hexadecimal of key's hash
      */
     String hash();
 }
