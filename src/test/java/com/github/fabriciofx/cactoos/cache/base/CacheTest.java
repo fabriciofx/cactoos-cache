@@ -73,7 +73,7 @@ final class CacheTest {
     }
 
     @Test
-    void size() {
+    void retrieveSize() {
         final Cache<Word, Synonyms> cache = new CacheOf<>();
         cache.store().save(
             new KeyOf<>(new Word("a")),
@@ -93,6 +93,15 @@ final class CacheTest {
             "must check the cache size in bytes",
             cache.size(),
             new IsEqual<>(10)
+        ).affirm();
+    }
+
+    @Test
+    void haveSizeZeroWhenEmpty() {
+        new Assertion<>(
+            "must have size zero when empty",
+            new CacheOf<>().size(),
+            new IsEqual<>(0)
         ).affirm();
     }
 }
