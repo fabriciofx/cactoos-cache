@@ -11,7 +11,7 @@ import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.enforcer.ImmediateEnforcer;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
-import com.github.fabriciofx.cactoos.cache.policy.MaxSizePolicy;
+import com.github.fabriciofx.cactoos.cache.policy.MaxCountPolicy;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
 import org.llorllale.cactoos.matchers.HasValue;
@@ -113,7 +113,7 @@ final class InstrumentedTest {
             new Policed<>(
                 new CacheOf<>(),
                 new ImmediateEnforcer<>(),
-                new MaxSizePolicy<>(1)
+                new MaxCountPolicy<>(1)
             )
         );
         cache.store().save(

@@ -13,22 +13,22 @@ import org.cactoos.Bytes;
 import org.cactoos.list.ListOf;
 
 /**
- * MaxSizePolicy.
+ * MaxCountPolicy.
  * @param <K> the key value type
  * @param <V> the entry value type
- * @since 0.0.1
+ * @since 0.0.12
  */
-public final class MaxSizePolicy<K extends Bytes, V extends Bytes>
+public final class MaxCountPolicy<K extends Bytes, V extends Bytes>
     implements Policy<K, V> {
     /**
-     * Max size.
+     * Max count.
      */
     private final int max;
 
     /**
      * Ctor.
      */
-    public MaxSizePolicy() {
+    public MaxCountPolicy() {
         this(Integer.MAX_VALUE);
     }
 
@@ -37,7 +37,7 @@ public final class MaxSizePolicy<K extends Bytes, V extends Bytes>
      *
      * @param max Maximum size
      */
-    public MaxSizePolicy(final int max) {
+    public MaxCountPolicy(final int max) {
         this.max = max;
     }
 
