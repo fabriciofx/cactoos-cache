@@ -23,39 +23,16 @@ import org.cactoos.Bytes;
  */
 public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
     implements Policy<K, V> {
-    /**
-     * Expiration timestamp.
-     */
-    private final LocalDateTime timestamp;
-
-    /**
-     * Ctor.
-     */
-    public ExpiredPolicy() {
-        this(LocalDateTime.now());
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param timestamp The expiration timestamp
-     */
-    public ExpiredPolicy(final LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
     @Override
     public void apply(final Cache<K, V> cache) {
         final List<Entry<K, V>> evicted = cache.evicted();
         final Store<K, V> store = cache.store();
+        final LocalDateTime now = LocalDateTime.now();
         for (final Key<K> key : store.keys()) {
             final Entry<K, V> entry = store.retrieve(key);
             final List<LocalDateTime> expiration = entry.metadata()
                 .value("expiration", new TypeOf<>() { });
-            if (
-                !expiration.isEmpty()
-                    && expiration.get(0).isBefore(this.timestamp)
-            ) {
+            if (!expiration.isEmpty() && expiration.get(0).isBefore(now)) {
                 evicted.add(store.delete(key));
             }
         }
