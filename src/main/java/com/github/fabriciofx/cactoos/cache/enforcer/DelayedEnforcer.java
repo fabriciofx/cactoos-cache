@@ -86,18 +86,17 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
         final List<Policy<K, V>> policies
     ) {
         if (this.cached.isEmpty()) {
-            final List<Entry<K, V>> evicted = cache.evicted();
             this.executor.value().scheduleWithFixedDelay(
                 () -> {
                     for (final Policy<K, V> policy : policies) {
-                        evicted.addAll(policy.apply(cache.store()));
+                        policy.apply(cache);
                     }
                 },
                 0L,
                 this.delay,
                 this.unit
             );
-            this.cached.add(evicted);
+            this.cached.add(cache.evicted());
         }
         return this.cached.get(0);
     }

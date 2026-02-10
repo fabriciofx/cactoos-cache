@@ -25,10 +25,9 @@ public final class ImmediateEnforcer<K extends Bytes, V extends Bytes>
         final Cache<K, V> cache,
         final List<Policy<K, V>> policies
     ) {
-        final List<Entry<K, V>> evicted = cache.evicted();
         for (final Policy<K, V> policy : policies) {
-            evicted.addAll(policy.apply(cache.store()));
+            policy.apply(cache);
         }
-        return evicted;
+        return cache.evicted();
     }
 }

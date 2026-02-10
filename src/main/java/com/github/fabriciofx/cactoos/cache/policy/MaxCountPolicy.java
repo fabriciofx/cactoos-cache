@@ -4,13 +4,13 @@
  */
 package com.github.fabriciofx.cactoos.cache.policy;
 
+import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Entries;
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
 import java.util.List;
 import org.cactoos.Bytes;
-import org.cactoos.list.ListOf;
 
 /**
  * MaxCountPolicy.
@@ -42,8 +42,9 @@ public final class MaxCountPolicy<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public List<Entry<K, V>> apply(final Store<K, V> store) {
-        final List<Entry<K, V>> evicted = new ListOf<>();
+    public List<Entry<K, V>> apply(final Cache<K, V> cache) {
+        final List<Entry<K, V>> evicted = cache.evicted();
+        final Store<K, V> store = cache.store();
         final Entries<K, V> entries = store.entries();
         while (entries.count() > this.max) {
             evicted.add(store.delete(store.keys().iterator().next()));

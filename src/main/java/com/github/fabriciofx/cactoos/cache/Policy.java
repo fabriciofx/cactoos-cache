@@ -15,5 +15,5 @@ import org.cactoos.Bytes;
  */
 @FunctionalInterface
 public interface Policy<K extends Bytes, V extends Bytes> {
-    List<Entry<K, V>> apply(Store<K, V> store);
+    List<Entry<K, V>> apply(Cache<K, V> cache);
 }

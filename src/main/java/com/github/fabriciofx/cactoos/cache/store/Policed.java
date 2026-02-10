@@ -21,6 +21,7 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.9
  */
+@SuppressWarnings("PMD.UnnecessaryLocalRule")
 public final class Policed<K extends Bytes, V extends Bytes>
     implements Store<K, V> {
     /**
@@ -62,8 +63,9 @@ public final class Policed<K extends Bytes, V extends Bytes>
 
     @Override
     public Entry<K, V> save(final Key<K> key, final Entry<K, V> entry) {
+        final Entry<K, V> replaced = this.cache.store().save(key, entry);
         this.enforcer.apply(this.cache, this.policies);
-        return this.cache.store().save(key, entry);
+        return replaced;
     }
 
     @Override

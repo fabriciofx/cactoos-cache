@@ -105,7 +105,7 @@ public final class Policed<K extends Bytes, V extends Bytes>
 
     @Override
     public List<Entry<K, V>> evicted() {
-        return this.enforcer.apply(this.origin, this.policies);
+        return this.origin.evicted();
     }
 
     @Override

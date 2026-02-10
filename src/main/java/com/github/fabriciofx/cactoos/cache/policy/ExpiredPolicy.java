@@ -4,6 +4,7 @@
  */
 package com.github.fabriciofx.cactoos.cache.policy;
 
+import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Policy;
@@ -12,7 +13,6 @@ import com.github.fabriciofx.cactoos.cache.metadata.TypeOf;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.cactoos.Bytes;
-import org.cactoos.list.ListOf;
 
 /**
  * ExpiredPolicy.
@@ -45,8 +45,9 @@ public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public List<Entry<K, V>> apply(final Store<K, V> store) {
-        final List<Entry<K, V>> evicted = new ListOf<>();
+    public List<Entry<K, V>> apply(final Cache<K, V> cache) {
+        final List<Entry<K, V>> evicted = cache.evicted();
+        final Store<K, V> store = cache.store();
         for (final Key<K> key : store.keys()) {
             final Entry<K, V> entry = store.retrieve(key);
             final List<LocalDateTime> expiration = entry.metadata()
