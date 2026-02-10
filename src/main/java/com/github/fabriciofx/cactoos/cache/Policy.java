@@ -4,7 +4,6 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
-import java.util.List;
 import org.cactoos.Bytes;
 
 /**
@@ -15,5 +14,5 @@ import org.cactoos.Bytes;
  */
 @FunctionalInterface
 public interface Policy<K extends Bytes, V extends Bytes> {
-    List<Entry<K, V>> apply(Cache<K, V> cache);
+    void apply(Cache<K, V> cache);
 }

@@ -6,7 +6,6 @@ package com.github.fabriciofx.cactoos.cache.enforcer;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Enforcer;
-import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -14,7 +13,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.Bytes;
 import org.cactoos.list.ListOf;
-import org.cactoos.scalar.Unchecked;
 
 /**
  * Delayed enforcer of policies.
@@ -28,12 +26,7 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
     /**
      * Executor.
      */
-    private final Unchecked<ScheduledExecutorService> executor;
-
-    /**
-     * Cached evicted list.
-     */
-    private final List<List<Entry<K, V>>> cached;
+    private final List<ScheduledExecutorService> cached;
 
     /**
      * Delay between executions.
@@ -55,38 +48,20 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
         final long delay,
         final TimeUnit unit
     ) {
-        this(
-            new Unchecked<>(Executors::newSingleThreadScheduledExecutor),
-            delay,
-            unit
-        );
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param executor Executor service to run the enforcer
-     * @param delay Delay between executions
-     * @param unit Time unit
-     */
-    public DelayedEnforcer(
-        final Unchecked<ScheduledExecutorService> executor,
-        final long delay,
-        final TimeUnit unit
-    ) {
-        this.executor = executor;
         this.cached = new ListOf<>();
         this.delay = delay;
         this.unit = unit;
     }
 
     @Override
-    public List<Entry<K, V>> apply(
+    public void apply(
         final Cache<K, V> cache,
         final List<Policy<K, V>> policies
     ) {
         if (this.cached.isEmpty()) {
-            this.executor.value().scheduleWithFixedDelay(
+            final ScheduledExecutorService executor = Executors
+                .newSingleThreadScheduledExecutor();
+            executor.scheduleWithFixedDelay(
                 () -> {
                     for (final Policy<K, V> policy : policies) {
                         policy.apply(cache);
@@ -96,13 +71,14 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
                 this.delay,
                 this.unit
             );
-            this.cached.add(cache.evicted());
+            this.cached.add(executor);
         }
-        return this.cached.get(0);
     }
 
     @Override
     public void close() {
-        this.executor.value().shutdown();
+        if (!this.cached.isEmpty()) {
+            this.cached.get(0).shutdown();
+        }
     }
 }

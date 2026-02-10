@@ -42,13 +42,12 @@ public final class MaxCountPolicy<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public List<Entry<K, V>> apply(final Cache<K, V> cache) {
+    public void apply(final Cache<K, V> cache) {
         final List<Entry<K, V>> evicted = cache.evicted();
         final Store<K, V> store = cache.store();
         final Entries<K, V> entries = store.entries();
         while (entries.count() > this.max) {
             evicted.add(store.delete(store.keys().iterator().next()));
         }
-        return evicted;
     }
 }

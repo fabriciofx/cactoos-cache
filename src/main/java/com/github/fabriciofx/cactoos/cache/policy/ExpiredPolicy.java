@@ -45,7 +45,7 @@ public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public List<Entry<K, V>> apply(final Cache<K, V> cache) {
+    public void apply(final Cache<K, V> cache) {
         final List<Entry<K, V>> evicted = cache.evicted();
         final Store<K, V> store = cache.store();
         for (final Key<K> key : store.keys()) {
@@ -59,6 +59,5 @@ public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
                 evicted.add(store.delete(key));
             }
         }
-        return evicted;
     }
 }

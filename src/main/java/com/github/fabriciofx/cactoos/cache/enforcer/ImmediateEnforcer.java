@@ -6,7 +6,6 @@ package com.github.fabriciofx.cactoos.cache.enforcer;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Enforcer;
-import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import java.util.List;
 import org.cactoos.Bytes;
@@ -21,13 +20,12 @@ import org.cactoos.Bytes;
 public final class ImmediateEnforcer<K extends Bytes, V extends Bytes>
     implements Enforcer<K, V> {
     @Override
-    public List<Entry<K, V>> apply(
+    public void apply(
         final Cache<K, V> cache,
         final List<Policy<K, V>> policies
     ) {
         for (final Policy<K, V> policy : policies) {
             policy.apply(cache);
         }
-        return cache.evicted();
     }
 }
