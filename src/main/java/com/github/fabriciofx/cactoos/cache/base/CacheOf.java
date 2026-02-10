@@ -28,6 +28,11 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
     private final Store<K, V> str;
 
     /**
+     * Statistics.
+     */
+    private final Statistics stats;
+
+    /**
      * Evicted.
      */
     private final List<Entry<K, V>> removed;
@@ -44,19 +49,31 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
      * @param store A store
      */
     public CacheOf(final Store<K, V> store) {
-        this(store, new ListOf<>());
+        this(store, new StatisticsOf(), new ListOf<>());
     }
 
     /**
      * Ctor.
      * @param store A store
+     * @param statistics Statistics
+     */
+    public CacheOf(final Store<K, V> store, final Statistics statistics) {
+        this(store, statistics, new ListOf<>());
+    }
+
+    /**
+     * Ctor.
+     * @param store A store
+     * @param statistics Statistics
      * @param evicted The evicted entries
      */
     public CacheOf(
         final Store<K, V> store,
+        final Statistics statistics,
         final List<Entry<K, V>> evicted
     ) {
         this.str = store;
+        this.stats = statistics;
         this.removed = evicted;
     }
 
@@ -67,7 +84,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
 
     @Override
     public Statistics statistics() {
-        return new StatisticsOf();
+        return this.stats;
     }
 
     @Override
