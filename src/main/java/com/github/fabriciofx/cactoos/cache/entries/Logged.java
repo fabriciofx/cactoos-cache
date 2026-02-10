@@ -83,6 +83,9 @@ public final class Logged<K extends Bytes, V extends Bytes>
                         if (lvl == null) {
                             Logger parent = logger;
                             while (lvl == null) {
+                                if (parent.getParent() == null) {
+                                    break;
+                                }
                                 parent = parent.getParent();
                                 lvl = parent.getLevel();
                             }
