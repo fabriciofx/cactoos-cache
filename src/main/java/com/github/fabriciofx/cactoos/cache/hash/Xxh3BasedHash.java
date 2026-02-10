@@ -63,9 +63,9 @@ public final class Xxh3BasedHash implements Hash<Long> {
     private final Bytes bytes;
 
     /**
-     * Cached hash.
+     * Hash only once.
      */
-    private final List<Long> cached;
+    private final List<Long> once;
 
     /**
      * Ctor.
@@ -73,13 +73,13 @@ public final class Xxh3BasedHash implements Hash<Long> {
      * @param bytes Bytes
      */
     public Xxh3BasedHash(final Bytes bytes) {
-        this.cached = new ListOf<>();
+        this.once = new ListOf<>();
         this.bytes = bytes;
     }
 
     @Override
     public Long value() {
-        if (this.cached.isEmpty()) {
+        if (this.once.isEmpty()) {
             final byte[] data = new UncheckedBytes(this.bytes).asBytes();
             final int len = data.length;
             long hash = len * Xxh3BasedHash.PRIME1;
@@ -117,9 +117,9 @@ public final class Xxh3BasedHash implements Hash<Long> {
                 last ^ Xxh3BasedHash.SECRET[7],
                 Xxh3BasedHash.PRIME4
             );
-            this.cached.add(avalanche(hash));
+            this.once.add(avalanche(hash));
         }
-        return this.cached.get(0);
+        return this.once.get(0);
     }
 
     @Override

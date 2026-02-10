@@ -38,9 +38,9 @@ public final class Murmur3Hash implements Hash<long[]> {
     };
 
     /**
-     * Cached hash.
+     * Hash only once.
      */
-    private final List<long[]> cached;
+    private final List<long[]> once;
 
     /**
      * Bytes.
@@ -68,7 +68,7 @@ public final class Murmur3Hash implements Hash<long[]> {
      * @param seed The seed
      */
     public Murmur3Hash(final Bytes bytes, final int seed) {
-        this.cached = new ListOf<>();
+        this.once = new ListOf<>();
         this.bytes = bytes;
         this.seed = seed;
     }
@@ -76,7 +76,7 @@ public final class Murmur3Hash implements Hash<long[]> {
     @SuppressWarnings("fallthrough")
     @Override
     public long[] value() {
-        if (this.cached.isEmpty()) {
+        if (this.once.isEmpty()) {
             final byte[] data = new UncheckedBytes(this.bytes).asBytes();
             final int length = data.length;
             final int blocks = length >> 4;
@@ -158,9 +158,9 @@ public final class Murmur3Hash implements Hash<long[]> {
             hash[1] = fmix(hash[1]);
             hash[0] += hash[1];
             hash[1] += hash[0];
-            this.cached.add(hash);
+            this.once.add(hash);
         }
-        return this.cached.get(0);
+        return this.once.get(0);
     }
 
     @Override
