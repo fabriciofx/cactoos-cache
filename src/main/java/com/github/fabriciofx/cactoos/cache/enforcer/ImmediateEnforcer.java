@@ -24,8 +24,6 @@ public final class ImmediateEnforcer<K extends Bytes, V extends Bytes>
         final Cache<K, V> cache,
         final List<Policy<K, V>> policies
     ) {
-        for (final Policy<K, V> policy : policies) {
-            policy.apply(cache);
-        }
+        policies.forEach(policy -> policy.apply(cache));
     }
 }

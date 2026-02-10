@@ -91,11 +91,7 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
     ) {
         if (this.once.isEmpty()) {
             this.executor.value().scheduleWithFixedDelay(
-                () -> {
-                    for (final Policy<K, V> policy : policies) {
-                        policy.apply(cache);
-                    }
-                },
+                () -> policies.forEach(policy -> policy.apply(cache)),
                 0L,
                 this.delay,
                 this.unit
