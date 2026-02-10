@@ -163,9 +163,9 @@ public final class Logged<K extends Bytes, V extends Bytes>
                     key.hash(),
                     new Unchecked<>(
                         new Ternary<>(
-                            entry != null,
+                            entry.valid(),
                             () -> entry.value().toString(),
-                            () -> "(null)"
+                            () -> "(invalid)"
                         )
                     ).value()
                 )
