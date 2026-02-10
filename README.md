@@ -182,11 +182,11 @@ enable it, just compose the cache with the `Policed` decorator and pass the
 policies that the enforcer will execute, as in the example below:
 
 ```java
-// Create a cache with Expired and MaxSize policies
+// Create a cache with Expired and MaxCount policies
 final Cache<Word, Synonyms> cache = new Policed<>(
     new CacheOf<>(),
     new ExpiredPolicy<>(),
-    new MaxSizePolicy<>()
+    new MaxCountPolicy<>()
 );
 
 // Normal cache usage
@@ -197,13 +197,16 @@ cache, applying the policies to each entry every **500 milliseconds**. This time
 can be changed too; just create a new `DelayedEnforcer` with the desired time:
 
 ```java
+// Check the cache every 1 second, applying Expired and MaxCount policies
 final Cache<Word, Synonyms> cache = new Policed<>(
     new CacheOf<>(),
-    new DelayedEnforcer<>(1L, TimeUnit.SECONDS), // Execute at each 1 second
-    new ExpiredPolicy<>(),
-    new MaxSizePolicy<>()
+    new DelayedPolicies<>(
+        1L,
+        TimeUnit.SECONDS,
+        new ExpiredPolicy<>(),
+        new MaxCountPolicy<>()
+    )
 );
-
 // Normal cache usage
 ```
 
@@ -211,17 +214,17 @@ final Cache<Word, Synonyms> cache = new Policed<>(
 
 `Cactoos-Cache` has the following policies:
 
-- `MaxSizePolicy`: remove entries when reach a max number
+- `MaxCountPolicy`: remove entries when reach a max number
 - `ExpiredPolicy`: remove entries when reach an expired lifetime
 
-To use `MaxSizePolicy` just use the policy using the max number of entries
+To use `MaxCountPolicy` just use the policy using the max number of entries
 (the default is `Integer.MAX_VALUE`), as the example below:
 
 ```java
 // Create a cache with max 2 entries
 final Cache<Word, Synonyms> cache = new Policed<>(
     new CacheOf<>(),
-    new MaxSizePolicy<>(2)
+    new MaxCountPolicy<>(2)
 );
 
 // Store
@@ -337,7 +340,7 @@ final Cache<Word, Synonyms> cache = new Instrumented<>(
         new Policed<>(
             new CacheOf<>(),
             new ExpiredPolicy<>(),
-            new MaxSizePolicy<>()
+            new MaxCountPolicy<>()
         ),
         "cache",
         logger
