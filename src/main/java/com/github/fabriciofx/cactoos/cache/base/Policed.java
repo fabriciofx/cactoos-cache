@@ -5,13 +5,12 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
-import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Evicted;
 import com.github.fabriciofx.cactoos.cache.Policies;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.policies.DelayedPolicies;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.Bytes;
 
@@ -72,7 +71,8 @@ public final class Policed<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public List<Entry<K, V>> evicted() {
+    public Evicted<K, V> evicted() {
+        this.policies.apply(this.origin);
         return this.origin.evicted();
     }
 

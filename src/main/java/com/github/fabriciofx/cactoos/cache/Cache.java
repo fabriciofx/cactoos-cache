@@ -4,7 +4,6 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
-import java.util.List;
 import org.cactoos.Bytes;
 
 /**
@@ -30,7 +29,7 @@ public interface Cache<K extends Bytes, V extends Bytes> {
      * Evicted entries.
      * @return The evicted entries
      */
-    List<Entry<K, V>> evicted();
+    Evicted<K, V> evicted();
 
     /**
      * Clear the cache.

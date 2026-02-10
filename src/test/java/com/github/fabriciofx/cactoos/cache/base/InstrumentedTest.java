@@ -18,6 +18,7 @@ import org.llorllale.cactoos.matchers.HasValue;
 
 /**
  * Instrumented tests.
+ *
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
@@ -109,12 +110,12 @@ final class InstrumentedTest {
 
     @Test
     void checkEvictions() {
-        final Cache<Word, Synonyms> cache = new Instrumented<>(
-            new Policed<>(
-                new CacheOf<>(),
-                new ImmediatePolicies<>(
-                    new MaxCountPolicy<>(1)
-                )
+        final Cache<Word, Synonyms> cache = new Policed<>(
+            new Instrumented<>(
+                new CacheOf<>()
+            ),
+            new ImmediatePolicies<>(
+                new MaxCountPolicy<>(1)
             )
         );
         cache.store().save(

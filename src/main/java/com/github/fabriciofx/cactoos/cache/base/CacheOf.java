@@ -5,14 +5,20 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
-import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Evicted;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
+import com.github.fabriciofx.cactoos.cache.evicted.EvictedOf;
+import com.github.fabriciofx.cactoos.cache.statistic.Evictions;
+import com.github.fabriciofx.cactoos.cache.statistic.Hits;
+import com.github.fabriciofx.cactoos.cache.statistic.Insertions;
+import com.github.fabriciofx.cactoos.cache.statistic.Invalidations;
+import com.github.fabriciofx.cactoos.cache.statistic.Lookups;
+import com.github.fabriciofx.cactoos.cache.statistic.Misses;
+import com.github.fabriciofx.cactoos.cache.statistic.Replacements;
 import com.github.fabriciofx.cactoos.cache.statistics.StatisticsOf;
 import com.github.fabriciofx.cactoos.cache.store.StoreOf;
-import java.util.List;
 import org.cactoos.Bytes;
-import org.cactoos.list.ListOf;
 
 /**
  * CacheOf.
@@ -35,7 +41,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
     /**
      * Evicted.
      */
-    private final List<Entry<K, V>> removed;
+    private final Evicted<K, V> removed;
 
     /**
      * Ctor.
@@ -49,7 +55,18 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
      * @param store A store
      */
     public CacheOf(final Store<K, V> store) {
-        this(store, new StatisticsOf(), new ListOf<>());
+        this(
+            store,
+            new StatisticsOf(
+                new Hits(),
+                new Misses(),
+                new Lookups(),
+                new Invalidations(),
+                new Evictions(),
+                new Insertions(),
+                new Replacements()
+            )
+        );
     }
 
     /**
@@ -58,7 +75,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
      * @param statistics Statistics
      */
     public CacheOf(final Store<K, V> store, final Statistics statistics) {
-        this(store, statistics, new ListOf<>());
+        this(store, statistics, new EvictedOf<>());
     }
 
     /**
@@ -70,7 +87,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
     public CacheOf(
         final Store<K, V> store,
         final Statistics statistics,
-        final List<Entry<K, V>> evicted
+        final Evicted<K, V> evicted
     ) {
         this.str = store;
         this.stats = statistics;
@@ -88,7 +105,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public List<Entry<K, V>> evicted() {
+    public Evicted<K, V> evicted() {
         return this.removed;
     }
 

@@ -21,7 +21,7 @@ public final class Synonyms implements Bytes {
 
     /**
      * Ctor.
-     * @param words A list of words
+     * @param words A evicted of words
      */
     public Synonyms(final String... words) {
         this(new ListOf<>(words).stream().map(Word::new).toList());
@@ -29,7 +29,7 @@ public final class Synonyms implements Bytes {
 
     /**
      * Ctor.
-     * @param words A list of words
+     * @param words A evicted of words
      */
     public Synonyms(final List<Word> words) {
         this.words = words;

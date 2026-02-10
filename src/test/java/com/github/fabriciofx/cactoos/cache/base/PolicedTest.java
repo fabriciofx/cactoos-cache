@@ -53,7 +53,7 @@ final class PolicedTest {
         );
         new Assertion<>(
             "must check whether the eviction is the expired one",
-            new Unchecked<>(() -> cache.evicted().get(0).key()),
+            new Unchecked<>(() -> cache.evicted().entry(0).key()),
             new HasValue<>(new KeyOf<>(new Word("a")))
         ).affirm();
     }

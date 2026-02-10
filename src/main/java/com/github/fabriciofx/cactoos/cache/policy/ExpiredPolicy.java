@@ -6,6 +6,7 @@ package com.github.fabriciofx.cactoos.cache.policy;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Evicted;
 import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
@@ -25,7 +26,7 @@ public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
     implements Policy<K, V> {
     @Override
     public void apply(final Cache<K, V> cache) {
-        final List<Entry<K, V>> evicted = cache.evicted();
+        final Evicted<K, V> evicted = cache.evicted();
         final Store<K, V> store = cache.store();
         final LocalDateTime now = LocalDateTime.now();
         for (final Key<K> key : store.keys()) {

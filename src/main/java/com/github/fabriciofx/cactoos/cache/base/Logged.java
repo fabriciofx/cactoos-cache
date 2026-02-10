@@ -5,10 +5,9 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
-import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Evicted;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cactoos.Bytes;
@@ -148,15 +147,15 @@ public final class Logged<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public List<Entry<K, V>> evicted() {
-        final List<Entry<K, V>> evicted = this.origin.evicted();
+    public Evicted<K, V> evicted() {
+        final Evicted<K, V> evicted = this.origin.evicted();
         this.logger.log(
             this.level.value(),
             new UncheckedText(
                 new FormattedText(
                     "[%s] Cache evicted %d entries",
                     this.from,
-                    evicted.size()
+                    evicted.count()
                 )
             ).asString()
         );

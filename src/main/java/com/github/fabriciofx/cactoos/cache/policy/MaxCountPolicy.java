@@ -6,10 +6,9 @@ package com.github.fabriciofx.cactoos.cache.policy;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Entries;
-import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Evicted;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
-import java.util.List;
 import org.cactoos.Bytes;
 
 /**
@@ -43,7 +42,7 @@ public final class MaxCountPolicy<K extends Bytes, V extends Bytes>
 
     @Override
     public void apply(final Cache<K, V> cache) {
-        final List<Entry<K, V>> evicted = cache.evicted();
+        final Evicted<K, V> evicted = cache.evicted();
         final Store<K, V> store = cache.store();
         final Entries<K, V> entries = store.entries();
         while (entries.count() > this.max) {

@@ -32,11 +32,11 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     * @param cache The cache
+     * @param store The store
      * @param statistics The statistics
      */
-    public Instrumented(final Store<K, V> cache, final Statistics statistics) {
-        this.origin = cache;
+    public Instrumented(final Store<K, V> store, final Statistics statistics) {
+        this.origin = store;
         this.stats = statistics;
     }
 
