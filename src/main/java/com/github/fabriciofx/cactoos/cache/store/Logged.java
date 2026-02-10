@@ -115,6 +115,12 @@ public final class Logged<K extends Bytes, V extends Bytes>
     @Override
     public Entry<K, V> retrieve(final Key<K> key) {
         final Entry<K, V> entry = this.origin.retrieve(key);
+        final String text;
+        if  (entry.valid()) {
+            text = entry.value().toString();
+        } else {
+            text = "invalid";
+        }
         this.logger.log(
             this.level.value(),
             new UncheckedText(
@@ -122,7 +128,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
                     "[%s] Retrieving from cache with key '%s' and value '%s'",
                     this.from,
                     key.hash(),
-                    entry.value().toString()
+                    text
                 )
             ).asString()
         );
