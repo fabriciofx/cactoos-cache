@@ -5,10 +5,9 @@
 package com.github.fabriciofx.cactoos.cache.hash;
 
 import com.github.fabriciofx.cactoos.cache.Hash;
-import java.util.List;
 import org.cactoos.Bytes;
-import org.cactoos.bytes.UncheckedBytes;
-import org.cactoos.list.ListOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * Xxh3BasedHash.
@@ -58,14 +57,9 @@ public final class Xxh3BasedHash implements Hash<Long> {
     };
 
     /**
-     * Bytes.
-     */
-    private final Bytes bytes;
-
-    /**
      * Hash only once.
      */
-    private final List<Long> once;
+    private final Unchecked<Long> once;
 
     /**
      * Ctor.
@@ -73,63 +67,86 @@ public final class Xxh3BasedHash implements Hash<Long> {
      * @param bytes Bytes
      */
     public Xxh3BasedHash(final Bytes bytes) {
-        this.once = new ListOf<>();
-        this.bytes = bytes;
+        this.once = new Unchecked<>(
+            new Sticky<>(
+                () -> {
+                    final byte[] data = bytes.asBytes();
+                    final int len = data.length;
+                    long hash = len * Xxh3BasedHash.PRIME1;
+                    int idx = 0;
+                    while (idx + 32 <= len) {
+                        final long first = Xxh3BasedHash.littleEndian(data, idx)
+                            ^ Xxh3BasedHash.SECRET[0];
+                        final long second = Xxh3BasedHash.littleEndian(
+                            data,
+                            idx + 8
+                        ) ^ Xxh3BasedHash.SECRET[1];
+                        final long third = Xxh3BasedHash.littleEndian(
+                            data,
+                            idx + 16
+                        ) ^ Xxh3BasedHash.SECRET[2];
+                        final long fourth = Xxh3BasedHash.littleEndian(
+                            data,
+                            idx + 24
+                        ) ^ Xxh3BasedHash.SECRET[3];
+                        hash += Xxh3BasedHash.mulFold(
+                            first,
+                            Xxh3BasedHash.PRIME1
+                        );
+                        hash ^= Xxh3BasedHash.mulFold(
+                            second,
+                            Xxh3BasedHash.PRIME2
+                        );
+                        hash += Xxh3BasedHash.mulFold(
+                            third,
+                            Xxh3BasedHash.PRIME3
+                        );
+                        hash ^= Xxh3BasedHash.mulFold(
+                            fourth,
+                            Xxh3BasedHash.PRIME4
+                        );
+                        hash = Long.rotateLeft(hash, 27) * Xxh3BasedHash.PRIME1
+                            + Xxh3BasedHash.PRIME4;
+                        idx += 32;
+                    }
+                    while (idx + 8 <= len) {
+                        final long value = Xxh3BasedHash.littleEndian(data, idx)
+                            ^ Xxh3BasedHash.SECRET[(idx >> 3) & 7];
+                        hash ^= Xxh3BasedHash.mulFold(
+                            value,
+                            Xxh3BasedHash.PRIME2
+                        );
+                        hash = Long.rotateLeft(hash, 23) * Xxh3BasedHash.PRIME3
+                            + Xxh3BasedHash.PRIME1;
+                        idx += 8;
+                    }
+                    long last = 0;
+                    for (int count = 0; idx < len; ++idx, count += 8) {
+                        last |= (long) (data[idx] & 0xFF) << count;
+                    }
+                    hash ^= mulFold(
+                        last ^ Xxh3BasedHash.SECRET[7],
+                        Xxh3BasedHash.PRIME4
+                    );
+                    return Xxh3BasedHash.avalanche(hash);
+                }
+            )
+        );
     }
 
     @Override
     public Long value() {
-        if (this.once.isEmpty()) {
-            final byte[] data = new UncheckedBytes(this.bytes).asBytes();
-            final int len = data.length;
-            long hash = len * Xxh3BasedHash.PRIME1;
-            int idx = 0;
-            while (idx + 32 <= len) {
-                final long first = littleEndian(data, idx)
-                    ^ Xxh3BasedHash.SECRET[0];
-                final long second = littleEndian(data, idx + 8)
-                    ^ Xxh3BasedHash.SECRET[1];
-                final long third = littleEndian(data, idx + 16)
-                    ^ Xxh3BasedHash.SECRET[2];
-                final long fourth = littleEndian(data, idx + 24)
-                    ^ Xxh3BasedHash.SECRET[3];
-                hash += mulFold(first, Xxh3BasedHash.PRIME1);
-                hash ^= mulFold(second, Xxh3BasedHash.PRIME2);
-                hash += mulFold(third, Xxh3BasedHash.PRIME3);
-                hash ^= mulFold(fourth, Xxh3BasedHash.PRIME4);
-                hash = Long.rotateLeft(hash, 27) * Xxh3BasedHash.PRIME1
-                    + Xxh3BasedHash.PRIME4;
-                idx += 32;
-            }
-            while (idx + 8 <= len) {
-                final long value = littleEndian(data, idx)
-                    ^ Xxh3BasedHash.SECRET[(idx >> 3) & 7];
-                hash ^= mulFold(value, Xxh3BasedHash.PRIME2);
-                hash = Long.rotateLeft(hash, 23) * Xxh3BasedHash.PRIME3
-                    + Xxh3BasedHash.PRIME1;
-                idx += 8;
-            }
-            long last = 0;
-            for (int count = 0; idx < len; ++idx, count += 8) {
-                last |= (long) (data[idx] & 0xFF) << count;
-            }
-            hash ^= mulFold(
-                last ^ Xxh3BasedHash.SECRET[7],
-                Xxh3BasedHash.PRIME4
-            );
-            this.once.add(avalanche(hash));
-        }
-        return this.once.get(0);
+        return this.once.value();
     }
 
     @Override
     public String asString() {
-        return Long.toHexString(this.value());
+        return Long.toHexString(this.once.value());
     }
 
     @Override
     public int asInt() {
-        return this.value().hashCode();
+        return this.once.value().hashCode();
     }
 
     private static long mulFold(final long first, final long second) {

@@ -5,10 +5,9 @@
 package com.github.fabriciofx.cactoos.cache.hash;
 
 import com.github.fabriciofx.cactoos.cache.Hash;
-import java.util.List;
 import org.cactoos.Bytes;
-import org.cactoos.bytes.UncheckedBytes;
-import org.cactoos.list.ListOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * Murmur3Hash.
@@ -24,8 +23,7 @@ import org.cactoos.list.ListOf;
 @SuppressWarnings(
     {
         "PMD.UnnecessaryCast",
-        "PMD.ImplicitSwitchFallThrough",
-        "PMD.NcssCount"
+        "PMD.ImplicitSwitchFallThrough"
     }
 )
 public final class Murmur3Hash implements Hash<long[]> {
@@ -40,17 +38,7 @@ public final class Murmur3Hash implements Hash<long[]> {
     /**
      * Hash only once.
      */
-    private final List<long[]> once;
-
-    /**
-     * Bytes.
-     */
-    private final Bytes bytes;
-
-    /**
-     * Seed.
-     */
-    private final int seed;
+    private final Unchecked<long[]> once;
 
     /**
      * Ctor.
@@ -67,105 +55,106 @@ public final class Murmur3Hash implements Hash<long[]> {
      * @param bytes Bytes
      * @param seed The seed
      */
+    @SuppressWarnings("fallthrough")
     public Murmur3Hash(final Bytes bytes, final int seed) {
-        this.once = new ListOf<>();
-        this.bytes = bytes;
-        this.seed = seed;
+        this.once = new Unchecked<>(
+            new Sticky<>(
+                () -> {
+                    final byte[] data = bytes.asBytes();
+                    final int length = data.length;
+                    final int blocks = length >> 4;
+                    final long first = 0x87c37b91114253d5L;
+                    final long second = 0x4cf5ad432745937fL;
+                    final long[] hash = new long[2];
+                    hash[0] = seed & 0xffffffffL;
+                    hash[1] = seed & 0xffffffffL;
+                    for (int num = 0; num < blocks; ++num) {
+                        final int index = num << 4;
+                        long keia = Murmur3Hash.littleEndian(data, index);
+                        long keib = Murmur3Hash.littleEndian(data, index + 8);
+                        keia *= first;
+                        keia = Long.rotateLeft(keia, 31);
+                        keia *= second;
+                        hash[0] ^= keia;
+                        hash[0] = Long.rotateLeft(hash[0], 27);
+                        hash[0] += hash[1];
+                        hash[0] = hash[0] * 5 + 0x52dce729;
+                        keib *= second;
+                        keib = Long.rotateLeft(keib, 33);
+                        keib *= first;
+                        hash[1] ^= keib;
+                        hash[1] = Long.rotateLeft(hash[1], 31);
+                        hash[1] += hash[0];
+                        hash[1] = hash[1] * 5 + 0x38495ab5;
+                    }
+                    long one = 0;
+                    long two = 0;
+                    final int tail = blocks << 4;
+                    switch (length & 15) {
+                        case 15:
+                            two ^= ((long) data[tail + 14] & 0xff) << 48;
+                        case 14:
+                            two ^= ((long) data[tail + 13] & 0xff) << 40;
+                        case 13:
+                            two ^= ((long) data[tail + 12] & 0xff) << 32;
+                        case 12:
+                            two ^= ((long) data[tail + 11] & 0xff) << 24;
+                        case 11:
+                            two ^= ((long) data[tail + 10] & 0xff) << 16;
+                        case 10:
+                            two ^= ((long) data[tail + 9] & 0xff) << 8;
+                        case 9:
+                            two ^= ((long) data[tail + 8] & 0xff);
+                            two *= second;
+                            two = Long.rotateLeft(two, 33);
+                            two *= first;
+                            hash[1] ^= two;
+                        case 8:
+                            one ^= ((long) data[tail + 7] & 0xff) << 56;
+                        case 7:
+                            one ^= ((long) data[tail + 6] & 0xff) << 48;
+                        case 6:
+                            one ^= ((long) data[tail + 5] & 0xff) << 40;
+                        case 5:
+                            one ^= ((long) data[tail + 4] & 0xff) << 32;
+                        case 4:
+                            one ^= ((long) data[tail + 3] & 0xff) << 24;
+                        case 3:
+                            one ^= ((long) data[tail + 2] & 0xff) << 16;
+                        case 2:
+                            one ^= ((long) data[tail + 1] & 0xff) << 8;
+                        case 1:
+                            one ^= ((long) data[tail] & 0xff);
+                            one *= first;
+                            one = Long.rotateLeft(one, 31);
+                            one *= second;
+                            hash[0] ^= one;
+                            break;
+                        default:
+                            break;
+                    }
+                    hash[0] ^= length;
+                    hash[1] ^= length;
+                    hash[0] += hash[1];
+                    hash[1] += hash[0];
+                    hash[0] = Murmur3Hash.fmix(hash[0]);
+                    hash[1] = Murmur3Hash.fmix(hash[1]);
+                    hash[0] += hash[1];
+                    hash[1] += hash[0];
+                    return hash;
+                }
+            )
+        );
     }
 
-    @SuppressWarnings("fallthrough")
     @Override
     public long[] value() {
-        if (this.once.isEmpty()) {
-            final byte[] data = new UncheckedBytes(this.bytes).asBytes();
-            final int length = data.length;
-            final int blocks = length >> 4;
-            final long first = 0x87c37b91114253d5L;
-            final long second = 0x4cf5ad432745937fL;
-            final long[] hash = new long[2];
-            hash[0] = this.seed & 0xffffffffL;
-            hash[1] = this.seed & 0xffffffffL;
-            for (int num = 0; num < blocks; ++num) {
-                final int index = num << 4;
-                long keia = littleEndian(data, index);
-                long keib = littleEndian(data, index + 8);
-                keia *= first;
-                keia = Long.rotateLeft(keia, 31);
-                keia *= second;
-                hash[0] ^= keia;
-                hash[0] = Long.rotateLeft(hash[0], 27);
-                hash[0] += hash[1];
-                hash[0] = hash[0] * 5 + 0x52dce729;
-                keib *= second;
-                keib = Long.rotateLeft(keib, 33);
-                keib *= first;
-                hash[1] ^= keib;
-                hash[1] = Long.rotateLeft(hash[1], 31);
-                hash[1] += hash[0];
-                hash[1] = hash[1] * 5 + 0x38495ab5;
-            }
-            long one = 0;
-            long two = 0;
-            final int tail = blocks << 4;
-            switch (length & 15) {
-                case 15:
-                    two ^= ((long) data[tail + 14] & 0xff) << 48;
-                case 14:
-                    two ^= ((long) data[tail + 13] & 0xff) << 40;
-                case 13:
-                    two ^= ((long) data[tail + 12] & 0xff) << 32;
-                case 12:
-                    two ^= ((long) data[tail + 11] & 0xff) << 24;
-                case 11:
-                    two ^= ((long) data[tail + 10] & 0xff) << 16;
-                case 10:
-                    two ^= ((long) data[tail + 9] & 0xff) << 8;
-                case 9:
-                    two ^= ((long) data[tail + 8] & 0xff);
-                    two *= second;
-                    two = Long.rotateLeft(two, 33);
-                    two *= first;
-                    hash[1] ^= two;
-                case 8:
-                    one ^= ((long) data[tail + 7] & 0xff) << 56;
-                case 7:
-                    one ^= ((long) data[tail + 6] & 0xff) << 48;
-                case 6:
-                    one ^= ((long) data[tail + 5] & 0xff) << 40;
-                case 5:
-                    one ^= ((long) data[tail + 4] & 0xff) << 32;
-                case 4:
-                    one ^= ((long) data[tail + 3] & 0xff) << 24;
-                case 3:
-                    one ^= ((long) data[tail + 2] & 0xff) << 16;
-                case 2:
-                    one ^= ((long) data[tail + 1] & 0xff) << 8;
-                case 1:
-                    one ^= ((long) data[tail] & 0xff);
-                    one *= first;
-                    one = Long.rotateLeft(one, 31);
-                    one *= second;
-                    hash[0] ^= one;
-                    break;
-                default:
-                    break;
-            }
-            hash[0] ^= length;
-            hash[1] ^= length;
-            hash[0] += hash[1];
-            hash[1] += hash[0];
-            hash[0] = fmix(hash[0]);
-            hash[1] = fmix(hash[1]);
-            hash[0] += hash[1];
-            hash[1] += hash[0];
-            this.once.add(hash);
-        }
-        return this.once.get(0);
+        return this.once.value();
     }
 
     @Override
     public String asString() {
-        final long[] hash = this.value();
+        final long[] hash = this.once.value();
         final char[] hex = new char[32];
         for (int idx = 0; idx < 8; ++idx) {
             final int value = (int) (hash[0] >>> (idx * 8)) & 0xFF;
@@ -182,7 +171,7 @@ public final class Murmur3Hash implements Hash<long[]> {
 
     @Override
     public int asInt() {
-        final long[] hash = this.value();
+        final long[] hash = this.once.value();
         long mixed = hash[0] ^ hash[1];
         mixed ^= mixed >>> 33;
         mixed *= 0xff51afd7ed558ccdL;
