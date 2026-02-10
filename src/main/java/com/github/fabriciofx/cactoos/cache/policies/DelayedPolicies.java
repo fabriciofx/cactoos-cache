@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.cactoos.Bytes;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.Sticky;
@@ -24,6 +25,7 @@ import org.cactoos.scalar.Unchecked;
  * @since 0.0.13
  * @checkstyle ParameterNumberCheck (200 lines)
  */
+@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 public final class DelayedPolicies<K extends Bytes, V extends Bytes>
     implements Policies<K, V>, AutoCloseable {
     /**
@@ -34,7 +36,7 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
     /**
      * Execute executor only once.
      */
-    private final List<Unchecked<ScheduledExecutorService>> once;
+    private final AtomicBoolean once;
 
     /**
      * Delay between executions.
@@ -114,7 +116,7 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
         final Unchecked<ScheduledExecutorService> executor,
         final List<Policy<K, V>> items
     ) {
-        this.once = new ListOf<>();
+        this.once = new AtomicBoolean(false);
         this.delay = delay;
         this.unit = unit;
         this.executor = executor;
@@ -123,19 +125,23 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
 
     @Override
     public void apply(final Cache<K, V> cache) {
-        if (this.once.isEmpty()) {
+        if (this.once.compareAndSet(false, true)) {
             this.executor.value().scheduleWithFixedDelay(
                 () -> this.items.forEach(policy -> policy.apply(cache)),
                 0L,
                 this.delay,
                 this.unit
             );
-            this.once.add(this.executor);
         }
     }
 
     @Override
     public void close() {
-        this.executor.value().shutdown();
+        this.executor.value().shutdownNow();
+        try {
+            this.executor.value().awaitTermination(5, TimeUnit.SECONDS);
+        } catch (final InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
