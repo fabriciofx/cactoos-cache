@@ -15,6 +15,8 @@ import org.cactoos.Bytes;
 import org.cactoos.iterable.Joined;
 import org.cactoos.iterable.Mapped;
 import org.cactoos.number.SumOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * EntriesOf.
@@ -31,12 +33,27 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
     private final Map<Key<K>, Entry<K, V>> entries;
 
     /**
+     * Size.
+     */
+    private final Unchecked<Integer> unchecked;
+
+    /**
      * Ctor.
      *
      * @param entries The entries
      */
     public EntriesOf(final Map<Key<K>, Entry<K, V>> entries) {
         this.entries = entries;
+        this.unchecked = new Unchecked<>(
+            new Sticky<>(
+                () -> new SumOf(
+                    new Joined<Integer>(
+                        new Mapped<>(Key::size, this.entries.keySet()),
+                        new Mapped<>(Entry::size, this.entries.values())
+                    )
+                ).intValue()
+            )
+        );
     }
 
     @Override
@@ -56,12 +73,7 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
 
     @Override
     public int size() {
-        return new SumOf(
-            new Joined<Integer>(
-                new Mapped<>(Key::size, this.entries.keySet()),
-                new Mapped<>(Entry::size, this.entries.values())
-            )
-        ).intValue();
+        return this.unchecked.value();
     }
 
     @Override

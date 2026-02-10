@@ -13,6 +13,8 @@ import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.policies.DelayedPolicies;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.Bytes;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * Cache with policies enforcement.
@@ -27,6 +29,11 @@ public final class Policed<K extends Bytes, V extends Bytes>
      * Cache.
      */
     private final Cache<K, V> origin;
+
+    /**
+     * Store.
+     */
+    private final Unchecked<Store<K, V>> unchecked;
 
     /**
      * Policies.
@@ -54,14 +61,19 @@ public final class Policed<K extends Bytes, V extends Bytes>
     public Policed(final Cache<K, V> cache, final Policies<K, V> policies) {
         this.origin = cache;
         this.policies = policies;
+        this.unchecked = new Unchecked<>(
+            new Sticky<>(
+                () -> new com.github.fabriciofx.cactoos.cache.store.Policed<>(
+                    cache,
+                    this.policies
+                )
+            )
+        );
     }
 
     @Override
     public Store<K, V> store() {
-        return new com.github.fabriciofx.cactoos.cache.store.Policed<>(
-            this.origin,
-            this.policies
-        );
+        return this.unchecked.value();
     }
 
     @Override

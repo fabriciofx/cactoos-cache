@@ -11,6 +11,8 @@ import com.github.fabriciofx.cactoos.cache.Keys;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
 import org.cactoos.Bytes;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * Instrumented Store.
@@ -31,6 +33,16 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
     private final Statistics stats;
 
     /**
+     * Keys.
+     */
+    private final Unchecked<Keys<K>> kys;
+
+    /**
+     * Entries.
+     */
+    private final Unchecked<Entries<K, V>> ntrs;
+
+    /**
      * Ctor.
      * @param store The store
      * @param statistics The statistics
@@ -38,6 +50,22 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
     public Instrumented(final Store<K, V> store, final Statistics statistics) {
         this.origin = store;
         this.stats = statistics;
+        this.kys = new Unchecked<>(
+            new Sticky<>(
+                () -> new com.github.fabriciofx.cactoos.cache.keys.Instrumented<>(
+                    this.origin.keys(),
+                    this.stats
+                )
+            )
+        );
+        this.ntrs = new Unchecked<>(
+            new Sticky<>(
+                () -> new com.github.fabriciofx.cactoos.cache.entries.Instrumented<>(
+                    this.origin.entries(),
+                    this.stats
+                )
+            )
+        );
     }
 
     @Override
@@ -83,17 +111,11 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
 
     @Override
     public Keys<K> keys() {
-        return new com.github.fabriciofx.cactoos.cache.keys.Instrumented<>(
-            this.origin.keys(),
-            this.stats
-        );
+        return this.kys.value();
     }
 
     @Override
     public Entries<K, V> entries() {
-        return new com.github.fabriciofx.cactoos.cache.entries.Instrumented<>(
-            this.origin.entries(),
-            this.stats
-        );
+        return this.ntrs.value();
     }
 }

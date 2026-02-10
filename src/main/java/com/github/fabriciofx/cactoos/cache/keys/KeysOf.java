@@ -11,6 +11,8 @@ import java.util.Set;
 import org.cactoos.Bytes;
 import org.cactoos.iterable.Mapped;
 import org.cactoos.number.SumOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 
 /**
  * KeysOf.
@@ -24,11 +26,26 @@ public final class KeysOf<K extends Bytes> implements Keys<K> {
     private final Set<Key<K>> keys;
 
     /**
+     * Size.
+     */
+    private final Unchecked<Integer> unchecked;
+
+    /**
      * Ctor.
      * @param keys The keys
      */
     public KeysOf(final Set<Key<K>> keys) {
         this.keys = keys;
+        this.unchecked = new Unchecked<>(
+            new Sticky<>(
+                () -> new SumOf(
+                    new Mapped<>(
+                        Key::size,
+                        this.keys
+                    )
+                ).intValue()
+            )
+        );
     }
 
     @Override
@@ -43,12 +60,7 @@ public final class KeysOf<K extends Bytes> implements Keys<K> {
 
     @Override
     public int size() {
-        return new SumOf(
-            new Mapped<>(
-                Key::size,
-                this.keys
-            )
-        ).intValue();
+        return this.unchecked.value();
     }
 
     @Override
