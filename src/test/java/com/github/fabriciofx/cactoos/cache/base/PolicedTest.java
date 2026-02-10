@@ -7,10 +7,10 @@ package com.github.fabriciofx.cactoos.cache.base;
 import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
-import com.github.fabriciofx.cactoos.cache.enforcer.ImmediateEnforcer;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.cactoos.cache.metadata.MetadataOf;
+import com.github.fabriciofx.cactoos.cache.policies.ImmediatePolicies;
 import com.github.fabriciofx.cactoos.cache.policy.ExpiredPolicy;
 import java.time.LocalDateTime;
 import org.cactoos.scalar.Unchecked;
@@ -29,8 +29,9 @@ final class PolicedTest {
     void expiredPolicy() {
         final Cache<Word, Synonyms> cache = new Policed<>(
             new CacheOf<>(),
-            new ImmediateEnforcer<>(),
-            new ExpiredPolicy<>()
+            new ImmediatePolicies<>(
+                new ExpiredPolicy<>()
+            )
         );
         cache.store().save(
             new KeyOf<>(new Word("a")),

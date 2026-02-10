@@ -4,17 +4,20 @@
  */
 package com.github.fabriciofx.cactoos.cache;
 
-import java.util.List;
 import org.cactoos.Bytes;
 
 /**
- * Enforcer of policies.
+ * Policies.
  *
  * @param <K> the key value type
  * @param <V> the entry value type
- * @since 0.0.7
+ * @since 0.0.13
  */
 @FunctionalInterface
-public interface Enforcer<K extends Bytes, V extends Bytes> {
-    void apply(Cache<K, V> cache, List<Policy<K, V>> policies);
+public interface Policies<K extends Bytes, V extends Bytes> {
+    /**
+    * Apply policies to the cache.
+    * @param cache Cache to apply policies
+    */
+    void apply(Cache<K, V> cache);
 }

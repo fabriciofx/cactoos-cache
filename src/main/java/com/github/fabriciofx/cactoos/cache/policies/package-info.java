@@ -4,8 +4,8 @@
  */
 
 /**
- * Enforcer.
+ * Policies.
  *
- * @since 0.0.7
+ * @since 0.0.13
  */
-package com.github.fabriciofx.cactoos.cache.enforcer;
+package com.github.fabriciofx.cactoos.cache.policies;

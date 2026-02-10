@@ -5,16 +5,15 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
-import com.github.fabriciofx.cactoos.cache.Enforcer;
 import com.github.fabriciofx.cactoos.cache.Entry;
+import com.github.fabriciofx.cactoos.cache.Policies;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Store;
-import com.github.fabriciofx.cactoos.cache.enforcer.DelayedEnforcer;
+import com.github.fabriciofx.cactoos.cache.policies.DelayedPolicies;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.Bytes;
-import org.cactoos.list.ListOf;
 
 /**
  * Cache with policies enforcement.
@@ -31,14 +30,9 @@ public final class Policed<K extends Bytes, V extends Bytes>
     private final Cache<K, V> origin;
 
     /**
-     * Enforcer.
-     */
-    private final Enforcer<K, V> enforcer;
-
-    /**
      * Policies.
      */
-    private final List<Policy<K, V>> policies;
+    private final Policies<K, V> policies;
 
     /**
      * Ctor.
@@ -46,45 +40,20 @@ public final class Policed<K extends Bytes, V extends Bytes>
      * @param policies The policies
      */
     @SafeVarargs
-    public Policed(
-        final Cache<K, V> cache,
-        final Policy<K, V>... policies
-    ) {
+    public Policed(final Cache<K, V> cache, final Policy<K, V>... policies) {
         this(
             cache,
-            new DelayedEnforcer<>(500, TimeUnit.MILLISECONDS),
-            new ListOf<>(policies)
+            new DelayedPolicies<>(500, TimeUnit.MILLISECONDS, policies)
         );
     }
 
     /**
      * Ctor.
      * @param cache The cache
-     * @param enforcer The enforcer
      * @param policies The policies
      */
-    @SafeVarargs
-    public Policed(
-        final Cache<K, V> cache,
-        final Enforcer<K, V> enforcer,
-        final Policy<K, V>... policies
-    ) {
-        this(cache, enforcer, new ListOf<>(policies));
-    }
-
-    /**
-     * Ctor.
-     * @param cache The cache
-     * @param enforcer The enforcer
-     * @param policies The policies
-     */
-    public Policed(
-        final Cache<K, V> cache,
-        final Enforcer<K, V> enforcer,
-        final List<Policy<K, V>> policies
-    ) {
+    public Policed(final Cache<K, V> cache, final Policies<K, V> policies) {
         this.origin = cache;
-        this.enforcer = enforcer;
         this.policies = policies;
     }
 
@@ -92,14 +61,13 @@ public final class Policed<K extends Bytes, V extends Bytes>
     public Store<K, V> store() {
         return new com.github.fabriciofx.cactoos.cache.store.Policed<>(
             this.origin,
-            this.enforcer,
             this.policies
         );
     }
 
     @Override
     public Statistics statistics() {
-        this.enforcer.apply(this.origin, this.policies);
+        this.policies.apply(this.origin);
         return this.origin.statistics();
     }
 

@@ -8,9 +8,9 @@ import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
-import com.github.fabriciofx.cactoos.cache.enforcer.ImmediateEnforcer;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
+import com.github.fabriciofx.cactoos.cache.policies.ImmediatePolicies;
 import com.github.fabriciofx.cactoos.cache.policy.MaxCountPolicy;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -112,8 +112,9 @@ final class InstrumentedTest {
         final Cache<Word, Synonyms> cache = new Instrumented<>(
             new Policed<>(
                 new CacheOf<>(),
-                new ImmediateEnforcer<>(),
-                new MaxCountPolicy<>(1)
+                new ImmediatePolicies<>(
+                    new MaxCountPolicy<>(1)
+                )
             )
         );
         cache.store().save(

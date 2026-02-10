@@ -2,10 +2,10 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.cactoos.cache.enforcer;
+package com.github.fabriciofx.cactoos.cache.policies;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
-import com.github.fabriciofx.cactoos.cache.Enforcer;
+import com.github.fabriciofx.cactoos.cache.Policies;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -17,14 +17,20 @@ import org.cactoos.scalar.Sticky;
 import org.cactoos.scalar.Unchecked;
 
 /**
- * Delayed enforcer of policies.
+ * Delayed policies.
  *
  * @param <K> the key value type
  * @param <V> the entry value type
- * @since 0.0.7
+ * @since 0.0.13
+ * @checkstyle ParameterNumberCheck (200 lines)
  */
-public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
-    implements Enforcer<K, V>, AutoCloseable {
+public final class DelayedPolicies<K extends Bytes, V extends Bytes>
+    implements Policies<K, V>, AutoCloseable {
+    /**
+     * Items.
+     */
+    private final List<Policy<K, V>> items;
+
     /**
      * Execute executor only once.
      */
@@ -50,10 +56,13 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
      *
      * @param delay Delay between executions
      * @param unit Time unit
+     * @param items Items
      */
-    public DelayedEnforcer(
+    @SafeVarargs
+    public DelayedPolicies(
         final long delay,
-        final TimeUnit unit
+        final TimeUnit unit,
+        final Policy<K, V>... items
     ) {
         this(
             delay,
@@ -62,7 +71,32 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
                 new Sticky<>(
                     Executors::newSingleThreadScheduledExecutor
                 )
-            )
+            ),
+            new ListOf<>(items)
+        );
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param delay Delay between executions
+     * @param unit Time unit
+     * @param items Items
+     */
+    public DelayedPolicies(
+        final long delay,
+        final TimeUnit unit,
+        final List<Policy<K, V>> items
+    ) {
+        this(
+            delay,
+            unit,
+            new Unchecked<>(
+                new Sticky<>(
+                    Executors::newSingleThreadScheduledExecutor
+                )
+            ),
+            items
         );
     }
 
@@ -72,26 +106,26 @@ public final class DelayedEnforcer<K extends Bytes, V extends Bytes>
      * @param delay Delay between executions
      * @param unit Time unit
      * @param executor The executor to run the policies
+     * @param items Items
      */
-    public DelayedEnforcer(
+    public DelayedPolicies(
         final long delay,
         final TimeUnit unit,
-        final Unchecked<ScheduledExecutorService> executor
+        final Unchecked<ScheduledExecutorService> executor,
+        final List<Policy<K, V>> items
     ) {
         this.once = new ListOf<>();
         this.delay = delay;
         this.unit = unit;
         this.executor = executor;
+        this.items = items;
     }
 
     @Override
-    public void apply(
-        final Cache<K, V> cache,
-        final List<Policy<K, V>> policies
-    ) {
+    public void apply(final Cache<K, V> cache) {
         if (this.once.isEmpty()) {
             this.executor.value().scheduleWithFixedDelay(
-                () -> policies.forEach(policy -> policy.apply(cache)),
+                () -> this.items.forEach(policy -> policy.apply(cache)),
                 0L,
                 this.delay,
                 this.unit
