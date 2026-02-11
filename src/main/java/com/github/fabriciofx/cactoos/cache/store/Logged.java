@@ -118,7 +118,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
                 new FormattedText(
                     "[%s] Retrieving from cache with key '%s' and value '%s'",
                     this.from,
-                    key.hash(),
+                    key.hash().asString(),
                     text
                 )
             ).asString()
@@ -134,7 +134,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
                 new FormattedText(
                     "[%s] Storing in cache with key '%s' and value '%s'",
                     this.from,
-                    key.hash(),
+                    key.hash().asString(),
                     entry.value().toString()
                 )
             ).asString()
@@ -151,7 +151,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
                 new FormattedText(
                     "[%s] Deleting into cache with key '%s' and returning value '%s'",
                     this.from,
-                    key.hash(),
+                    key.hash().asString(),
                     new Unchecked<>(
                         new Ternary<>(
                             entry.valid(),
@@ -174,7 +174,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
                 new FormattedText(
                     "[%s] Checking if cache has a value for key '%s': %s",
                     this.from,
-                    key.hash(),
+                    key.hash().asString(),
                     exists
                 )
             ).asString()

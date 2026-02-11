@@ -136,7 +136,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
                     new Joined(
                         new TextOf(", "),
                         new Mapped<Text>(
-                            entry -> new TextOf(entry.key().hash()),
+                            entry -> new TextOf(entry.key().hash().asString()),
                             invalidated
                         )
                     )

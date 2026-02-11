@@ -20,10 +20,10 @@ public interface Key<K extends Bytes> {
     K value();
 
     /**
-     * Retrieve the hexadecimal of the key's hash value.
-     * @return The hexadecimal of key's hash
+     * Retrieve the hash of this key.
+     * @return The key's hash
      */
-    String hash();
+    Hash<?> hash();
 
     /**
      * Size of the key in bytes.

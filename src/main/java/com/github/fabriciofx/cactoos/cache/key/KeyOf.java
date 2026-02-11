@@ -57,8 +57,8 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
     }
 
     @Override
-    public String hash() {
-        return this.hsh.asString();
+    public Hash<?> hash() {
+        return this.hsh;
     }
 
     @Override
@@ -70,7 +70,6 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
     public boolean equals(final Object other) {
         return this == other
             || other instanceof Key
-            && this.hash().equals(Key.class.cast(other).hash())
             && Arrays.equals(
                 this.unchecked.asBytes(),
                 new UncheckedBytes(Key.class.cast(other).value()).asBytes()
