@@ -7,8 +7,8 @@ package com.github.fabriciofx.cactoos.cache.evicted;
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Evicted;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.cactoos.Bytes;
-import org.cactoos.list.ListOf;
 
 /**
  * EvictedOf.
@@ -28,7 +28,7 @@ public final class EvictedOf<K extends Bytes, V extends Bytes>
      * Ctor.
      */
     public EvictedOf() {
-        this(new ListOf<>());
+        this(new CopyOnWriteArrayList<>());
     }
 
     /**
