@@ -20,4 +20,7 @@ public interface Policies<K extends Bytes, V extends Bytes>
     * @param cache Cache to apply policies
     */
     void apply(Cache<K, V> cache);
+
+    @Override
+    void close();
 }

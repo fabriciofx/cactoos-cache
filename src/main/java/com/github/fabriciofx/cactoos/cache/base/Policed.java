@@ -99,7 +99,7 @@ public final class Policed<K extends Bytes, V extends Bytes>
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         this.policies.close();
     }
 }

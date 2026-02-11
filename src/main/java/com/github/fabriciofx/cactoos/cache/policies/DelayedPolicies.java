@@ -25,7 +25,6 @@ import org.cactoos.scalar.Unchecked;
  * @since 0.0.13
  * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 public final class DelayedPolicies<K extends Bytes, V extends Bytes>
     implements Policies<K, V> {
     /**
@@ -141,7 +140,7 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
         try {
             this.executor.value().awaitTermination(5, TimeUnit.SECONDS);
         } catch (final InterruptedException ex) {
-            throw new RuntimeException(ex);
+            Thread.currentThread().interrupt();
         }
     }
 }
