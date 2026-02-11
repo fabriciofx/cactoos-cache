@@ -192,9 +192,9 @@ final Cache<Word, Synonyms> cache = new Policed<>(
 // Normal cache usage
 ```
 
-By default, `Cactoos-Cache` will use the `DelayedEnforcer` that iterates the
+By default, `Cactoos-Cache` will use the `DelayedPolicies` that iterates the
 cache, applying the policies to each entry every **500 milliseconds**. This time
-can be changed too; just create a new `DelayedEnforcer` with the desired time:
+can be changed too; just create a new `DelayedPolicies` with the desired time:
 
 ```java
 // Check the cache every 1 second, applying Expired and MaxCount policies
@@ -216,6 +216,7 @@ final Cache<Word, Synonyms> cache = new Policed<>(
 
 - `MaxCountPolicy`: remove entries when reach a max number
 - `ExpiredPolicy`: remove entries when reach an expired lifetime
+- `FifoPolicy`: remove oldest entries when reach a max size (in bytes)
 
 To use `MaxCountPolicy` just use the policy using the max number of entries
 (the default is `Integer.MAX_VALUE`), as the example below:
