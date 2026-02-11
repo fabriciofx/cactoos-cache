@@ -44,20 +44,14 @@ public final class LogLevel implements Scalar<Level> {
 
     @Override
     public Level value() throws Exception {
-        Level lvl = this.logger.getLevel();
-        if (lvl == null) {
-            Logger parent = this.logger;
-            while (lvl == null) {
-                if (parent.getParent() == null) {
-                    break;
-                }
-                parent = parent.getParent();
-                lvl = parent.getLevel();
+        Level level = this.def;
+        for (Logger lgr = this.logger; lgr != null; lgr = lgr.getParent()) {
+            final Level lvl = lgr.getLevel();
+            if (lvl != null) {
+                level = lvl;
+                break;
             }
         }
-        if (lvl == null) {
-            lvl = this.def;
-        }
-        return lvl;
+        return level;
     }
 }
