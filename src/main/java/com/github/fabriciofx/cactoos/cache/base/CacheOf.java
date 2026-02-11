@@ -111,7 +111,6 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
 
     @Override
     public void clear() {
-        this.str.keys().clear();
         this.str.entries().clear();
         this.removed.clear();
     }
