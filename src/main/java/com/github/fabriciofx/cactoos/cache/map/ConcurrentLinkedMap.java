@@ -45,11 +45,20 @@ public final class ConcurrentLinkedMap<K, V> implements Map<K, V> {
 
     /**
      * Ctor.
-     * @param origin The backing map
+     * @param map The backing map
      */
-    public ConcurrentLinkedMap(final Map<K, V> origin) {
-        this.lock = new ReentrantLock();
-        this.map = origin;
+    public ConcurrentLinkedMap(final Map<K, V> map) {
+        this(new ReentrantLock(), map);
+    }
+
+    /**
+     * Ctor.
+     * @param lock The lock to use for synchronization
+     * @param map The backing map
+     */
+    public ConcurrentLinkedMap(final Lock lock, final Map<K, V> map) {
+        this.lock = lock;
+        this.map = map;
     }
 
     @Override
