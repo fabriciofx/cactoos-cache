@@ -4,16 +4,15 @@
  */
 package com.github.fabriciofx.cactoos.cache.map;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import org.cactoos.Scalar;
+import org.cactoos.experimental.Threads;
+import org.cactoos.list.ListOf;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
+import org.llorllale.cactoos.matchers.IsTrue;
 
 /**
  * {@link ConcurrentLinkedMap} tests.
@@ -21,11 +20,11 @@ import org.llorllale.cactoos.matchers.Assertion;
  * @since 0.0.14
  * @checkstyle MagicNumberCheck (300 lines)
  * @checkstyle JavadocMethodCheck (300 lines)
+ * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
  */
 @SuppressWarnings({
     "PMD.UnitTestShouldIncludeAssert",
-    "PMD.UnnecessaryLocalRule",
-    "PMD.CloseResource"
+    "PMD.UnnecessaryLocalRule"
 })
 final class ConcurrentLinkedMapTest {
     @Test
@@ -36,8 +35,8 @@ final class ConcurrentLinkedMapTest {
         map.put("third", 3);
         new Assertion<>(
             "must preserve insertion order in keySet",
-            new ArrayList<>(map.keySet()),
-            new IsEqual<>(List.of("first", "second", "third"))
+            new ListOf<>(map.keySet()),
+            new IsEqual<>(new ListOf<>("first", "second", "third"))
         ).affirm();
     }
 
@@ -50,8 +49,8 @@ final class ConcurrentLinkedMapTest {
         map.remove("b");
         new Assertion<>(
             "must preserve order after removing middle element",
-            new ArrayList<>(map.keySet()),
-            new IsEqual<>(List.of("a", "c"))
+            new ListOf<>(map.keySet()),
+            new IsEqual<>(new ListOf<>("a", "c"))
         ).affirm();
     }
 
@@ -64,8 +63,8 @@ final class ConcurrentLinkedMapTest {
         map.put("x", 10);
         new Assertion<>(
             "must keep original insertion position after update",
-            new ArrayList<>(map.keySet()),
-            new IsEqual<>(List.of("x", "y", "z"))
+            new ListOf<>(map.keySet()),
+            new IsEqual<>(new ListOf<>("x", "y", "z"))
         ).affirm();
     }
 
@@ -90,40 +89,29 @@ final class ConcurrentLinkedMapTest {
         map.put("c", 30);
         new Assertion<>(
             "must preserve insertion order in values",
-            new ArrayList<>(map.values()),
+            new ListOf<>(map.values()),
             new IsEqual<>(List.of(10, 20, 30))
         ).affirm();
     }
 
     @Test
-    void threadSafePuts() throws InterruptedException {
+    void threadSafePuts() {
         final int threads = 10;
         final int per = 100;
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        final CountDownLatch latch = new CountDownLatch(threads);
-        final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        try {
-            for (int idx = 0; idx < threads; idx = idx + 1) {
-                final int offset = idx * per;
-                pool.submit(
-                    () -> {
-                        try {
-                            latch.countDown();
-                            latch.await();
-                            for (int num = 0; num < per; num = num + 1) {
-                                target.put(offset + num, offset + num);
-                            }
-                        } catch (final InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
+        final List<Scalar<Boolean>> tasks = new ListOf<>();
+        for (int idx = 0; idx < threads; ++idx) {
+            final int offset = idx * per;
+            tasks.add(
+                () -> {
+                    for (int num = 0; num < per; ++num) {
+                        target.put(offset + num, offset + num);
                     }
-                );
-            }
-            pool.shutdown();
-            pool.awaitTermination(10, TimeUnit.SECONDS);
-        } finally {
-            pool.shutdownNow();
+                    return true;
+                }
+            );
         }
+        new ListOf<>(new Threads<>(threads, tasks));
         new Assertion<>(
             "must contain all entries after concurrent puts",
             target.size(),
@@ -132,136 +120,100 @@ final class ConcurrentLinkedMapTest {
     }
 
     @Test
-    void threadSafeReads() throws InterruptedException {
+    void threadSafeReads() {
         final int total = 500;
         final int threads = 10;
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        for (int idx = 0; idx < total; idx = idx + 1) {
+        for (int idx = 0; idx < total; ++idx) {
             target.put(idx, idx);
         }
-        final CountDownLatch latch = new CountDownLatch(threads);
-        final List<Boolean> found =
-            java.util.Collections.synchronizedList(
-                new ArrayList<>(threads * total)
-            );
-        final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        try {
-            for (int idx = 0; idx < threads; idx = idx + 1) {
-                pool.submit(
-                    () -> {
-                        try {
-                            latch.countDown();
-                            latch.await();
-                            for (int num = 0; num < total; num = num + 1) {
-                                found.add(target.containsKey(num));
-                            }
-                        } catch (final InterruptedException ex) {
-                            Thread.currentThread().interrupt();
+        final List<Scalar<Boolean>> tasks = new ListOf<>();
+        for (int idx = 0; idx < threads; ++idx) {
+            tasks.add(
+                () -> {
+                    boolean found = true;
+                    for (int num = 0; num < total; ++num) {
+                        if (!target.containsKey(num)) {
+                            found = false;
                         }
                     }
-                );
-            }
-            pool.shutdown();
-            pool.awaitTermination(10, TimeUnit.SECONDS);
-        } finally {
-            pool.shutdownNow();
+                    return found;
+                }
+            );
         }
         new Assertion<>(
             "all concurrent reads must find every key",
-            found.stream().allMatch(val -> val),
-            new IsEqual<>(true)
+            new ListOf<>(new Threads<>(threads, tasks))
+                .stream().allMatch(val -> val),
+            new IsTrue()
         ).affirm();
     }
 
     @Test
-    void threadSafePutsAndRemoves() throws InterruptedException {
+    void threadSafePutsAndRemoves() {
         final int total = 500;
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        final CountDownLatch latch = new CountDownLatch(2);
-        final ExecutorService pool = Executors.newFixedThreadPool(2);
-        try {
-            pool.submit(
+        new ListOf<>(
+            new Threads<>(
+                2,
                 () -> {
-                    try {
-                        latch.countDown();
-                        latch.await();
-                        for (int idx = 0; idx < total; idx = idx + 1) {
-                            target.put(idx, idx);
-                        }
-                    } catch (final InterruptedException ex) {
-                        Thread.currentThread().interrupt();
+                    for (int idx = 0; idx < total; ++idx) {
+                        target.put(idx, idx);
                     }
-                }
-            );
-            pool.submit(
+                    return true;
+                },
                 () -> {
-                    try {
-                        latch.countDown();
-                        latch.await();
-                        for (int idx = 0; idx < total; idx = idx + 1) {
-                            target.remove(idx);
-                        }
-                    } catch (final InterruptedException ex) {
-                        Thread.currentThread().interrupt();
+                    for (int idx = 0; idx < total; ++idx) {
+                        target.remove(idx);
                     }
+                    return true;
                 }
-            );
-            pool.shutdown();
-            pool.awaitTermination(10, TimeUnit.SECONDS);
-        } finally {
-            pool.shutdownNow();
-        }
+            )
+        );
         new Assertion<>(
             "must not throw after concurrent puts and removes",
-            target.size() >= 0,
-            new IsEqual<>(true)
+            target.size() <= total,
+            new IsTrue()
         ).affirm();
     }
 
     @Test
-    void noExceptionOnConcurrentIteration() throws InterruptedException {
+    void noExceptionOnConcurrentIteration() {
         final int total = 200;
         final int threads = 5;
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        for (int idx = 0; idx < total; idx = idx + 1) {
+        for (int idx = 0; idx < total; ++idx) {
             target.put(idx, idx);
         }
-        final CountDownLatch latch = new CountDownLatch(threads);
-        final List<Boolean> found =
-            java.util.Collections.synchronizedList(
-                new ArrayList<>(threads * total)
-            );
-        final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        try {
-            for (int idx = 0; idx < threads; idx = idx + 1) {
-                final int id = idx;
-                pool.submit(
+        final List<Scalar<Boolean>> tasks = new ListOf<>();
+        for (int idx = 0; idx < threads; ++idx) {
+            final int id = idx;
+            if (id % 2 == 0) {
+                tasks.add(
                     () -> {
-                        try {
-                            latch.countDown();
-                            latch.await();
-                            if (id % 2 == 0) {
-                                for (final Integer key : target.keySet()) {
-                                    found.add(key >= 0);
-                                }
-                            } else {
-                                target.put(total + id, id);
+                        boolean valid = true;
+                        for (final Integer key : target.keySet()) {
+                            if (key < 0) {
+                                valid = false;
                             }
-                        } catch (final InterruptedException ex) {
-                            Thread.currentThread().interrupt();
                         }
+                        return valid;
+                    }
+                );
+            } else {
+                tasks.add(
+                    () -> {
+                        target.put(total + id, id);
+                        return true;
                     }
                 );
             }
-            pool.shutdown();
-            pool.awaitTermination(10, TimeUnit.SECONDS);
-        } finally {
-            pool.shutdownNow();
         }
         new Assertion<>(
             "must not throw ConcurrentModificationException",
-            found.stream().allMatch(val -> val),
-            new IsEqual<>(true)
+            new ListOf<>(new Threads<>(threads, tasks))
+                .stream().allMatch(val -> val),
+            new IsTrue()
         ).affirm();
     }
 }
