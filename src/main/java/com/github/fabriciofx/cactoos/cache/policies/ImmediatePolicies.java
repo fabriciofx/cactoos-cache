@@ -48,4 +48,9 @@ public final class ImmediatePolicies<K extends Bytes, V extends Bytes>
     public void apply(final Cache<K, V> cache) {
         this.items.forEach(policy -> policy.apply(cache));
     }
+
+    @Override
+    public void close() {
+        // Nothing to close
+    }
 }

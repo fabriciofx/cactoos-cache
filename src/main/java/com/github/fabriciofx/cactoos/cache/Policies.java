@@ -13,8 +13,8 @@ import org.cactoos.Bytes;
  * @param <V> the entry value type
  * @since 0.0.13
  */
-@FunctionalInterface
-public interface Policies<K extends Bytes, V extends Bytes> {
+public interface Policies<K extends Bytes, V extends Bytes>
+    extends AutoCloseable {
     /**
     * Apply policies to the cache.
     * @param cache Cache to apply policies

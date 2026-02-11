@@ -24,7 +24,7 @@ import org.cactoos.scalar.Unchecked;
  * @since 0.0.7
  */
 public final class Policed<K extends Bytes, V extends Bytes>
-    implements Cache<K, V> {
+    implements Cache<K, V>, AutoCloseable {
     /**
      * Cache.
      */
@@ -96,5 +96,10 @@ public final class Policed<K extends Bytes, V extends Bytes>
     @Override
     public int size() {
         return this.origin.size();
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.policies.close();
     }
 }

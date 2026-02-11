@@ -27,7 +27,7 @@ import org.cactoos.scalar.Unchecked;
  */
 @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 public final class DelayedPolicies<K extends Bytes, V extends Bytes>
-    implements Policies<K, V>, AutoCloseable {
+    implements Policies<K, V> {
     /**
      * Items.
      */
