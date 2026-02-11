@@ -24,7 +24,8 @@ import org.llorllale.cactoos.matchers.Assertion;
  */
 @SuppressWarnings({
     "PMD.UnitTestShouldIncludeAssert",
-    "PMD.UnnecessaryLocalRule"
+    "PMD.UnnecessaryLocalRule",
+    "PMD.CloseResource"
 })
 final class ConcurrentLinkedMapTest {
     @Test
