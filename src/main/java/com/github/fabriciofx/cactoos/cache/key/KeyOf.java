@@ -7,6 +7,7 @@ package com.github.fabriciofx.cactoos.cache.key;
 import com.github.fabriciofx.cactoos.cache.Hash;
 import com.github.fabriciofx.cactoos.cache.Key;
 import com.github.fabriciofx.cactoos.cache.hash.Xxh3BasedHash;
+import java.util.Arrays;
 import org.cactoos.Bytes;
 import org.cactoos.bytes.UncheckedBytes;
 
@@ -69,7 +70,11 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
     public boolean equals(final Object other) {
         return this == other
             || other instanceof Key
-            && this.hash().equals(Key.class.cast(other).hash());
+            && this.hash().equals(Key.class.cast(other).hash())
+            && Arrays.equals(
+                this.unchecked.asBytes(),
+                new UncheckedBytes(Key.class.cast(other).value()).asBytes()
+            );
     }
 
     @Override
