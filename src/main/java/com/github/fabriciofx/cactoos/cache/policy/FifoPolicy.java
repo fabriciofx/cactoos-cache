@@ -11,7 +11,7 @@ import com.github.fabriciofx.cactoos.cache.Store;
 import org.cactoos.Bytes;
 
 /**
- * MaxSizePolicy.
+ * FifoPolicy.
  * @param <K> the key value type
  * @param <V> the entry value type
  * @since 0.0.13
