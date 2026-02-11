@@ -12,9 +12,9 @@ import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.entries.EntriesOf;
 import com.github.fabriciofx.cactoos.cache.entry.InvalidEntry;
 import com.github.fabriciofx.cactoos.cache.keys.KeysOf;
+import com.github.fabriciofx.cactoos.cache.map.ConcurrentLinkedMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import org.cactoos.Bytes;
 
 /**
@@ -34,7 +34,7 @@ public final class StoreOf<K extends Bytes, V extends Bytes>
      * Ctor.
      */
     public StoreOf() {
-        this(new ConcurrentHashMap<>());
+        this(new ConcurrentLinkedMap<>());
     }
 
     /**
