@@ -101,24 +101,28 @@ final class ConcurrentLinkedMapTest {
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
         final CountDownLatch latch = new CountDownLatch(threads);
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        for (int idx = 0; idx < threads; idx = idx + 1) {
-            final int offset = idx * per;
-            pool.submit(
-                () -> {
-                    try {
-                        latch.countDown();
-                        latch.await();
-                        for (int num = 0; num < per; num = num + 1) {
-                            target.put(offset + num, offset + num);
+        try {
+            for (int idx = 0; idx < threads; idx = idx + 1) {
+                final int offset = idx * per;
+                pool.submit(
+                    () -> {
+                        try {
+                            latch.countDown();
+                            latch.await();
+                            for (int num = 0; num < per; num = num + 1) {
+                                target.put(offset + num, offset + num);
+                            }
+                        } catch (final InterruptedException ex) {
+                            Thread.currentThread().interrupt();
                         }
-                    } catch (final InterruptedException ex) {
-                        Thread.currentThread().interrupt();
                     }
-                }
-            );
+                );
+            }
+            pool.shutdown();
+            pool.awaitTermination(10, TimeUnit.SECONDS);
+        } finally {
+            pool.shutdownNow();
         }
-        pool.shutdown();
-        pool.awaitTermination(10, TimeUnit.SECONDS);
         new Assertion<>(
             "must contain all entries after concurrent puts",
             target.size(),
@@ -140,23 +144,27 @@ final class ConcurrentLinkedMapTest {
                 new ArrayList<>(threads * total)
             );
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        for (int idx = 0; idx < threads; idx = idx + 1) {
-            pool.submit(
-                () -> {
-                    try {
-                        latch.countDown();
-                        latch.await();
-                        for (int num = 0; num < total; num = num + 1) {
-                            found.add(target.containsKey(num));
+        try {
+            for (int idx = 0; idx < threads; idx = idx + 1) {
+                pool.submit(
+                    () -> {
+                        try {
+                            latch.countDown();
+                            latch.await();
+                            for (int num = 0; num < total; num = num + 1) {
+                                found.add(target.containsKey(num));
+                            }
+                        } catch (final InterruptedException ex) {
+                            Thread.currentThread().interrupt();
                         }
-                    } catch (final InterruptedException ex) {
-                        Thread.currentThread().interrupt();
                     }
-                }
-            );
+                );
+            }
+            pool.shutdown();
+            pool.awaitTermination(10, TimeUnit.SECONDS);
+        } finally {
+            pool.shutdownNow();
         }
-        pool.shutdown();
-        pool.awaitTermination(10, TimeUnit.SECONDS);
         new Assertion<>(
             "all concurrent reads must find every key",
             found.stream().allMatch(val -> val),
@@ -170,34 +178,38 @@ final class ConcurrentLinkedMapTest {
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
         final CountDownLatch latch = new CountDownLatch(2);
         final ExecutorService pool = Executors.newFixedThreadPool(2);
-        pool.submit(
-            () -> {
-                try {
-                    latch.countDown();
-                    latch.await();
-                    for (int idx = 0; idx < total; idx = idx + 1) {
-                        target.put(idx, idx);
+        try {
+            pool.submit(
+                () -> {
+                    try {
+                        latch.countDown();
+                        latch.await();
+                        for (int idx = 0; idx < total; idx = idx + 1) {
+                            target.put(idx, idx);
+                        }
+                    } catch (final InterruptedException ex) {
+                        Thread.currentThread().interrupt();
                     }
-                } catch (final InterruptedException ex) {
-                    Thread.currentThread().interrupt();
                 }
-            }
-        );
-        pool.submit(
-            () -> {
-                try {
-                    latch.countDown();
-                    latch.await();
-                    for (int idx = 0; idx < total; idx = idx + 1) {
-                        target.remove(idx);
+            );
+            pool.submit(
+                () -> {
+                    try {
+                        latch.countDown();
+                        latch.await();
+                        for (int idx = 0; idx < total; idx = idx + 1) {
+                            target.remove(idx);
+                        }
+                    } catch (final InterruptedException ex) {
+                        Thread.currentThread().interrupt();
                     }
-                } catch (final InterruptedException ex) {
-                    Thread.currentThread().interrupt();
                 }
-            }
-        );
-        pool.shutdown();
-        pool.awaitTermination(10, TimeUnit.SECONDS);
+            );
+            pool.shutdown();
+            pool.awaitTermination(10, TimeUnit.SECONDS);
+        } finally {
+            pool.shutdownNow();
+        }
         new Assertion<>(
             "must not throw after concurrent puts and removes",
             target.size() >= 0,
@@ -219,28 +231,32 @@ final class ConcurrentLinkedMapTest {
                 new ArrayList<>(threads * total)
             );
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        for (int idx = 0; idx < threads; idx = idx + 1) {
-            final int id = idx;
-            pool.submit(
-                () -> {
-                    try {
-                        latch.countDown();
-                        latch.await();
-                        if (id % 2 == 0) {
-                            for (final Integer key : target.keySet()) {
-                                found.add(key >= 0);
+        try {
+            for (int idx = 0; idx < threads; idx = idx + 1) {
+                final int id = idx;
+                pool.submit(
+                    () -> {
+                        try {
+                            latch.countDown();
+                            latch.await();
+                            if (id % 2 == 0) {
+                                for (final Integer key : target.keySet()) {
+                                    found.add(key >= 0);
+                                }
+                            } else {
+                                target.put(total + id, id);
                             }
-                        } else {
-                            target.put(total + id, id);
+                        } catch (final InterruptedException ex) {
+                            Thread.currentThread().interrupt();
                         }
-                    } catch (final InterruptedException ex) {
-                        Thread.currentThread().interrupt();
                     }
-                }
-            );
+                );
+            }
+            pool.shutdown();
+            pool.awaitTermination(10, TimeUnit.SECONDS);
+        } finally {
+            pool.shutdownNow();
         }
-        pool.shutdown();
-        pool.awaitTermination(10, TimeUnit.SECONDS);
         new Assertion<>(
             "must not throw ConcurrentModificationException",
             found.stream().allMatch(val -> val),
