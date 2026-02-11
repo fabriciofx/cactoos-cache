@@ -7,6 +7,7 @@ package com.github.fabriciofx.cactoos.cache.entries;
 import com.github.fabriciofx.cactoos.cache.Entries;
 import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Invalidate;
+import com.github.fabriciofx.cactoos.cache.log.LogLevel;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -78,20 +79,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
             logger,
             new Unchecked<>(
                 new Sticky<>(
-                    () -> {
-                        Level lvl = logger.getLevel();
-                        if (lvl == null) {
-                            Logger parent = logger;
-                            while (lvl == null) {
-                                if (parent.getParent() == null) {
-                                    break;
-                                }
-                                parent = parent.getParent();
-                                lvl = parent.getLevel();
-                            }
-                        }
-                        return lvl;
-                    }
+                    () -> new LogLevel(logger).value()
                 )
             )
         );
