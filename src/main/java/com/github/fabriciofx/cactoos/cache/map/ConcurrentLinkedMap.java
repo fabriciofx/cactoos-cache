@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @param <K> the key type
  * @param <V> the value type
- * @since 0.0.14
+ * @since 0.0.13
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class ConcurrentLinkedMap<K, V> implements Map<K, V> {

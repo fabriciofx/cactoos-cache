@@ -6,6 +6,6 @@
 /**
  * Map.
  *
- * @since 0.0.14
+ * @since 0.0.13
  */
 package com.github.fabriciofx.cactoos.cache.map;

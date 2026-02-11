@@ -17,7 +17,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
 /**
  * {@link ConcurrentLinkedMap} tests.
  *
- * @since 0.0.14
+ * @since 0.0.13
  * @checkstyle MagicNumberCheck (300 lines)
  * @checkstyle JavadocMethodCheck (300 lines)
  * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
