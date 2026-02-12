@@ -28,7 +28,7 @@ public final class KeysOf<K extends Bytes> implements Keys<K> {
     /**
      * Size.
      */
-    private final Unchecked<Integer> siz;
+    private final Unchecked<Integer> sze;
 
     /**
      * Ctor.
@@ -36,7 +36,7 @@ public final class KeysOf<K extends Bytes> implements Keys<K> {
      */
     public KeysOf(final Set<Key<K>> keys) {
         this.keys = keys;
-        this.siz = new Unchecked<>(
+        this.sze = new Unchecked<>(
             new Sticky<>(
                 () -> new SumOf(
                     new Mapped<>(
@@ -60,7 +60,7 @@ public final class KeysOf<K extends Bytes> implements Keys<K> {
 
     @Override
     public int size() {
-        return this.siz.value();
+        return this.sze.value();
     }
 
     @Override

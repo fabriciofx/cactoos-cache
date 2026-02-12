@@ -35,7 +35,7 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
     /**
      * Size.
      */
-    private final Unchecked<Integer> siz;
+    private final Unchecked<Integer> sze;
 
     /**
      * Ctor.
@@ -44,7 +44,7 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
      */
     public EntriesOf(final Map<Key<K>, Entry<K, V>> entries) {
         this.entries = entries;
-        this.siz = new Unchecked<>(
+        this.sze = new Unchecked<>(
             new Sticky<>(
                 () -> new SumOf(
                     new Joined<Integer>(
@@ -73,7 +73,7 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
 
     @Override
     public int size() {
-        return this.siz.value();
+        return this.sze.value();
     }
 
     @Override
