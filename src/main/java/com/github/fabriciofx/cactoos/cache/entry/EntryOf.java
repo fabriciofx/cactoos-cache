@@ -35,9 +35,9 @@ public final class EntryOf<K extends Bytes, V extends Bytes>
     private final Metadata meta;
 
     /**
-     * Unchecked for size.
+     * Bytes.
      */
-    private final UncheckedBytes unchecked;
+    private final UncheckedBytes bytes;
 
     /**
      * Ctor.
@@ -62,7 +62,7 @@ public final class EntryOf<K extends Bytes, V extends Bytes>
         this.id = key;
         this.val = value;
         this.meta = metadata;
-        this.unchecked = new UncheckedBytes(value);
+        this.bytes = new UncheckedBytes(value);
     }
 
     @Override
@@ -87,6 +87,6 @@ public final class EntryOf<K extends Bytes, V extends Bytes>
 
     @Override
     public int size() {
-        return this.unchecked.asBytes().length;
+        return this.bytes.asBytes().length;
     }
 }

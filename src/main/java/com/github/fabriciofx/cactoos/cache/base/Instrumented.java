@@ -29,7 +29,7 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
     /**
      * Store.
      */
-    private final Unchecked<Store<K, V>> unchecked;
+    private final Unchecked<Store<K, V>> str;
 
     /**
      * Evicted.
@@ -43,7 +43,7 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
      */
     public Instrumented(final Cache<K, V> cache) {
         this.origin = cache;
-        this.unchecked = new Unchecked<>(
+        this.str = new Unchecked<>(
             new Sticky<>(
                 () -> new com.github.fabriciofx.cactoos.cache.store.Instrumented<>(
                     this.origin.store(),
@@ -63,7 +63,7 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
 
     @Override
     public Store<K, V> store() {
-        return this.unchecked.value();
+        return this.str.value();
     }
 
     @Override

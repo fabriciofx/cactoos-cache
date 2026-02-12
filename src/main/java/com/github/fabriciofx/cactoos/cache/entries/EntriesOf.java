@@ -35,7 +35,7 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
     /**
      * Size.
      */
-    private final Unchecked<Integer> unchecked;
+    private final Unchecked<Integer> siz;
 
     /**
      * Ctor.
@@ -44,12 +44,12 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
      */
     public EntriesOf(final Map<Key<K>, Entry<K, V>> entries) {
         this.entries = entries;
-        this.unchecked = new Unchecked<>(
+        this.siz = new Unchecked<>(
             new Sticky<>(
                 () -> new SumOf(
                     new Joined<Integer>(
-                        new Mapped<>(Key::size, this.entries.keySet()),
-                        new Mapped<>(Entry::size, this.entries.values())
+                        new Mapped<>(Key::size, entries.keySet()),
+                        new Mapped<>(Entry::size, entries.values())
                     )
                 ).intValue()
             )
@@ -73,7 +73,7 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
 
     @Override
     public int size() {
-        return this.unchecked.value();
+        return this.siz.value();
     }
 
     @Override

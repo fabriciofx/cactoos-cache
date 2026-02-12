@@ -33,7 +33,7 @@ public final class Policed<K extends Bytes, V extends Bytes>
     /**
      * Store.
      */
-    private final Unchecked<Store<K, V>> unchecked;
+    private final Unchecked<Store<K, V>> str;
 
     /**
      * Policies.
@@ -61,7 +61,7 @@ public final class Policed<K extends Bytes, V extends Bytes>
     public Policed(final Cache<K, V> cache, final Policies<K, V> policies) {
         this.origin = cache;
         this.policies = policies;
-        this.unchecked = new Unchecked<>(
+        this.str = new Unchecked<>(
             new Sticky<>(
                 () -> new com.github.fabriciofx.cactoos.cache.store.Policed<>(
                     cache,
@@ -73,7 +73,7 @@ public final class Policed<K extends Bytes, V extends Bytes>
 
     @Override
     public Store<K, V> store() {
-        return this.unchecked.value();
+        return this.str.value();
     }
 
     @Override

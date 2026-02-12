@@ -28,9 +28,9 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
     private final Hash<?> hsh;
 
     /**
-     * Unchecked for size.
+     * Bytes.
      */
-    private final UncheckedBytes unchecked;
+    private final UncheckedBytes bytes;
 
     /**
      * Ctor.
@@ -48,7 +48,7 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
     public KeyOf(final K value, final Hash<?> hash) {
         this.val = value;
         this.hsh = hash;
-        this.unchecked = new UncheckedBytes(value);
+        this.bytes = new UncheckedBytes(value);
     }
 
     @Override
@@ -63,7 +63,7 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
 
     @Override
     public int size() {
-        return this.unchecked.asBytes().length;
+        return this.bytes.asBytes().length;
     }
 
     @Override
@@ -71,7 +71,7 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
         return this == other
             || other instanceof Key
             && Arrays.equals(
-                this.unchecked.asBytes(),
+                this.bytes.asBytes(),
                 new UncheckedBytes(Key.class.cast(other).value()).asBytes()
             );
     }

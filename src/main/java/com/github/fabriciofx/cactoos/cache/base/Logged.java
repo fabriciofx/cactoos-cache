@@ -39,7 +39,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
     /**
      * Store.
      */
-    private final Unchecked<Store<K, V>> unchecked;
+    private final Unchecked<Store<K, V>> str;
 
     /**
      * Where the data comes from.
@@ -100,7 +100,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
         this.from = from;
         this.logger = logger;
         this.level = level;
-        this.unchecked = new Unchecked<>(
+        this.str = new Unchecked<>(
             new Sticky<>(
                 () -> new com.github.fabriciofx.cactoos.cache.store.Logged<>(
                     cache.store(),
@@ -114,7 +114,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     @Override
     public Store<K, V> store() {
-        return this.unchecked.value();
+        return this.str.value();
     }
 
     @Override
