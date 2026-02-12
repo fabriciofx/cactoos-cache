@@ -4,15 +4,13 @@
  */
 package com.github.fabriciofx.cactoos.cache.map;
 
-import java.util.List;
 import java.util.Map;
-import org.cactoos.Scalar;
-import org.cactoos.experimental.Threads;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.cactoos.list.ListOf;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
-import org.llorllale.cactoos.matchers.IsTrue;
+import org.llorllale.cactoos.matchers.RunsInThreads;
 
 /**
  * {@link ConcurrentLinkedMap} tests.
@@ -20,12 +18,8 @@ import org.llorllale.cactoos.matchers.IsTrue;
  * @since 0.0.13
  * @checkstyle MagicNumberCheck (300 lines)
  * @checkstyle JavadocMethodCheck (300 lines)
- * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
  */
-@SuppressWarnings({
-    "PMD.UnitTestShouldIncludeAssert",
-    "PMD.UnnecessaryLocalRule"
-})
+@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class ConcurrentLinkedMapTest {
     @Test
     void preservesInsertionOrder() {
@@ -90,130 +84,94 @@ final class ConcurrentLinkedMapTest {
         new Assertion<>(
             "must preserve insertion order in values",
             new ListOf<>(map.values()),
-            new IsEqual<>(List.of(10, 20, 30))
+            new IsEqual<>(new ListOf<>(10, 20, 30))
         ).affirm();
     }
 
     @Test
     void threadSafePuts() {
-        final int threads = 10;
-        final int per = 100;
-        final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        final List<Scalar<Boolean>> tasks = new ListOf<>();
-        for (int idx = 0; idx < threads; ++idx) {
-            final int offset = idx * per;
-            tasks.add(
-                () -> {
-                    for (int num = 0; num < per; ++num) {
-                        target.put(offset + num, offset + num);
-                    }
-                    return true;
-                }
-            );
-        }
-        new ListOf<>(new Threads<>(threads, tasks));
+        final AtomicInteger counter = new AtomicInteger(0);
         new Assertion<>(
             "must contain all entries after concurrent puts",
-            target.size(),
-            new IsEqual<>(threads * per)
+            map -> {
+                final int offset = counter.getAndIncrement() * 100;
+                for (int num = 0; num < 100; ++num) {
+                    map.put(offset + num, offset + num);
+                }
+                return true;
+            },
+            new RunsInThreads<>(new ConcurrentLinkedMap<>(), 10)
         ).affirm();
     }
 
     @Test
     void threadSafeReads() {
-        final int total = 500;
-        final int threads = 10;
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        for (int idx = 0; idx < total; ++idx) {
+        for (int idx = 0; idx < 500; ++idx) {
             target.put(idx, idx);
-        }
-        final List<Scalar<Boolean>> tasks = new ListOf<>();
-        for (int idx = 0; idx < threads; ++idx) {
-            tasks.add(
-                () -> {
-                    boolean found = true;
-                    for (int num = 0; num < total; ++num) {
-                        if (!target.containsKey(num)) {
-                            found = false;
-                        }
-                    }
-                    return found;
-                }
-            );
         }
         new Assertion<>(
             "all concurrent reads must find every key",
-            new ListOf<>(new Threads<>(threads, tasks))
-                .stream().allMatch(val -> val),
-            new IsTrue()
+            map -> {
+                boolean found = true;
+                for (int num = 0; num < 500; ++num) {
+                    if (!map.containsKey(num)) {
+                        found = false;
+                        break;
+                    }
+                }
+                return found;
+            },
+            new RunsInThreads<>(target, 10)
         ).affirm();
     }
 
     @Test
     void threadSafePutsAndRemoves() {
-        final int total = 500;
-        final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        new ListOf<>(
-            new Threads<>(
-                2,
-                () -> {
-                    for (int idx = 0; idx < total; ++idx) {
-                        target.put(idx, idx);
-                    }
-                    return true;
-                },
-                () -> {
-                    for (int idx = 0; idx < total; ++idx) {
-                        target.remove(idx);
-                    }
-                    return true;
-                }
-            )
-        );
+        final AtomicInteger role = new AtomicInteger(0);
         new Assertion<>(
             "must not throw after concurrent puts and removes",
-            target.size() <= total,
-            new IsTrue()
+            map -> {
+                if (role.getAndIncrement() % 2 == 0) {
+                    for (int idx = 0; idx < 500; ++idx) {
+                        map.put(idx, idx);
+                    }
+                } else {
+                    for (int idx = 0; idx < 500; ++idx) {
+                        map.remove(idx);
+                    }
+                }
+                return true;
+            },
+            new RunsInThreads<>(new ConcurrentLinkedMap<>(), 2)
         ).affirm();
     }
 
     @Test
     void noExceptionOnConcurrentIteration() {
-        final int total = 200;
-        final int threads = 5;
         final Map<Integer, Integer> target = new ConcurrentLinkedMap<>();
-        for (int idx = 0; idx < total; ++idx) {
+        for (int idx = 0; idx < 200; ++idx) {
             target.put(idx, idx);
         }
-        final List<Scalar<Boolean>> tasks = new ListOf<>();
-        for (int idx = 0; idx < threads; ++idx) {
-            final int id = idx;
-            if (id % 2 == 0) {
-                tasks.add(
-                    () -> {
-                        boolean valid = true;
-                        for (final Integer key : target.keySet()) {
-                            if (key < 0) {
-                                valid = false;
-                            }
-                        }
-                        return valid;
-                    }
-                );
-            } else {
-                tasks.add(
-                    () -> {
-                        target.put(total + id, id);
-                        return true;
-                    }
-                );
-            }
-        }
+        final AtomicInteger role = new AtomicInteger(0);
         new Assertion<>(
             "must not throw ConcurrentModificationException",
-            new ListOf<>(new Threads<>(threads, tasks))
-                .stream().allMatch(val -> val),
-            new IsTrue()
+            map -> {
+                final int id = role.getAndIncrement();
+                boolean valid = true;
+                if (id % 2 == 0) {
+                    for (final Integer key : map.keySet()) {
+                        if (key < 0) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                } else {
+                    map.put(200 + id, id);
+                }
+                return valid;
+            },
+            new RunsInThreads<>(target, 5)
         ).affirm();
     }
 }
