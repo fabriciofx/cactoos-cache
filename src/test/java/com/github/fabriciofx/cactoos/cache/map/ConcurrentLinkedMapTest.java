@@ -14,13 +14,13 @@ import org.llorllale.cactoos.matchers.RunsInThreads;
 
 /**
  * {@link ConcurrentLinkedMap} tests.
- *
  * @since 0.0.13
  * @checkstyle MagicNumberCheck (300 lines)
  * @checkstyle JavadocMethodCheck (300 lines)
  */
-@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
+@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "InvalidBlockTag"})
 final class ConcurrentLinkedMapTest {
+
     @Test
     void preservesInsertionOrder() {
         final Map<String, Integer> map = new ConcurrentLinkedMap<>();
@@ -90,11 +90,10 @@ final class ConcurrentLinkedMapTest {
 
     @Test
     void threadSafePuts() {
-        final AtomicInteger counter = new AtomicInteger(0);
         new Assertion<>(
             "must contain all entries after concurrent puts",
             map -> {
-                final int offset = counter.getAndIncrement() * 100;
+                final int offset = new AtomicInteger(0).getAndIncrement() * 100;
                 for (int num = 0; num < 100; ++num) {
                     map.put(offset + num, offset + num);
                 }
@@ -128,11 +127,10 @@ final class ConcurrentLinkedMapTest {
 
     @Test
     void threadSafePutsAndRemoves() {
-        final AtomicInteger role = new AtomicInteger(0);
         new Assertion<>(
             "must not throw after concurrent puts and removes",
             map -> {
-                if (role.getAndIncrement() % 2 == 0) {
+                if (new AtomicInteger(0).getAndIncrement() % 2 == 0) {
                     for (int idx = 0; idx < 500; ++idx) {
                         map.put(idx, idx);
                     }
@@ -153,11 +151,10 @@ final class ConcurrentLinkedMapTest {
         for (int idx = 0; idx < 200; ++idx) {
             target.put(idx, idx);
         }
-        final AtomicInteger role = new AtomicInteger(0);
         new Assertion<>(
             "must not throw ConcurrentModificationException",
             map -> {
-                final int id = role.getAndIncrement();
+                final int id = new AtomicInteger(0).getAndIncrement();
                 boolean valid = true;
                 if (id % 2 == 0) {
                     for (final Integer key : map.keySet()) {

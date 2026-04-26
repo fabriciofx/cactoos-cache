@@ -11,7 +11,9 @@ import org.cactoos.Bytes;
  * Word.
  * @since 0.0.6
  */
+@SuppressWarnings({"InvalidBlockTag", "OperatorPrecedence"})
 public final class Word implements Bytes {
+
     /**
      * Content.
      */

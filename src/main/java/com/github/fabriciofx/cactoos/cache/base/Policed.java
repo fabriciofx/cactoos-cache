@@ -18,13 +18,13 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Cache with policies enforcement.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.7
  */
 public final class Policed<K extends Bytes, V extends Bytes>
     implements Cache<K, V>, AutoCloseable {
+
     /**
      * Cache.
      */

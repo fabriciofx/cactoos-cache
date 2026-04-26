@@ -5,14 +5,12 @@
 package com.github.fabriciofx.cactoos.cache.invalidate;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
-import com.github.fabriciofx.cactoos.cache.Entry;
 import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.base.CacheOf;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.cactoos.cache.metadata.MetadataOf;
-import java.util.List;
 import org.cactoos.list.ListOf;
 import org.cactoos.set.SetOf;
 import org.junit.jupiter.api.Test;
@@ -25,6 +23,7 @@ import org.llorllale.cactoos.matchers.HasValue;
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class MetadataInvalidateTest {
+
     @Test
     void invalidateIfMetadataHasAny() {
         final Cache<Word, Synonyms> cache = new CacheOf<>();
@@ -43,13 +42,13 @@ final class MetadataInvalidateTest {
                 new Synonyms("k", "l", "m")
             )
         );
-        final List<Entry<Word, Synonyms>> invalidated = cache
-            .store()
-            .entries()
-            .invalidate(new MetadataInvalidate<>(new ListOf<>("j")));
         new Assertion<>(
             "must invalidate a cache entry if metadata contains a value",
-            () -> invalidated.get(0).key().value(),
+            () -> cache
+                .store()
+                .entries()
+                .invalidate(new MetadataInvalidate<>(new ListOf<>("j")))
+                .get(0).key().value(),
             new HasValue<>(new Word("a"))
         ).affirm();
     }

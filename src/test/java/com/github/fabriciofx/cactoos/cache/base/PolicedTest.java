@@ -13,6 +13,7 @@ import com.github.fabriciofx.cactoos.cache.metadata.MetadataOf;
 import com.github.fabriciofx.cactoos.cache.policies.ImmediatePolicies;
 import com.github.fabriciofx.cactoos.cache.policy.ExpiredPolicy;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import org.cactoos.scalar.Unchecked;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -20,11 +21,11 @@ import org.llorllale.cactoos.matchers.HasValue;
 
 /**
  * {@link Policed} tests.
- *
  * @since 0.0.7
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class PolicedTest {
+
     @Test
     void expiredPolicy() {
         final Cache<Word, Synonyms> cache = new Policed<>(
@@ -38,8 +39,10 @@ final class PolicedTest {
             new EntryOf<>(
                 new KeyOf<>(new Word("a")),
                 new Synonyms("x", "y", "z"),
-                new MetadataOf()
-                    .with("expiration", LocalDateTime.now().minusSeconds(1L))
+                new MetadataOf().with(
+                    "expiration",
+                    LocalDateTime.now(ZoneId.systemDefault()).minusSeconds(1L)
+                )
             )
         );
         cache.store().save(
@@ -47,8 +50,10 @@ final class PolicedTest {
             new EntryOf<>(
                 new KeyOf<>(new Word("b")),
                 new Synonyms("k", "l", "m"),
-                new MetadataOf()
-                    .with("expiration", LocalDateTime.now().plusSeconds(1L))
+                new MetadataOf().with(
+                    "expiration",
+                    LocalDateTime.now(ZoneId.systemDefault()).plusSeconds(1L)
+                )
             )
         );
         new Assertion<>(

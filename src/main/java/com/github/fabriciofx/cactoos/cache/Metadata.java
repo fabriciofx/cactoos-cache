@@ -10,10 +10,10 @@ import java.util.Set;
 
 /**
  * Metadata.
- *
  * @since 0.0.7
  */
 public interface Metadata {
+
     /**
      * Names of metadata items.
      * @return A set of names

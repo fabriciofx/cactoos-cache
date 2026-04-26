@@ -9,6 +9,7 @@ package com.github.fabriciofx.cactoos.cache;
  * @since 0.0.1
  */
 public interface Statistics extends Iterable<Statistic> {
+
     /**
      * Retrieve a statistic.
      * @param name The name of statistic

@@ -13,13 +13,13 @@ import org.cactoos.list.ListOf;
 
 /**
  * Immediate policies.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.13
  */
 public final class ImmediatePolicies<K extends Bytes, V extends Bytes>
     implements Policies<K, V> {
+
     /**
      * Items.
      */
@@ -27,7 +27,6 @@ public final class ImmediatePolicies<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param items Items
      */
     @SafeVarargs
@@ -37,7 +36,6 @@ public final class ImmediatePolicies<K extends Bytes, V extends Bytes>
 
     /**
     * Ctor.
-    *
     * @param items Items
     */
     public ImmediatePolicies(final List<Policy<K, V>> items) {

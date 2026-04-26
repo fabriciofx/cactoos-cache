@@ -16,6 +16,7 @@ import org.llorllale.cactoos.matchers.IsText;
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class Murmur3HashTest {
+
     @Test
     void checkHash() {
         new Assertion<>(

@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 0.0.9
  */
 public final class Replacements implements Statistic {
+
     /**
      * Count.
      */

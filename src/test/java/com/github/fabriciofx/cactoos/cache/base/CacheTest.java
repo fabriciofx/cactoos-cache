@@ -20,6 +20,7 @@ import org.llorllale.cactoos.matchers.Assertion;
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class CacheTest {
+
     @Test
     void saveAndRetrieve() {
         final Cache<Word, Synonyms> cache = new CacheOf<>();

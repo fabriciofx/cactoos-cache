@@ -13,10 +13,12 @@ import org.cactoos.bytes.UncheckedBytes;
 
 /**
  * KeyOf.
- * @param <K> the key value type
+ * @param <K> The key value type
  * @since 0.0.1
  */
+@SuppressWarnings({"InvalidBlockTag", "OperatorPrecedence"})
 public final class KeyOf<K extends Bytes> implements Key<K> {
+
     /**
      * Value.
      */

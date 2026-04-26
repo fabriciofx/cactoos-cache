@@ -5,7 +5,6 @@
 package com.github.fabriciofx.cactoos.cache.metadata;
 
 import com.github.fabriciofx.cactoos.cache.Metadata;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.list.ListOf;
@@ -25,6 +24,7 @@ import org.llorllale.cactoos.matchers.Matches;
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class MetadataOfTest {
+
     @Test
     void retrieveNames() {
         new Assertion<>(
@@ -40,12 +40,12 @@ final class MetadataOfTest {
 
     @Test
     void createANewStringValue() {
-        final List<String> value = new MetadataOf()
-            .with("color", "red")
-            .value("color", new TypeOf<>() { });
         new Assertion<>(
             "must create a new metadata with a string value",
-            () -> value.get(0),
+            () -> new MetadataOf()
+                .with("color", "red")
+                .value("color", new TypeOf<String>() { })
+                .get(0),
             new IsText("red")
         ).affirm();
     }
@@ -53,12 +53,13 @@ final class MetadataOfTest {
     @Test
     void createANewSetOfStrings() {
         final Set<String> tables = new SetOf<>("a", "b", "c");
-        final List<Set<String>> value = new MetadataOf()
-            .with("tables", tables)
-            .value("tables", new TypeOf<>() { });
         new Assertion<>(
             "must create a new metadata with a set of strings value",
-            new HasValues<>(value.get(0)),
+            new HasValues<>(
+                new MetadataOf()
+                    .with("tables", tables)
+                    .value("tables", new TypeOf<Set<String>>() { }).get(0)
+            ),
             new Matches<>(tables)
         ).affirm();
     }
@@ -68,19 +69,19 @@ final class MetadataOfTest {
         final Metadata meta = new MetadataOf()
             .with("expiration", 5)
             .with("unit", TimeUnit.SECONDS);
-        final List<Integer> value = meta.value(
-            "expiration",
-            new TypeOf<>() { }
-        );
-        final List<TimeUnit> unit = meta.value("unit", new TypeOf<>() { });
         new Assertion<>(
             "must create a new metadata with an expiration value",
-            new IsNumber(value.get(0)),
+            new IsNumber(
+                meta.value(
+                    "expiration",
+                    new TypeOf<Integer>() { }
+                ).get(0)
+            ),
             new Matches<>(5)
         ).affirm();
         new Assertion<>(
             "must create a new metadata with a unit value",
-            () -> unit.get(0),
+            () -> meta.value("unit", new TypeOf<TimeUnit>() { }).get(0),
             new HasValue<>(TimeUnit.SECONDS)
         ).affirm();
     }

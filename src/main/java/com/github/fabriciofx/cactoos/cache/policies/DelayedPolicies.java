@@ -8,7 +8,9 @@ import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Policies;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,14 +21,15 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Delayed policies.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.13
  * @checkstyle ParameterNumberCheck (200 lines)
  */
+@SuppressWarnings("InvalidBlockTag")
 public final class DelayedPolicies<K extends Bytes, V extends Bytes>
     implements Policies<K, V> {
+
     /**
      * Items.
      */
@@ -54,7 +57,6 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param delay Delay between executions
      * @param unit Time unit
      * @param items Items
@@ -79,7 +81,6 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param delay Delay between executions
      * @param unit Time unit
      * @param items Items
@@ -103,7 +104,6 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param delay Delay between executions
      * @param unit Time unit
      * @param executor The executor to run the policies
@@ -125,12 +125,17 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
     @Override
     public void apply(final Cache<K, V> cache) {
         if (this.once.compareAndSet(false, true)) {
-            this.executor.value().scheduleWithFixedDelay(
+            final Future<?> future = this.executor.value().scheduleWithFixedDelay(
                 () -> this.items.forEach(policy -> policy.apply(cache)),
                 0L,
                 this.delay,
                 this.unit
             );
+            try {
+                future.get();
+            } catch (final ExecutionException | InterruptedException ex) {
+                throw new IllegalStateException(ex);
+            }
         }
     }
 

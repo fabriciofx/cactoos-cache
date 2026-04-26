@@ -11,7 +11,6 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Murmur3Hash.
- *
  * @since 0.0.1
  * @checkstyle CyclomaticComplexityCheck (200 lines)
  * @checkstyle JavaNCSSCheck (200 lines)
@@ -20,13 +19,13 @@ import org.cactoos.scalar.Unchecked;
  * @checkstyle UnnecessaryParenthesesCheck (200 lines)
  * @checkstyle BooleanExpressionComplexityCheck (200 lines)
  */
-@SuppressWarnings(
-    {
-        "PMD.UnnecessaryCast",
-        "PMD.ImplicitSwitchFallThrough"
-    }
-)
+@SuppressWarnings({
+    "PMD.UnnecessaryCast",
+    "PMD.ImplicitSwitchFallThrough",
+    "InvalidBlockTag"
+})
 public final class Murmur3Hash implements Hash<long[]> {
+
     /**
      * Hex chars.
      */
@@ -42,7 +41,6 @@ public final class Murmur3Hash implements Hash<long[]> {
 
     /**
      * Ctor.
-     *
      * @param bytes Bytes
      */
     public Murmur3Hash(final Bytes bytes) {
@@ -51,9 +49,9 @@ public final class Murmur3Hash implements Hash<long[]> {
 
     /**
      * Ctor.
-     *
      * @param bytes Bytes
      * @param seed The seed
+     * @checkstyle LambdaBodyLengthCheck (100 lines)
      */
     @SuppressWarnings("fallthrough")
     public Murmur3Hash(final Bytes bytes, final int seed) {

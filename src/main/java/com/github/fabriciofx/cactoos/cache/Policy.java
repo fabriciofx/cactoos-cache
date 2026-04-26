@@ -8,11 +8,12 @@ import org.cactoos.Bytes;
 
 /**
  * Policy.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.1
  */
 @FunctionalInterface
 public interface Policy<K extends Bytes, V extends Bytes> {
+
     void apply(Cache<K, V> cache);
 }

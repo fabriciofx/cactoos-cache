@@ -16,16 +16,15 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Thread-safe Map that preserves insertion order.
- *
  * <p>This implementation uses a {@link LinkedHashMap} for insertion-order
  * iteration and a {@link ReentrantLock} for thread safety.</p>
- *
- * @param <K> the key type
- * @param <V> the value type
+ * @param <K> The key type
+ * @param <V> The value type
  * @since 0.0.13
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class ConcurrentLinkedMap<K, V> implements Map<K, V> {
+
     /**
      * Lock.
      */

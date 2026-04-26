@@ -13,12 +13,13 @@ import org.cactoos.bytes.UncheckedBytes;
 
 /**
  * EntryOf.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.3
  */
 public final class EntryOf<K extends Bytes, V extends Bytes>
     implements Entry<K, V> {
+
     /**
      * Key.
      */
@@ -54,11 +55,7 @@ public final class EntryOf<K extends Bytes, V extends Bytes>
      * @param value A value
      * @param metadata The metadata
      */
-    public EntryOf(
-        final Key<K> key,
-        final V value,
-        final Metadata metadata
-    ) {
+    public EntryOf(final Key<K> key, final V value, final Metadata metadata) {
         this.id = key;
         this.val = value;
         this.meta = metadata;

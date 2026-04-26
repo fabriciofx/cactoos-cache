@@ -9,6 +9,7 @@ package com.github.fabriciofx.cactoos.cache;
  * @since 0.0.1
  */
 public interface Statistic {
+
     /**
      * Retrieve the name of statistic.
      * @return The name

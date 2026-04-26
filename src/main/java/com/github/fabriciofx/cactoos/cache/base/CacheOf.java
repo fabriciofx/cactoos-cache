@@ -22,12 +22,13 @@ import org.cactoos.Bytes;
 
 /**
  * CacheOf.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.3
  */
 public final class CacheOf<K extends Bytes, V extends Bytes>
     implements Cache<K, V> {
+
     /**
      * Store.
      */

@@ -12,23 +12,24 @@ import com.github.fabriciofx.cactoos.cache.Policy;
 import com.github.fabriciofx.cactoos.cache.Store;
 import com.github.fabriciofx.cactoos.cache.metadata.TypeOf;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import org.cactoos.Bytes;
 
 /**
  * ExpiredPolicy.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.7
  */
 public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
     implements Policy<K, V> {
+
     @Override
     public void apply(final Cache<K, V> cache) {
         final Evicted<K, V> evicted = cache.evicted();
         final Store<K, V> store = cache.store();
-        final LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
         for (final Key<K> key : store.keys()) {
             final Entry<K, V> entry = store.retrieve(key);
             final List<LocalDateTime> expiration = entry.metadata()

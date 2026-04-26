@@ -9,13 +9,13 @@ import java.lang.reflect.Type;
 
 /**
  * Type of T.
- *
  * @param <T> The type parameter
  * @since 0.0.7
  * @checkstyle NonStaticMethodCheck (100 lines)
  */
-@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
+@SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod", "InvalidBlockTag"})
 public abstract class TypeOf<T> {
+
     /**
      * The type.
      */
@@ -23,6 +23,7 @@ public abstract class TypeOf<T> {
 
     /**
      * Ctor.
+     * @checkstyle ConstructorsCodeFreeCheck (10 lines)
      */
     protected TypeOf() {
         this.typ = ((ParameterizedType)
@@ -41,7 +42,7 @@ public abstract class TypeOf<T> {
     /**
      * Casts an object to T.
      * @param value The object
-     * @return The casted object
+     * @return The cast object
      */
     @SuppressWarnings("unchecked")
     public T cast(final Object value) {

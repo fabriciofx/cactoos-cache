@@ -22,13 +22,15 @@ import org.cactoos.text.UncheckedText;
 /**
  * Logged Store.
  * <p>A {@link Store} decorator to logging store operations.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (500 lines)
  */
+@SuppressWarnings("InvalidBlockTag")
 public final class Logged<K extends Bytes, V extends Bytes>
     implements Store<K, V> {
+
     /**
      * Store.
      */
@@ -51,9 +53,9 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param store The cache to be logged
      * @param from Where the data comes from
+     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
     public Logged(final Store<K, V> store, final String from) {
         this(store, from, Logger.getLogger(from));
@@ -61,7 +63,6 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param store The cache to be logged
      * @param from Where the data comes from
      * @param logger The logger
@@ -85,7 +86,6 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param store The cache to be logged
      * @param from Where the data comes from
      * @param logger The logger
@@ -107,7 +107,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
     public Entry<K, V> retrieve(final Key<K> key) {
         final Entry<K, V> entry = this.origin.retrieve(key);
         final String text;
-        if  (entry.valid()) {
+        if (entry.valid()) {
             text = entry.value().toString();
         } else {
             text = "invalid";

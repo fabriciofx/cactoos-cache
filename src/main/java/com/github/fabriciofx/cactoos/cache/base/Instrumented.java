@@ -14,13 +14,13 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Instrumented Cache.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.1
  */
 public final class Instrumented<K extends Bytes, V extends Bytes>
     implements Cache<K, V> {
+
     /**
      * Cache.
      */
@@ -38,7 +38,6 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param cache The cache
      */
     public Instrumented(final Cache<K, V> cache) {

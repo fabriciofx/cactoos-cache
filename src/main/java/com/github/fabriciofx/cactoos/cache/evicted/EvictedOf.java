@@ -12,13 +12,13 @@ import org.cactoos.Bytes;
 
 /**
  * EvictedOf.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.13
  */
 public final class EvictedOf<K extends Bytes, V extends Bytes>
     implements Evicted<K, V> {
+
     /**
      * Items.
      */

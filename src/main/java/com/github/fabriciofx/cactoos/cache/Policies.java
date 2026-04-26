@@ -8,13 +8,13 @@ import org.cactoos.Bytes;
 
 /**
  * Policies.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.13
  */
 public interface Policies<K extends Bytes, V extends Bytes>
     extends AutoCloseable {
+
     /**
     * Apply policies to the cache.
     * @param cache Cache to apply policies

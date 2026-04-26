@@ -6,10 +6,11 @@ package com.github.fabriciofx.cactoos.cache;
 
 /**
  * Hash.
- * @param <T> the hash value type
+ * @param <T> The hash value type
  * @since 0.0.10
  */
 public interface Hash<T> {
+
     /**
      * Retrieve the hash value.
      * @return The hash value

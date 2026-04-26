@@ -8,12 +8,12 @@ import org.cactoos.Bytes;
 
 /**
  * Evicted.
- *
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.13
  */
 public interface Evicted<K extends Bytes, V extends Bytes> {
+
     /**
      * Add an entry.
      * @param entry The entry

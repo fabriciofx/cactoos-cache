@@ -5,7 +5,6 @@
 package com.github.fabriciofx.cactoos.cache.base;
 
 import com.github.fabriciofx.cactoos.cache.Cache;
-import com.github.fabriciofx.cactoos.cache.Statistics;
 import com.github.fabriciofx.cactoos.cache.Synonyms;
 import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
@@ -18,11 +17,11 @@ import org.llorllale.cactoos.matchers.HasValue;
 
 /**
  * Instrumented tests.
- *
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class InstrumentedTest {
+
     @Test
     void checkHits() {
         final Cache<Word, Synonyms> cache = new Instrumented<>(
@@ -36,10 +35,9 @@ final class InstrumentedTest {
             )
         );
         cache.store().retrieve(new KeyOf<>(new Word("a")));
-        final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the hits statistic",
-            () -> stats.statistic("hits").value(),
+            () -> cache.statistics().statistic("hits").value(),
             new HasValue<>(1)
         ).affirm();
     }
@@ -58,10 +56,9 @@ final class InstrumentedTest {
         );
         cache.store().retrieve(new KeyOf<>(new Word("a")));
         cache.store().contains(new KeyOf<>(new Word("a")));
-        final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the lookups statistic",
-            () -> stats.statistic("lookups").value(),
+            () -> cache.statistics().statistic("lookups").value(),
             new HasValue<>(2)
         ).affirm();
     }
@@ -79,10 +76,9 @@ final class InstrumentedTest {
             )
         );
         cache.store().delete(new KeyOf<>(new Word("a")));
-        final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the invalidations statistic",
-            () -> stats.statistic("invalidations").value(),
+            () -> cache.statistics().statistic("invalidations").value(),
             new HasValue<>(1)
         ).affirm();
     }
@@ -100,10 +96,9 @@ final class InstrumentedTest {
             )
         );
         cache.store().retrieve(new KeyOf<>(new Word("b")));
-        final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the misses statistic",
-            () -> stats.statistic("misses").value(),
+            () -> cache.statistics().statistic("misses").value(),
             new HasValue<>(1)
         ).affirm();
     }
@@ -132,10 +127,9 @@ final class InstrumentedTest {
                 new Synonyms("k", "l", "m")
             )
         );
-        final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the evictions statistic",
-            () -> stats.statistic("evictions").value(),
+            () -> cache.statistics().statistic("evictions").value(),
             new HasValue<>(1)
         ).affirm();
     }
@@ -159,10 +153,9 @@ final class InstrumentedTest {
                 new Synonyms("k", "l", "m")
             )
         );
-        final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the insertions statistic",
-            () -> stats.statistic("insertions").value(),
+            () -> cache.statistics().statistic("insertions").value(),
             new HasValue<>(2)
         ).affirm();
     }
@@ -186,10 +179,9 @@ final class InstrumentedTest {
                 new Synonyms("i", "j", "k")
             )
         );
-        final Statistics stats = cache.statistics();
         new Assertion<>(
             "must check the replacements statistic",
-            () -> stats.statistic("replacements").value(),
+            () -> cache.statistics().statistic("replacements").value(),
             new HasValue<>(1)
         ).affirm();
     }

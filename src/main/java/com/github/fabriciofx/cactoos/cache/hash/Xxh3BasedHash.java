@@ -11,12 +11,16 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Xxh3BasedHash.
- *
  * @since 0.0.10
  * @checkstyle BooleanExpressionComplexityCheck (200 lines)
  */
-@SuppressWarnings({"PMD.UnnecessaryLocalRule", "PMD.UnnecessaryCast"})
+@SuppressWarnings({
+    "PMD.UnnecessaryLocalRule",
+    "PMD.UnnecessaryCast",
+    "InvalidBlockTag"
+})
 public final class Xxh3BasedHash implements Hash<Long> {
+
     /**
      * Prime constant.
      */
@@ -63,8 +67,8 @@ public final class Xxh3BasedHash implements Hash<Long> {
 
     /**
      * Ctor.
-     *
      * @param bytes Bytes
+     * @checkstyle LambdaBodyLengthCheck (100 lines)
      */
     public Xxh3BasedHash(final Bytes bytes) {
         this.once = new Unchecked<>(

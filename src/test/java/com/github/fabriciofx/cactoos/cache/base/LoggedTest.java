@@ -10,7 +10,6 @@ import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.fake.logger.FakeLogger;
-import org.cactoos.text.Replaced;
 import org.cactoos.text.TextOf;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -23,6 +22,7 @@ import org.llorllale.cactoos.matchers.Matches;
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class LoggedTest {
+
     @Test
     void logSaveAndRetrieve() {
         final FakeLogger logger = new FakeLogger();
@@ -49,13 +49,7 @@ final class LoggedTest {
                 'c654297dc7d34acc' and value '[x, y, z]'
                 """
             ),
-            new Matches<>(
-                new Replaced(
-                    new TextOf(logger.toString()),
-                    "\r\n",
-                    "\n"
-                )
-            )
+            new Matches<>(new TextOf(logger.toString()))
         ).affirm();
     }
 
@@ -86,13 +80,7 @@ final class LoggedTest {
                 value '[k, l, m]'
                 """
             ),
-            new Matches<>(
-                new Replaced(
-                    new TextOf(logger.toString()),
-                    "\r\n",
-                    "\n"
-                )
-            )
+            new Matches<>(new TextOf(logger.toString()))
         ).affirm();
     }
 }

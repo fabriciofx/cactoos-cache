@@ -8,11 +8,12 @@ import org.cactoos.Bytes;
 
 /**
  * Entry.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.1
  */
 public interface Entry<K extends Bytes, V extends Bytes> {
+
     /**
      * Retrieve the key associated with this entry.
      * @return The key

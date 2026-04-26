@@ -10,10 +10,10 @@ import org.cactoos.Scalar;
 
 /**
  * LogLevel.
- *
  * @since 0.0.13
  */
 public final class LogLevel implements Scalar<Level> {
+
     /**
      * Logger.
      */

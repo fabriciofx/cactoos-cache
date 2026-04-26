@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 0.0.1
  */
 public final class Evictions implements Statistic {
+
     /**
      * Count.
      */

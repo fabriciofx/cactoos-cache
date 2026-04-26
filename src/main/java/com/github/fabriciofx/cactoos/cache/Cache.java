@@ -8,14 +8,15 @@ import org.cactoos.Bytes;
 
 /**
  * Cache.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.1
  */
 public interface Cache<K extends Bytes, V extends Bytes> {
+
     /**
      * Store.
-     * @return The store.
+     * @return The store
      */
     Store<K, V> store();
 

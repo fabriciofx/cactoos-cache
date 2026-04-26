@@ -17,10 +17,10 @@ import org.cactoos.map.MapOf;
 
 /**
  * Metadata.
- *
  * @since 0.0.7
  */
 public final class MetadataOf implements Metadata {
+
     /**
      * Items.
      */
@@ -35,7 +35,6 @@ public final class MetadataOf implements Metadata {
 
     /**
      * Ctor.
-     *
      * @param items Metadata items
      */
     @SafeVarargs
@@ -45,7 +44,6 @@ public final class MetadataOf implements Metadata {
 
     /**
      * Ctor.
-     *
      * @param items Metadata items
      */
     public MetadataOf(final Map<String, Object> items) {
@@ -77,16 +75,15 @@ public final class MetadataOf implements Metadata {
     @Override
     @SuppressWarnings("unchecked")
     public <T> boolean hasAny(final Iterable<T> values) {
-        return this.items.values().stream()
-            .flatMap(
-                value ->
-                    Stream.concat(
-                        Stream.of(value),
-                        Stream.of(value)
-                            .filter(Collection.class::isInstance)
-                            .map(collection -> (Collection<T>) collection)
-                            .flatMap(Collection::stream)
-                    )
+        return this.items.values().stream().flatMap(
+            value ->
+                Stream.concat(
+                    Stream.of(value),
+                    Stream.of(value)
+                        .filter(Collection.class::isInstance)
+                        .map(collection -> (Collection<T>) collection)
+                        .flatMap(Collection::stream)
+                )
             )
             .anyMatch(new ListOf<>(values)::contains);
     }

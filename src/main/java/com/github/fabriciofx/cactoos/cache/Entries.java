@@ -9,15 +9,16 @@ import org.cactoos.Bytes;
 
 /**
  * Entries.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.1
  */
 public interface Entries<K extends Bytes, V extends Bytes>
     extends Iterable<Entry<K, V>> {
+
     /**
      * Retrieve the amount of entries.
-     * @return The amount of entries.
+     * @return The amount of entries
      */
     int count();
 

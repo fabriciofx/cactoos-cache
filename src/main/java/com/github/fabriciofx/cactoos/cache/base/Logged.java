@@ -24,13 +24,15 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * Logged Cache.
- * @param <K> the key value type
- * @param <V> the entry value type
+ * @param <K> The key value type
+ * @param <V> The entry value type
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (200 lines)
  */
+@SuppressWarnings("InvalidBlockTag")
 public final class Logged<K extends Bytes, V extends Bytes>
     implements Cache<K, V> {
+
     /**
      * Cache.
      */
@@ -58,9 +60,9 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param cache The cache to be logged
      * @param from Where the data comes from
+     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
     public Logged(final Cache<K, V> cache, final String from) {
         this(cache, from, Logger.getLogger(from));
@@ -68,7 +70,6 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
-     *
      * @param cache The cache to be logged
      * @param from Where the data comes from
      * @param logger The logger
@@ -90,6 +91,13 @@ public final class Logged<K extends Bytes, V extends Bytes>
         );
     }
 
+    /**
+     * Ctor.
+     * @param cache The cache to be logged
+     * @param from Where the data comes from
+     * @param logger The logger
+     * @param level The level to be used to log
+     */
     public Logged(
         final Cache<K, V> cache,
         final String from,
@@ -124,10 +132,10 @@ public final class Logged<K extends Bytes, V extends Bytes>
             this.level.value(),
             new UncheckedText(
                 new FormattedText(
-                    "[%s] Cache statistics:\n%s",
+                    "[%s] Cache statistics:%n%s",
                     this.from,
                     new Joined(
-                        new TextOf("\n"),
+                        new TextOf(System.lineSeparator()),
                         new Mapped<Text>(
                             stat -> new FormattedText(
                                 "%s %s: %d",

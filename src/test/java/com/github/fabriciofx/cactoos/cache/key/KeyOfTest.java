@@ -17,6 +17,7 @@ import org.llorllale.cactoos.matchers.IsText;
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class KeyOfTest {
+
     @Test
     void hashAsValue() {
         new Assertion<>(

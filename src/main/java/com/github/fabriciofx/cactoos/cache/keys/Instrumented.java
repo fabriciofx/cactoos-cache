@@ -12,10 +12,11 @@ import org.cactoos.Bytes;
 
 /**
  * Instrumented Keys.
- * @param <K> the key value type
+ * @param <K> The key value type
  * @since 0.0.1
  */
 public final class Instrumented<K extends Bytes> implements Keys<K> {
+
     /**
      * Keys.
      */
@@ -31,10 +32,7 @@ public final class Instrumented<K extends Bytes> implements Keys<K> {
      * @param keys The keys
      * @param statistics The statistics
      */
-    public Instrumented(
-        final Keys<K> keys,
-        final Statistics statistics
-    ) {
+    public Instrumented(final Keys<K> keys, final Statistics statistics) {
         this.origin = keys;
         this.stats = statistics;
     }

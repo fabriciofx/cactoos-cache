@@ -18,11 +18,13 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * Logged Keys.
- * @param <K> the key value type
+ * @param <K> The key value type
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (300 lines)
  */
+@SuppressWarnings("InvalidBlockTag")
 public final class Logged<K extends Bytes> implements Keys<K> {
+
     /**
      * Keys.
      */
@@ -45,9 +47,9 @@ public final class Logged<K extends Bytes> implements Keys<K> {
 
     /**
      * Ctor.
-     *
      * @param keys The cache to be logged
      * @param from Where the data comes from
+     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
     public Logged(final Keys<K> keys, final String from) {
         this(keys, from, Logger.getLogger(from));
@@ -55,7 +57,6 @@ public final class Logged<K extends Bytes> implements Keys<K> {
 
     /**
      * Ctor.
-     *
      * @param keys The cache to be logged
      * @param from Where the data comes from
      * @param logger The logger
@@ -79,7 +80,6 @@ public final class Logged<K extends Bytes> implements Keys<K> {
 
     /**
      * Ctor.
-     *
      * @param keys The cache to be logged
      * @param from Where the data comes from
      * @param logger The logger

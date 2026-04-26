@@ -5,7 +5,6 @@
 
 /**
  * Policies.
- *
  * @since 0.0.13
  */
 package com.github.fabriciofx.cactoos.cache.policies;
