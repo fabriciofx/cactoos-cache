@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Eviction.
+ *
  * <p>Number of cache entries removed automatically.</p>
  *
  * @since 0.0.1

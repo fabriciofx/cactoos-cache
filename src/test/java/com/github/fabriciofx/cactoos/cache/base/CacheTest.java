@@ -15,7 +15,8 @@ import org.llorllale.cactoos.matchers.Assertion;
 
 /**
  * CacheTest.
- * <p>Tests for {@link Cache}.
+ *
+ * <p>Tests for {@link Cache}.</p>
  *
  * @since 0.0.1
  */

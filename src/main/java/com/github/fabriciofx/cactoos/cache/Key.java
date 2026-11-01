@@ -8,7 +8,9 @@ import org.cactoos.Bytes;
 
 /**
  * Key.
- * <p>You MUST implement equals() and hashCode() in Key's implementation class.
+ *
+ * <p>You MUST implement equals() and hashCode() in Key's implementation
+ * class.</p>
  *
  * @param <K> The key value type
  * @since 0.0.1

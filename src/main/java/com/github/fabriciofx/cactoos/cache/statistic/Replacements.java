@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Replacements.
+ *
  * <p>Number of times the entry was replaced by new save.</p>
  *
  * @since 0.0.9

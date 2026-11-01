@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Lookups.
+ *
  * <p>Total of accesses (hits + misses).</p>
  *
  * @since 0.0.1

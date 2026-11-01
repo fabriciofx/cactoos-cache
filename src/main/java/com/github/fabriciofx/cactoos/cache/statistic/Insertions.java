@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Inserts.
+ *
  * <p>Number of times a new entry has been inserted in the cache.</p>
  *
  * @since 0.0.9

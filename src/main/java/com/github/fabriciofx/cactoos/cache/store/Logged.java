@@ -21,7 +21,8 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * Logged Store.
- * <p>A {@link Store} decorator to logging store operations.
+ *
+ * <p>A {@link Store} decorator to logging store operations.</p>
  *
  * @param <K> The key value type
  * @param <V> The entry value type

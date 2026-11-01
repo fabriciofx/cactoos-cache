@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Invalidation.
+ *
  * <p>Explicit removals.</p>
  *
  * @since 0.0.1

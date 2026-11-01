@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Hits.
+ *
  * <p>Number of times the value was found in the cache.</p>
  *
  * @since 0.0.1

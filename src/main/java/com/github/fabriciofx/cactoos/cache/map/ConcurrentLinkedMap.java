@@ -16,6 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Thread-safe Map that preserves insertion order.
+ *
  * <p>This implementation uses a {@link LinkedHashMap} for insertion-order
  * iteration and a {@link ReentrantLock} for thread safety.</p>
  *
