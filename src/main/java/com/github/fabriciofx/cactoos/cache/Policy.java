@@ -16,5 +16,10 @@ import org.cactoos.Bytes;
 @FunctionalInterface
 public interface Policy<K extends Bytes, V extends Bytes> {
 
+    /**
+     * Apply the policy to the cache.
+     *
+     * @param cache Cache to apply the policy
+     */
     void apply(Cache<K, V> cache);
 }

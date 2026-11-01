@@ -18,5 +18,11 @@ import org.cactoos.Bytes;
 @FunctionalInterface
 public interface Invalidate<K extends Bytes, V extends Bytes> {
 
+    /**
+     * Select the entries to be invalidated.
+     *
+     * @param entries The cache entries
+     * @return The invalidated entries
+     */
     List<Entry<K, V>> apply(Map<Key<K>, Entry<K, V>> entries);
 }

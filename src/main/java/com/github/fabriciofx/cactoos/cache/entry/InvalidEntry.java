@@ -19,6 +19,13 @@ import org.cactoos.Bytes;
 public final class InvalidEntry<K extends Bytes, V extends Bytes>
     implements Entry<K, V> {
 
+    /**
+     * Ctor.
+     */
+    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
+    public InvalidEntry() {
+    }
+
     @Override
     public Key<K> key() {
         throw new UnsupportedOperationException("#key(): invalid entry");

@@ -26,6 +26,13 @@ import org.cactoos.Bytes;
 public final class ExpiredPolicy<K extends Bytes, V extends Bytes>
     implements Policy<K, V> {
 
+    /**
+     * Ctor.
+     */
+    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
+    public ExpiredPolicy() {
+    }
+
     @Override
     public void apply(final Cache<K, V> cache) {
         final Evicted<K, V> evicted = cache.evicted();
