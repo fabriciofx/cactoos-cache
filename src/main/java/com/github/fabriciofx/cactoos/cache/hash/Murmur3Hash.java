@@ -20,7 +20,6 @@ import org.cactoos.scalar.Unchecked;
  * @checkstyle BooleanExpressionComplexityCheck (200 lines)
  */
 @SuppressWarnings({
-    "PMD.UnnecessaryCast",
     "PMD.ImplicitSwitchFallThrough",
     "InvalidBlockTag"
 })

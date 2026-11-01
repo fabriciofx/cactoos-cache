@@ -22,7 +22,6 @@ import org.llorllale.cactoos.matchers.Matches;
  *
  * @since 0.0.1
  */
-@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class LoggedTest {
 
     @Test

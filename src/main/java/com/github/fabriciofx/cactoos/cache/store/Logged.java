@@ -27,9 +27,7 @@ import org.cactoos.text.UncheckedText;
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.1
- * @checkstyle ParameterNumberCheck (500 lines)
  */
-@SuppressWarnings("InvalidBlockTag")
 public final class Logged<K extends Bytes, V extends Bytes>
     implements Store<K, V> {
 
@@ -58,7 +56,6 @@ public final class Logged<K extends Bytes, V extends Bytes>
      *
      * @param store The cache to be logged
      * @param from Where the data comes from
-     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
     public Logged(final Store<K, V> store, final String from) {
         this(store, from, Logger.getLogger(from));

@@ -20,7 +20,6 @@ import org.cactoos.Bytes;
  * @param <V> The entry value type
  * @since 0.0.9
  */
-@SuppressWarnings("PMD.UnnecessaryLocalRule")
 public final class Policed<K extends Bytes, V extends Bytes>
     implements Store<K, V> {
 

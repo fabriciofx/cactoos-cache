@@ -23,7 +23,6 @@ import org.llorllale.cactoos.matchers.Matches;
  *
  * @since 0.0.7
  */
-@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class MetadataOfTest {
 
     @Test

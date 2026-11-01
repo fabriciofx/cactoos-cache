@@ -17,7 +17,6 @@ import org.cactoos.scalar.Unchecked;
  */
 @SuppressWarnings({
     "PMD.UnnecessaryLocalRule",
-    "PMD.UnnecessaryCast",
     "InvalidBlockTag"
 })
 public final class Xxh3BasedHash implements Hash<Long> {

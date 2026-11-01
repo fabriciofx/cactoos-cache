@@ -16,10 +16,7 @@ import org.llorllale.cactoos.matchers.RunsInThreads;
  * {@link ConcurrentLinkedMap} tests.
  *
  * @since 0.0.13
- * @checkstyle MagicNumberCheck (300 lines)
- * @checkstyle JavadocMethodCheck (300 lines)
  */
-@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "InvalidBlockTag"})
 final class ConcurrentLinkedMapTest {
 
     @Test

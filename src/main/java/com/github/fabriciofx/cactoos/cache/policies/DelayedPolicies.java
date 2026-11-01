@@ -25,9 +25,7 @@ import org.cactoos.scalar.Unchecked;
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.13
- * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings("InvalidBlockTag")
 public final class DelayedPolicies<K extends Bytes, V extends Bytes>
     implements Policies<K, V> {
 

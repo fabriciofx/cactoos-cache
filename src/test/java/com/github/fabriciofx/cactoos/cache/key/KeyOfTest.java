@@ -16,7 +16,6 @@ import org.llorllale.cactoos.matchers.IsText;
  *
  * @since 0.0.10
  */
-@SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
 final class KeyOfTest {
 
     @Test
