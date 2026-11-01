@@ -17,10 +17,10 @@ public interface Policies<K extends Bytes, V extends Bytes>
     extends AutoCloseable {
 
     /**
-    * Apply policies to the cache.
+     * Apply policies to the cache.
      *
-    * @param cache Cache to apply policies
-    */
+     * @param cache Cache to apply policies
+     */
     void apply(Cache<K, V> cache);
 
     @Override

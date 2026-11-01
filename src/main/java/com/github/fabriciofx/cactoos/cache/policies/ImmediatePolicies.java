@@ -37,10 +37,10 @@ public final class ImmediatePolicies<K extends Bytes, V extends Bytes>
     }
 
     /**
-    * Ctor.
+     * Ctor.
      *
-    * @param items Items
-    */
+     * @param items Items
+     */
     public ImmediatePolicies(final List<Policy<K, V>> items) {
         this.items = items;
     }

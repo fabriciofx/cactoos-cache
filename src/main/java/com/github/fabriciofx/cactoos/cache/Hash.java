@@ -27,9 +27,9 @@ public interface Hash<T> {
     String asString();
 
     /**
-    * Retrieve the hash value as an integer.
+     * Retrieve the hash value as an integer.
      *
-    * @return The hash value as an integer
-    */
+     * @return The hash value as an integer
+     */
     int asInt();
 }
