@@ -170,13 +170,13 @@ public final class Xxh3BasedHash implements Hash<Long> {
     }
 
     private static long littleEndian(final byte[] bytes, final int offset) {
-        return ((long) bytes[offset] & 0xff)
-            | (((long) bytes[offset + 1] & 0xff) << 8)
-            | (((long) bytes[offset + 2] & 0xff) << 16)
-            | (((long) bytes[offset + 3] & 0xff) << 24)
-            | (((long) bytes[offset + 4] & 0xff) << 32)
-            | (((long) bytes[offset + 5] & 0xff) << 40)
-            | (((long) bytes[offset + 6] & 0xff) << 48)
-            | (((long) bytes[offset + 7] & 0xff) << 56);
+        return ((long) bytes[offset] & 0xFF)
+            | (((long) bytes[offset + 1] & 0xFF) << 8)
+            | (((long) bytes[offset + 2] & 0xFF) << 16)
+            | (((long) bytes[offset + 3] & 0xFF) << 24)
+            | (((long) bytes[offset + 4] & 0xFF) << 32)
+            | (((long) bytes[offset + 5] & 0xFF) << 40)
+            | (((long) bytes[offset + 6] & 0xFF) << 48)
+            | (((long) bytes[offset + 7] & 0xFF) << 56);
     }
 }

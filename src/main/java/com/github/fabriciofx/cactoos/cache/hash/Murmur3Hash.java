@@ -64,11 +64,11 @@ public final class Murmur3Hash implements Hash<long[]> {
                     final byte[] data = bytes.asBytes();
                     final int length = data.length;
                     final int blocks = length >> 4;
-                    final long first = 0x87c37b91114253d5L;
-                    final long second = 0x4cf5ad432745937fL;
+                    final long first = 0x87C37B91114253D5L;
+                    final long second = 0x4CF5AD432745937FL;
                     final long[] hash = new long[2];
-                    hash[0] = seed & 0xffffffffL;
-                    hash[1] = seed & 0xffffffffL;
+                    hash[0] = seed & 0xFFFFFFFFL;
+                    hash[1] = seed & 0xFFFFFFFFL;
                     for (int num = 0; num < blocks; ++num) {
                         final int index = num << 4;
                         long keia = Murmur3Hash.littleEndian(data, index);
@@ -79,53 +79,53 @@ public final class Murmur3Hash implements Hash<long[]> {
                         hash[0] ^= keia;
                         hash[0] = Long.rotateLeft(hash[0], 27);
                         hash[0] += hash[1];
-                        hash[0] = hash[0] * 5 + 0x52dce729;
+                        hash[0] = hash[0] * 5 + 0x52DCE729;
                         keib *= second;
                         keib = Long.rotateLeft(keib, 33);
                         keib *= first;
                         hash[1] ^= keib;
                         hash[1] = Long.rotateLeft(hash[1], 31);
                         hash[1] += hash[0];
-                        hash[1] = hash[1] * 5 + 0x38495ab5;
+                        hash[1] = hash[1] * 5 + 0x38495AB5;
                     }
                     long one = 0;
                     long two = 0;
                     final int tail = blocks << 4;
                     switch (length & 15) {
                         case 15:
-                            two ^= ((long) data[tail + 14] & 0xff) << 48;
+                            two ^= ((long) data[tail + 14] & 0xFF) << 48;
                         case 14:
-                            two ^= ((long) data[tail + 13] & 0xff) << 40;
+                            two ^= ((long) data[tail + 13] & 0xFF) << 40;
                         case 13:
-                            two ^= ((long) data[tail + 12] & 0xff) << 32;
+                            two ^= ((long) data[tail + 12] & 0xFF) << 32;
                         case 12:
-                            two ^= ((long) data[tail + 11] & 0xff) << 24;
+                            two ^= ((long) data[tail + 11] & 0xFF) << 24;
                         case 11:
-                            two ^= ((long) data[tail + 10] & 0xff) << 16;
+                            two ^= ((long) data[tail + 10] & 0xFF) << 16;
                         case 10:
-                            two ^= ((long) data[tail + 9] & 0xff) << 8;
+                            two ^= ((long) data[tail + 9] & 0xFF) << 8;
                         case 9:
-                            two ^= ((long) data[tail + 8] & 0xff);
+                            two ^= ((long) data[tail + 8] & 0xFF);
                             two *= second;
                             two = Long.rotateLeft(two, 33);
                             two *= first;
                             hash[1] ^= two;
                         case 8:
-                            one ^= ((long) data[tail + 7] & 0xff) << 56;
+                            one ^= ((long) data[tail + 7] & 0xFF) << 56;
                         case 7:
-                            one ^= ((long) data[tail + 6] & 0xff) << 48;
+                            one ^= ((long) data[tail + 6] & 0xFF) << 48;
                         case 6:
-                            one ^= ((long) data[tail + 5] & 0xff) << 40;
+                            one ^= ((long) data[tail + 5] & 0xFF) << 40;
                         case 5:
-                            one ^= ((long) data[tail + 4] & 0xff) << 32;
+                            one ^= ((long) data[tail + 4] & 0xFF) << 32;
                         case 4:
-                            one ^= ((long) data[tail + 3] & 0xff) << 24;
+                            one ^= ((long) data[tail + 3] & 0xFF) << 24;
                         case 3:
-                            one ^= ((long) data[tail + 2] & 0xff) << 16;
+                            one ^= ((long) data[tail + 2] & 0xFF) << 16;
                         case 2:
-                            one ^= ((long) data[tail + 1] & 0xff) << 8;
+                            one ^= ((long) data[tail + 1] & 0xFF) << 8;
                         case 1:
-                            one ^= ((long) data[tail] & 0xff);
+                            one ^= ((long) data[tail] & 0xFF);
                             one *= first;
                             one = Long.rotateLeft(one, 31);
                             one *= second;
@@ -175,27 +175,27 @@ public final class Murmur3Hash implements Hash<long[]> {
         final long[] hash = this.once.value();
         long mixed = hash[0] ^ hash[1];
         mixed ^= mixed >>> 33;
-        mixed *= 0xff51afd7ed558ccdL;
+        mixed *= 0xFF51AFD7ED558CCDL;
         return (int) mixed;
     }
 
     private static long littleEndian(final byte[] bytes, final int offset) {
-        return ((long) bytes[offset] & 0xff)
-            | (((long) bytes[offset + 1] & 0xff) << 8)
-            | (((long) bytes[offset + 2] & 0xff) << 16)
-            | (((long) bytes[offset + 3] & 0xff) << 24)
-            | (((long) bytes[offset + 4] & 0xff) << 32)
-            | (((long) bytes[offset + 5] & 0xff) << 40)
-            | (((long) bytes[offset + 6] & 0xff) << 48)
-            | (((long) bytes[offset + 7] & 0xff) << 56);
+        return ((long) bytes[offset] & 0xFF)
+            | (((long) bytes[offset + 1] & 0xFF) << 8)
+            | (((long) bytes[offset + 2] & 0xFF) << 16)
+            | (((long) bytes[offset + 3] & 0xFF) << 24)
+            | (((long) bytes[offset + 4] & 0xFF) << 32)
+            | (((long) bytes[offset + 5] & 0xFF) << 40)
+            | (((long) bytes[offset + 6] & 0xFF) << 48)
+            | (((long) bytes[offset + 7] & 0xFF) << 56);
     }
 
     private static long fmix(final long value) {
         long result = value;
         result ^= result >>> 33;
-        result *= 0xff51afd7ed558ccdL;
+        result *= 0xFF51AFD7ED558CCDL;
         result ^= result >>> 33;
-        result *= 0xc4ceb9fe1a85ec53L;
+        result *= 0xC4CEB9FE1A85EC53L;
         result ^= result >>> 33;
         return result;
     }
