@@ -43,11 +43,6 @@ public final class Xxh3BasedHash implements Hash<Long> {
     private static final long PRIME4 = 0x85EBCA77C2B2AE63L;
 
     /**
-     * Prime constant.
-     */
-    private static final long PRIME5 = 0x165667919E3779F9L;
-
-    /**
      * Secret.
      */
     private static final long[] SECRET = {
@@ -164,7 +159,7 @@ public final class Xxh3BasedHash implements Hash<Long> {
     private static long avalanche(final long value) {
         long hash = value;
         hash ^= hash >>> 37;
-        hash *= Xxh3BasedHash.PRIME5;
+        hash *= 0x165667919E3779F9L;
         hash ^= hash >>> 32;
         return hash;
     }

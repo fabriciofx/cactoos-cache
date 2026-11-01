@@ -17,7 +17,6 @@ import org.cactoos.scalar.Unchecked;
  * @checkstyle JavaNCSSCheck (200 lines)
  * @checkstyle ExecutableStatementCountCheck (200 lines)
  * @checkstyle FallThroughCheck (200 lines)
- * @checkstyle UnnecessaryParenthesesCheck (200 lines)
  * @checkstyle BooleanExpressionComplexityCheck (200 lines)
  */
 @SuppressWarnings({
@@ -72,7 +71,6 @@ public final class Murmur3Hash implements Hash<long[]> {
                     for (int num = 0; num < blocks; ++num) {
                         final int index = num << 4;
                         long keia = Murmur3Hash.littleEndian(data, index);
-                        long keib = Murmur3Hash.littleEndian(data, index + 8);
                         keia *= first;
                         keia = Long.rotateLeft(keia, 31);
                         keia *= second;
@@ -80,6 +78,7 @@ public final class Murmur3Hash implements Hash<long[]> {
                         hash[0] = Long.rotateLeft(hash[0], 27);
                         hash[0] += hash[1];
                         hash[0] = hash[0] * 5 + 0x52DCE729;
+                        long keib = Murmur3Hash.littleEndian(data, index + 8);
                         keib *= second;
                         keib = Long.rotateLeft(keib, 33);
                         keib *= first;
@@ -105,7 +104,7 @@ public final class Murmur3Hash implements Hash<long[]> {
                         case 10:
                             two ^= ((long) data[tail + 9] & 0xFF) << 8;
                         case 9:
-                            two ^= ((long) data[tail + 8] & 0xFF);
+                            two ^= (long) data[tail + 8] & 0xFF;
                             two *= second;
                             two = Long.rotateLeft(two, 33);
                             two *= first;
@@ -125,7 +124,7 @@ public final class Murmur3Hash implements Hash<long[]> {
                         case 2:
                             one ^= ((long) data[tail + 1] & 0xFF) << 8;
                         case 1:
-                            one ^= ((long) data[tail] & 0xFF);
+                            one ^= (long) data[tail] & 0xFF;
                             one *= first;
                             one = Long.rotateLeft(one, 31);
                             one *= second;
