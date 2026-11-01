@@ -10,11 +10,9 @@ import com.github.fabriciofx.cactoos.cache.Word;
 import com.github.fabriciofx.cactoos.cache.entry.EntryOf;
 import com.github.fabriciofx.cactoos.cache.key.KeyOf;
 import com.github.fabriciofx.fake.logger.FakeLogger;
-import org.cactoos.text.TextOf;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
 import org.llorllale.cactoos.matchers.HasLines;
-import org.llorllale.cactoos.matchers.HasString;
 import org.llorllale.cactoos.matchers.Matches;
 
 /**
@@ -72,16 +70,16 @@ final class LoggedTest {
         cache.store().delete(new KeyOf<>(new Word("b")));
         new Assertion<>(
             "must log save and delete from cache",
-            new HasString(
+            new HasLines(
                 """
                 [cache] Storing in cache with key \
-                '906a98983c4ba12d' and value '[k, l, m]'
+                '906a98983c4ba12d' and value '[k, l, m]'""",
+                """
                 [cache] Deleting into cache with key \
                 '906a98983c4ba12d' and returning \
-                value '[k, l, m]'
-                """
+                value '[k, l, m]'"""
             ),
-            new Matches<>(new TextOf(logger.toString()))
+            new Matches<>(logger.toString())
         ).affirm();
     }
 }
