@@ -13,6 +13,7 @@ import com.github.fabriciofx.fake.logger.FakeLogger;
 import org.cactoos.text.TextOf;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
+import org.llorllale.cactoos.matchers.HasLines;
 import org.llorllale.cactoos.matchers.HasString;
 import org.llorllale.cactoos.matchers.Matches;
 
@@ -41,15 +42,15 @@ final class LoggedTest {
         cache.store().retrieve(new KeyOf<>(new Word("a")));
         new Assertion<>(
             "must log save and retrieve from cache",
-            new HasString(
+            new HasLines(
                 """
                 [cache] Storing in cache with key \
-                'c654297dc7d34acc' and value '[x, y, z]'
-                [cache] Retrieving from cache with key \
-                'c654297dc7d34acc' and value '[x, y, z]'
+                'c654297dc7d34acc' and value '[x, y, z]'""",
                 """
+                [cache] Retrieving from cache with key \
+                'c654297dc7d34acc' and value '[x, y, z]'"""
             ),
-            new Matches<>(new TextOf(logger.toString()))
+            new Matches<>(logger.toString())
         ).affirm();
     }
 
