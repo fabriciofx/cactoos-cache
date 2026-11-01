@@ -182,7 +182,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
             this.level.value(),
             new UncheckedText(
                 new FormattedText(
-                    "[%s] Retrieve the cache entries",
+                    "[%s] Retrieve all the cache entries",
                     this.from
                 )
             ).asString()
