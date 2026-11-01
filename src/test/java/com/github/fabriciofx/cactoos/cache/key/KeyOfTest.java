@@ -13,6 +13,7 @@ import org.llorllale.cactoos.matchers.IsText;
 
 /**
  * KeyOf tests.
+ *
  * @since 0.0.10
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")

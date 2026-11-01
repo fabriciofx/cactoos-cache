@@ -12,6 +12,7 @@ import org.llorllale.cactoos.matchers.IsText;
 
 /**
  * Murmur3Hash tests.
+ *
  * @since 0.0.10
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")

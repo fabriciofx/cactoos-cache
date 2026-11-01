@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Hits.
  * <p>Number of times the value was found in the cache.</p>
+ *
  * @since 0.0.1
  */
 public final class Hits implements Statistic {
@@ -28,6 +29,7 @@ public final class Hits implements Statistic {
 
     /**
      * Ctor.
+     *
      * @param count Count
      */
     public Hits(final AtomicInteger count) {

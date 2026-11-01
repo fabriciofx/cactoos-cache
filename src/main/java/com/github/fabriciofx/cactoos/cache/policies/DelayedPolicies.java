@@ -21,6 +21,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Delayed policies.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.13
@@ -57,6 +58,7 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param delay Delay between executions
      * @param unit Time unit
      * @param items Items
@@ -81,6 +83,7 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param delay Delay between executions
      * @param unit Time unit
      * @param items Items
@@ -104,6 +107,7 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param delay Delay between executions
      * @param unit Time unit
      * @param executor The executor to run the policies

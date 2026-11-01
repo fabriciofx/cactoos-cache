@@ -8,6 +8,7 @@ import org.cactoos.Bytes;
 
 /**
  * Cache.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.1
@@ -16,18 +17,21 @@ public interface Cache<K extends Bytes, V extends Bytes> {
 
     /**
      * Store.
+     *
      * @return The store
      */
     Store<K, V> store();
 
     /**
      * Statistics.
+     *
      * @return The statistics
      */
     Statistics statistics();
 
     /**
      * Evicted entries.
+     *
      * @return The evicted entries
      */
     Evicted<K, V> evicted();
@@ -39,6 +43,7 @@ public interface Cache<K extends Bytes, V extends Bytes> {
 
     /**
      * Size of the cache in bytes.
+     *
      * @return The size
      */
     int size();

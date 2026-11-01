@@ -18,6 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Thread-safe Map that preserves insertion order.
  * <p>This implementation uses a {@link LinkedHashMap} for insertion-order
  * iteration and a {@link ReentrantLock} for thread safety.</p>
+ *
  * @param <K> The key type
  * @param <V> The value type
  * @since 0.0.13
@@ -44,6 +45,7 @@ public final class ConcurrentLinkedMap<K, V> implements Map<K, V> {
 
     /**
      * Ctor.
+     *
      * @param map The backing map
      */
     public ConcurrentLinkedMap(final Map<K, V> map) {
@@ -52,6 +54,7 @@ public final class ConcurrentLinkedMap<K, V> implements Map<K, V> {
 
     /**
      * Ctor.
+     *
      * @param lock The lock to use for synchronization
      * @param map The backing map
      */

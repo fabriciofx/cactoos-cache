@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Misses.
  * <p>Number of times the value was not found.</p>
+ *
  * @since 0.0.1
  */
 public final class Misses implements Statistic {
@@ -28,6 +29,7 @@ public final class Misses implements Statistic {
 
     /**
      * Ctor.
+     *
      * @param count The count
      */
     public Misses(final AtomicInteger count) {

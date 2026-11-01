@@ -8,6 +8,7 @@ import org.cactoos.Bytes;
 
 /**
  * Evicted.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.13
@@ -16,12 +17,14 @@ public interface Evicted<K extends Bytes, V extends Bytes> {
 
     /**
      * Add an entry.
+     *
      * @param entry The entry
      */
     void add(Entry<K, V> entry);
 
     /**
      * Get an evicted entry by index.
+     *
      * @param index The index
      * @return The evicted entry
      */
@@ -29,6 +32,7 @@ public interface Evicted<K extends Bytes, V extends Bytes> {
 
     /**
      * Count of evicted entries.
+     *
      * @return Count of evicted entries
      */
     int count();

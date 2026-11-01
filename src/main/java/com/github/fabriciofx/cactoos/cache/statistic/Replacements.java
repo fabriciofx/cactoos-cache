@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Replacements.
  * <p>Number of times the entry was replaced by new save.</p>
+ *
  * @since 0.0.9
  */
 public final class Replacements implements Statistic {
@@ -28,6 +29,7 @@ public final class Replacements implements Statistic {
 
     /**
      * Ctor.
+     *
      * @param count The count
      */
     public Replacements(final AtomicInteger count) {

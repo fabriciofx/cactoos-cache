@@ -19,6 +19,7 @@ import org.llorllale.cactoos.matchers.HasValue;
 
 /**
  * Invalidate tests.
+ *
  * @since 0.0.7
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")

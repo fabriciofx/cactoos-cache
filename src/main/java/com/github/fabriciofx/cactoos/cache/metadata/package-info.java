@@ -5,6 +5,7 @@
 
 /**
  * Metadata.
+ *
  * @since 0.0.7
  */
 package com.github.fabriciofx.cactoos.cache.metadata;

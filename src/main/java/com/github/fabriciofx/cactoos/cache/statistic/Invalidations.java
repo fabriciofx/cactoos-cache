@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Invalidation.
  * <p>Explicit removals.</p>
+ *
  * @since 0.0.1
  */
 public final class Invalidations implements Statistic {
@@ -28,6 +29,7 @@ public final class Invalidations implements Statistic {
 
     /**
      * Ctor.
+     *
      * @param count Count
      */
     public Invalidations(final AtomicInteger count) {

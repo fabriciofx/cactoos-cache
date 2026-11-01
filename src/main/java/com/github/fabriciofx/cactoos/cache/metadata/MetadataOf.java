@@ -17,6 +17,7 @@ import org.cactoos.map.MapOf;
 
 /**
  * Metadata.
+ *
  * @since 0.0.7
  */
 public final class MetadataOf implements Metadata {
@@ -35,6 +36,7 @@ public final class MetadataOf implements Metadata {
 
     /**
      * Ctor.
+     *
      * @param items Metadata items
      */
     @SafeVarargs
@@ -44,6 +46,7 @@ public final class MetadataOf implements Metadata {
 
     /**
      * Ctor.
+     *
      * @param items Metadata items
      */
     public MetadataOf(final Map<String, Object> items) {

@@ -11,6 +11,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Xxh3BasedHash.
+ *
  * @since 0.0.10
  * @checkstyle BooleanExpressionComplexityCheck (200 lines)
  */
@@ -67,6 +68,7 @@ public final class Xxh3BasedHash implements Hash<Long> {
 
     /**
      * Ctor.
+     *
      * @param bytes Bytes
      * @checkstyle LambdaBodyLengthCheck (100 lines)
      */

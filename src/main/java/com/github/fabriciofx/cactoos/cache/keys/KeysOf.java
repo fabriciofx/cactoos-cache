@@ -16,6 +16,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * KeysOf.
+ *
  * @param <K> The key value type
  * @since 0.0.1
  */
@@ -33,6 +34,7 @@ public final class KeysOf<K extends Bytes> implements Keys<K> {
 
     /**
      * Ctor.
+     *
      * @param keys The keys
      */
     public KeysOf(final Set<Key<K>> keys) {

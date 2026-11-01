@@ -12,6 +12,7 @@ import org.cactoos.Bytes;
 
 /**
  * EvictedOf.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.13
@@ -33,6 +34,7 @@ public final class EvictedOf<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param items Items
      */
     public EvictedOf(final List<Entry<K, V>> items) {

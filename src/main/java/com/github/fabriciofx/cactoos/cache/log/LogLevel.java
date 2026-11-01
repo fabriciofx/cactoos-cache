@@ -10,6 +10,7 @@ import org.cactoos.Scalar;
 
 /**
  * LogLevel.
+ *
  * @since 0.0.13
  */
 public final class LogLevel implements Scalar<Level> {
@@ -26,6 +27,7 @@ public final class LogLevel implements Scalar<Level> {
 
     /**
      * Ctor.
+     *
      * @param logger Logger
      */
     public LogLevel(final Logger logger) {
@@ -34,6 +36,7 @@ public final class LogLevel implements Scalar<Level> {
 
     /**
      * Ctor.
+     *
      * @param logger Logger
      * @param def Default level
      */

@@ -11,6 +11,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * Synonyms.
+ *
  * @since 0.0.12
  */
 @SuppressWarnings({"InvalidBlockTag", "OperatorPrecedence"})
@@ -23,6 +24,7 @@ public final class Synonyms implements Bytes {
 
     /**
      * Ctor.
+     *
      * @param words A evicted of words
      * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
@@ -32,6 +34,7 @@ public final class Synonyms implements Bytes {
 
     /**
      * Ctor.
+     *
      * @param words A evicted of words
      */
     public Synonyms(final List<Word> words) {

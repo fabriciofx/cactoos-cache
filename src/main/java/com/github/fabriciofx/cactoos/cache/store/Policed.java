@@ -15,6 +15,7 @@ import org.cactoos.Bytes;
 
 /**
  * Policed.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.9
@@ -35,6 +36,7 @@ public final class Policed<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param cache The cache
      * @param policies The policies
      */

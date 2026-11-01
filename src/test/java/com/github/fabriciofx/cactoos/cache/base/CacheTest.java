@@ -16,6 +16,7 @@ import org.llorllale.cactoos.matchers.Assertion;
 /**
  * CacheTest.
  * <p>Tests for {@link Cache}.
+ *
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")

@@ -13,6 +13,7 @@ import org.cactoos.bytes.UncheckedBytes;
 
 /**
  * KeyOf.
+ *
  * @param <K> The key value type
  * @since 0.0.1
  */
@@ -36,6 +37,7 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
 
     /**
      * Ctor.
+     *
      * @param value A value
      */
     public KeyOf(final K value) {
@@ -44,6 +46,7 @@ public final class KeyOf<K extends Bytes> implements Key<K> {
 
     /**
      * Ctor.
+     *
      * @param value A value
      * @param hash The hash algorithm
      */

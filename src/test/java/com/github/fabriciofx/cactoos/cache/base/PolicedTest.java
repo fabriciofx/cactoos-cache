@@ -21,6 +21,7 @@ import org.llorllale.cactoos.matchers.HasValue;
 
 /**
  * {@link Policed} tests.
+ *
  * @since 0.0.7
  */
 @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")

@@ -12,6 +12,7 @@ import org.llorllale.cactoos.matchers.Throws;
 
 /**
  * StatisticsOf tests.
+ *
  * @since 0.0.10
  * @checkstyle RegexpSinglelineCheck (50 lines)
  */

@@ -8,6 +8,7 @@ import org.cactoos.Bytes;
 
 /**
  * Keys.
+ *
  * @param <K> The key value type
  * @since 0.0.1
  */
@@ -15,6 +16,7 @@ public interface Keys<K extends Bytes> extends Iterable<Key<K>> {
 
     /**
      * Retrieve the amount of keys.
+     *
      * @return The amount of keys
      */
     int count();
@@ -26,6 +28,7 @@ public interface Keys<K extends Bytes> extends Iterable<Key<K>> {
 
     /**
      * Size of the keys in bytes.
+     *
      * @return The size
      */
     int size();

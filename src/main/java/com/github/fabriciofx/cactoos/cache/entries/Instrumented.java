@@ -14,6 +14,7 @@ import org.cactoos.Bytes;
 
 /**
  * Instrumented Entries.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.1
@@ -33,6 +34,7 @@ public final class Instrumented<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param entries The entries
      * @param statistics The statistics
      */

@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Eviction.
  * <p>Number of cache entries removed automatically.</p>
+ *
  * @since 0.0.1
  */
 public final class Evictions implements Statistic {
@@ -28,6 +29,7 @@ public final class Evictions implements Statistic {
 
     /**
      * Ctor.
+     *
      * @param count The count
      */
     public Evictions(final AtomicInteger count) {

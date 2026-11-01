@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * StatisticsOf.
+ *
  * @since 0.0.1
  */
 @SuppressWarnings("InvalidBlockTag")
@@ -26,6 +27,7 @@ public final class StatisticsOf implements Statistics {
 
     /**
      * Ctor.
+     *
      * @param statistics The statistics
      * @checkstyle ConstructorsCodeFreeCheck (10 lines)
      */
@@ -39,6 +41,7 @@ public final class StatisticsOf implements Statistics {
 
     /**
      * Ctor.
+     *
      * @param statistics The statistics
      */
     public StatisticsOf(final Map<String, Statistic> statistics) {

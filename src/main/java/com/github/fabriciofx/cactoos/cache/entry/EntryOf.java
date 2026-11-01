@@ -13,6 +13,7 @@ import org.cactoos.bytes.UncheckedBytes;
 
 /**
  * EntryOf.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.3
@@ -42,6 +43,7 @@ public final class EntryOf<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param key A key
      * @param value A value
      */
@@ -51,6 +53,7 @@ public final class EntryOf<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param key A key
      * @param value A value
      * @param metadata The metadata

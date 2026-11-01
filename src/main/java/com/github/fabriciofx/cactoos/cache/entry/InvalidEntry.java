@@ -11,6 +11,7 @@ import org.cactoos.Bytes;
 
 /**
  * InvalidEntry.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.1

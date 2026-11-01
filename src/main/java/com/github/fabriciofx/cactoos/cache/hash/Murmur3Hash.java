@@ -11,6 +11,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Murmur3Hash.
+ *
  * @since 0.0.1
  * @checkstyle CyclomaticComplexityCheck (200 lines)
  * @checkstyle JavaNCSSCheck (200 lines)
@@ -41,6 +42,7 @@ public final class Murmur3Hash implements Hash<long[]> {
 
     /**
      * Ctor.
+     *
      * @param bytes Bytes
      */
     public Murmur3Hash(final Bytes bytes) {
@@ -49,6 +51,7 @@ public final class Murmur3Hash implements Hash<long[]> {
 
     /**
      * Ctor.
+     *
      * @param bytes Bytes
      * @param seed The seed
      * @checkstyle LambdaBodyLengthCheck (100 lines)

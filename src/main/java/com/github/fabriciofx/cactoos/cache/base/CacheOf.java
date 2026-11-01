@@ -22,6 +22,7 @@ import org.cactoos.Bytes;
 
 /**
  * CacheOf.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.3
@@ -53,6 +54,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param store A store
      */
     public CacheOf(final Store<K, V> store) {
@@ -72,6 +74,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param store A store
      * @param statistics Statistics
      */
@@ -81,6 +84,7 @@ public final class CacheOf<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param store A store
      * @param statistics Statistics
      * @param evicted The evicted entries

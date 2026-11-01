@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Inserts.
  * <p>Number of times a new entry has been inserted in the cache.</p>
+ *
  * @since 0.0.9
  */
 public final class Insertions implements Statistic {
@@ -28,6 +29,7 @@ public final class Insertions implements Statistic {
 
     /**
      * Ctor.
+     *
      * @param count The count
      */
     public Insertions(final AtomicInteger count) {

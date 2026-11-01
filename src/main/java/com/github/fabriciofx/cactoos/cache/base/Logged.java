@@ -24,6 +24,7 @@ import org.cactoos.text.UncheckedText;
 
 /**
  * Logged Cache.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.1
@@ -60,6 +61,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param cache The cache to be logged
      * @param from Where the data comes from
      * @checkstyle ConstructorsCodeFreeCheck (5 lines)
@@ -70,6 +72,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param cache The cache to be logged
      * @param from Where the data comes from
      * @param logger The logger
@@ -93,6 +96,7 @@ public final class Logged<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param cache The cache to be logged
      * @param from Where the data comes from
      * @param logger The logger

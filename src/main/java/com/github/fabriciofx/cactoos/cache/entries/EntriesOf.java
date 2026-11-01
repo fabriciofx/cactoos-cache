@@ -20,6 +20,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * EntriesOf.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.3
@@ -39,6 +40,7 @@ public final class EntriesOf<K extends Bytes, V extends Bytes>
 
     /**
      * Ctor.
+     *
      * @param entries The entries
      */
     public EntriesOf(final Map<Key<K>, Entry<K, V>> entries) {

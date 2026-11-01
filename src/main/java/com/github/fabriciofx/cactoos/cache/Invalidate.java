@@ -10,6 +10,7 @@ import org.cactoos.Bytes;
 
 /**
  * Invalidate cache entries.
+ *
  * @param <K> The key value type
  * @param <V> The entry value type
  * @since 0.0.7

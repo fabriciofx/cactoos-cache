@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 
 /**
  * Type of T.
+ *
  * @param <T> The type parameter
  * @since 0.0.7
  * @checkstyle NonStaticMethodCheck (100 lines)
@@ -23,6 +24,7 @@ public abstract class TypeOf<T> {
 
     /**
      * Ctor.
+     *
      * @checkstyle ConstructorsCodeFreeCheck (10 lines)
      */
     protected TypeOf() {
@@ -33,6 +35,7 @@ public abstract class TypeOf<T> {
 
     /**
      * Returns the type.
+     *
      * @return The type
      */
     public Type type() {
@@ -41,6 +44,7 @@ public abstract class TypeOf<T> {
 
     /**
      * Casts an object to T.
+     *
      * @param value The object
      * @return The cast object
      */

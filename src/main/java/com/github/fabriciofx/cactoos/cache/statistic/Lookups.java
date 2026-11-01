@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Lookups.
  * <p>Total of accesses (hits + misses).</p>
+ *
  * @since 0.0.1
  */
 public final class Lookups implements Statistic {
@@ -28,6 +29,7 @@ public final class Lookups implements Statistic {
 
     /**
      * Ctor.
+     *
      * @param count Count
      */
     public Lookups(final AtomicInteger count) {

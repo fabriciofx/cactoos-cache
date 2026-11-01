@@ -5,6 +5,7 @@
 
 /**
  * Cache Statistic.
+ *
  * @since 0.0.1
  */
 package com.github.fabriciofx.cactoos.cache.statistic;
