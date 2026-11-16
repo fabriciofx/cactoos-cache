@@ -8,12 +8,14 @@ import com.github.fabriciofx.cactoos.cache.Cache;
 import com.github.fabriciofx.cactoos.cache.Policies;
 import com.github.fabriciofx.cactoos.cache.Policy;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import org.cactoos.Bytes;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.Sticky;
@@ -38,6 +40,11 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
      * Execute executor only once.
      */
     private final AtomicBoolean once;
+
+    /**
+     * Scheduled execution of the policies.
+     */
+    private final AtomicReference<Future<?>> scheduled;
 
     /**
      * Delay between executions.
@@ -118,6 +125,7 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
         final List<Policy<K, V>> items
     ) {
         this.once = new AtomicBoolean(false);
+        this.scheduled = new AtomicReference<>(new CompletableFuture<>());
         this.delay = delay;
         this.unit = unit;
         this.executor = executor;
@@ -127,12 +135,17 @@ public final class DelayedPolicies<K extends Bytes, V extends Bytes>
     @Override
     public void apply(final Cache<K, V> cache) {
         if (this.once.compareAndSet(false, true)) {
-            final Future<?> future = this.executor.value().scheduleWithFixedDelay(
-                () -> this.items.forEach(policy -> policy.apply(cache)),
-                0L,
-                this.delay,
-                this.unit
+            this.scheduled.set(
+                this.executor.value().scheduleWithFixedDelay(
+                    () -> this.items.forEach(policy -> policy.apply(cache)),
+                    0L,
+                    this.delay,
+                    this.unit
+                )
             );
+        }
+        final Future<?> future = this.scheduled.get();
+        if (future.isDone()) {
             try {
                 future.get();
             } catch (final ExecutionException | InterruptedException ex) {
